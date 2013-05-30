@@ -10,3 +10,6 @@
 [submodule "bundle/vim-fakeclip"]
 	path = bundle/vim-fakeclip
 	url = git://github.com/kana/vim-fakeclip.git
+[submodule "bundle/mojo.vim"]
+	path = bundle/mojo.vim
+	url = git://github.com/yko/mojo.vim.git
