@@ -73,7 +73,7 @@ cnoreabbrev <expr> TABR ((getcmdtype() is# ':' && getcmdline() is# 'tabr')?('TAB
 cnoreabbrev <expr> TABL ((getcmdtype() is# ':' && getcmdline() is# 'tabl')?('TABL'):('tabl'))
 
 hi def link PerlString Comment
-hi def link PerlComment String
+hi def link PerlComment Comment
 
 iab xt <c-r>=strftime("%H:%M:%S")
 
