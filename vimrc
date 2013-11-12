@@ -76,6 +76,7 @@ hi def link PerlString Comment
 hi def link PerlComment Comment
 
 iab xt <c-r>=strftime("%H:%M:%S")
+iab xd <c-r>=strftime("%Y-%m-%d")
 
 function MyTabLine()
     let tabline = ''
