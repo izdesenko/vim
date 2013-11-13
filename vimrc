@@ -57,12 +57,16 @@ set foldopen=all
 
 set wildmenu
 set wildmode=full
-"set cursorline
+
+map <cr> i<cr><esc>
+
+"these lines to prevent vim to remove tabs from empty lines
+inoremap <CR> <CR>x<BS>
+nnoremap o ox<BS>
+nnoremap O Ox<BS>
 
 let Tlist_Ctags_Cmd='/usr/bin/ctags-exuberant'
 let Tlist_Inc_Winwidth=0
-
-map <cr> i<cr><esc>
 
 highlight MatchParen ctermbg=blue guibg=lightyellow
 "highlight CursorLine ctermbg=8 cterm=NONE
