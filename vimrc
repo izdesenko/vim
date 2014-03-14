@@ -61,9 +61,6 @@ set wildmode=full
 map <cr> i<cr><esc>
 
 "these lines to prevent vim to remove tabs from empty lines
-inoremap <CR> <CR>x<BS>
-nnoremap o ox<BS>
-nnoremap O Ox<BS>
 
 let Tlist_Ctags_Cmd='/usr/bin/ctags-exuberant'
 let Tlist_Inc_Winwidth=0
@@ -75,12 +72,17 @@ cnoreabbrev <expr> TABP ((getcmdtype() is# ':' && getcmdline() is# 'tabp')?('TAB
 cnoreabbrev <expr> TABN ((getcmdtype() is# ':' && getcmdline() is# 'tabn')?('TABN'):('tabn'))
 cnoreabbrev <expr> TABR ((getcmdtype() is# ':' && getcmdline() is# 'tabr')?('TABR'):('tabr'))
 cnoreabbrev <expr> TABL ((getcmdtype() is# ':' && getcmdline() is# 'tabl')?('TABL'):('tabl'))
+cnoreabbrev <expr> TABE ((getcmdtype() is# ':' && getcmdline() is# 'tabe')?('TABE'):('tabe'))
 
 hi def link PerlString Comment
 hi def link PerlComment Comment
+	
+inoremap <CR> <CR>x<BS>
+nnoremap o ox<BS>
+nnoremap O Ox<BS>
 
-iab xt <c-r>=strftime("%H:%M:%S")
-iab xd <c-r>=strftime("%Y-%m-%d")
+iab <expr> xt strftime("%H:%M:%S")
+iab <expr> xd strftime("%Y-%m-%d")
 
 function MyTabLine()
     let tabline = ''
