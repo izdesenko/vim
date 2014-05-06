@@ -13,3 +13,6 @@
 [submodule "bundle/mojo.vim"]
 	path = bundle/mojo.vim
 	url = git://github.com/yko/mojo.vim.git
+[submodule "mojo.vim"]
+	path = mojo.vim
+	url = https://github.com/yko/mojo.vim.git
