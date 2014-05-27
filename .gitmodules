@@ -7,3 +7,15 @@
 [submodule "bundle/supertab"]
 	path = bundle/supertab
 	url = git://github.com/vim-scripts/SuperTab.git
+[submodule "bundle/vim-fakeclip"]
+	path = bundle/vim-fakeclip
+	url = git://github.com/kana/vim-fakeclip.git
+[submodule "bundle/mojo.vim"]
+	path = bundle/mojo.vim
+	url = git://github.com/yko/mojo.vim.git
+[submodule "bundle/tagbar"]
+	path = bundle/tagbar
+	url = git@github.com:majutsushi/tagbar.git
+[submodule "bundle/vim-colors-solarized"]
+	path = bundle/vim-colors-solarized
+	url = git://github.com/altercation/vim-colors-solarized.git

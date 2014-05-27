@@ -54,14 +54,19 @@ set foldlevel=1
 let php_folding=1
 set foldopen=all 
 
+let mojo_highlight_data=1
+au BufRead,BufNewFile *.epl set filetype=html.epl
+au BufRead,BufNewFile *.ep  set filetype=html.epl
+
 set wildmenu
 set wildmode=full
-"set cursorline
+
+map <cr> i<cr><esc>
+
+"these lines to prevent vim to remove tabs from empty lines
 
 let Tlist_Ctags_Cmd='/usr/bin/ctags-exuberant'
 let Tlist_Inc_Winwidth=0
-
-map <cr> i<cr><esc>
 
 highlight MatchParen ctermbg=blue guibg=lightyellow
 "highlight CursorLine ctermbg=8 cterm=NONE
@@ -70,11 +75,18 @@ cnoreabbrev <expr> TABP ((getcmdtype() is# ':' && getcmdline() is# 'tabp')?('TAB
 cnoreabbrev <expr> TABN ((getcmdtype() is# ':' && getcmdline() is# 'tabn')?('TABN'):('tabn'))
 cnoreabbrev <expr> TABR ((getcmdtype() is# ':' && getcmdline() is# 'tabr')?('TABR'):('tabr'))
 cnoreabbrev <expr> TABL ((getcmdtype() is# ':' && getcmdline() is# 'tabl')?('TABL'):('tabl'))
+cnoreabbrev <expr> TABE ((getcmdtype() is# ':' && getcmdline() is# 'tabe')?('TABE'):('tabe'))
 
 hi def link PerlString Comment
-hi def link PerlComment String
+hi def link PerlComment Comment
+hi DiffText   ctermbg=Magenta	   cterm=bold gui=bold guibg=Red
 
-iab xt <c-r>=strftime("%H:%M:%S")
+inoremap <CR> <CR>x<BS>
+nnoremap o ox<BS>
+nnoremap O Ox<BS>
+
+iab <expr> xt strftime("%H:%M:%S")
+iab <expr> xd strftime("%Y-%m-%d")
 
 function MyTabLine()
     let tabline = ''
