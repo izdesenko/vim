@@ -37,7 +37,6 @@ set path=.,,**
 set scrolloff=3
 "allow backspacing over everything in insert mode
 set backspace=indent,eol,start
-set dictionary-=/home/ilya/funclist.txt dictionary+=/home/ilya/funclist.txt
 set complete-=k complete+=k
 
 set ignorecase
