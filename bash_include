@@ -5,8 +5,12 @@ umask 022
 
 source ~/bin/git-completion.bash
 
-gdon() { git diff origin/$1 --name-only }
-gdo()  { git diff origin/$@             }
+gdon() {
+	git diff origin/$1 --name-only
+}
+gdo()  {
+	git diff origin/$@
+}
 
 alias grep="grep --color"
 alias ll="ls -lAF"
@@ -21,7 +25,7 @@ alias go="git pull origin"
 alias gop="git push origin"
 
 control(){
-	$d = date +%Y-%m-%d
+	d=`date +%Y-%m-%d`
 	mkdir ~/control/days/$d
 	~/control/scripts/create_files.pl
 	cd ~/control/days/$d
