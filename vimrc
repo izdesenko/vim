@@ -80,7 +80,8 @@ cnoreabbrev <expr> TABE ((getcmdtype() is# ':' && getcmdline() is# 'tabe')?('TAB
 
 hi def link PerlString Comment
 hi def link PerlComment Comment
-hi DiffText   ctermbg=Magenta	   cterm=bold gui=bold guibg=Red
+hi DiffChange   ctermbg=LightMagenta	guibg=LightMagenta
+hi DiffText   ctermbg=Magenta	guibg=Magenta
 
 inoremap <CR> <CR>x<BS>
 nnoremap o ox<BS>
