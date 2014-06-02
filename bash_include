@@ -1,0 +1,36 @@
+export EDITOR=vim
+
+export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
+umask 022
+
+source ~/bin/git-completion.bash
+
+gdon() {
+	git diff origin/$1 --name-only
+}
+gdo()  {
+	git diff origin/$@
+}
+
+alias grep="grep --color"
+alias ll="ls -lAF"
+alias gis="git status"
+alias gil="git log --stat --graph --pretty=short --abbrev-commit"
+alias ga="git add "
+alias gc="git commit -m "
+alias gd="git diff HEAD "
+alias gpsm="git push origin master"
+alias gplm="git pull origin master"
+alias go="git pull origin"
+alias gop="git push origin"
+
+control(){
+	d=`date +%Y-%m-%d`
+	mkdir ~/control/days/$d
+	~/control/scripts/create_files.pl
+	cd ~/control/days/$d
+	vim -p *.txt
+}
+
+alias mousetrick="x=0;y=0;while [[ $y -lt 500 ]] ; do xdotool mousemove --polar $x $y ; x=$(($x+3));y=$(($y+1)); sleep 0.001; done"
+
