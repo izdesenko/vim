@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/Users/izdesenko/projects/uapi'
+let g:netrw_dirhist_2='/Users/izdesenko/Downloads'
+let g:netrw_dirhist_3='/Users/izdesenko/projects/uapi'
+let g:netrw_dirhist_4='/Users/izdesenko/Documents/uidme_pics/img/avatar'
+let g:netrw_dirhist_5='/Users/izdesenko'
+let g:netrw_dirhist_6='/Users/izdesenko/Downloads/forum/forum'
+let g:netrw_dirhist_7='/Users/izdesenko/Downloads/aboutme-widget'
