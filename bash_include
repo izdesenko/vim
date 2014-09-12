@@ -23,6 +23,7 @@ alias gpsm="git push origin master"
 alias gplm="git pull origin master"
 alias go="git pull origin"
 alias gop="git push origin"
+alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 
 control(){
 	d=`date +%Y-%m-%d`
