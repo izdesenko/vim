@@ -1,7 +1,7 @@
 export EDITOR=vim
 
 export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
-umask 022
+# umask 022
 
 LESSCHARSET=UTF-8
 
@@ -34,6 +34,13 @@ gbdiff () {
 		DIFF=$(git diff origin/$BRANCH $x 2> /dev/null)
 		echo $x$'\n'"$DIFF"$'\n'$'\n'$'\n' >> "$DUMP_FILE"
 	done
+}
+
+gdonw() {
+	git diff origin/$1 --name-only -w
+}
+gdow()  {
+	git diff -w origin/$@
 }
 
 alias grep="grep --color"
