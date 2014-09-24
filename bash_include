@@ -3,6 +3,8 @@ export EDITOR=vim
 export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
 umask 022
 
+LESSCHARSET=UTF-8
+
 source ~/bin/git-completion.bash
 
 gdon() {
@@ -10,6 +12,28 @@ gdon() {
 }
 gdo()  {
 	git diff origin/$@
+}
+
+gbdiff () {
+	BRANCH=$1
+	
+	DUMP_FILE="BRANCH_DIFF.TXT"
+	
+	if [ ! -f $DUMP_FILE ]
+	then
+		touch $DUMP_FILE
+	fi
+
+	STR=$(git diff origin/$BRANCH --name-only)
+	echo LIST:$'\n'"$STR"$'\n'$'\n' > "$DUMP_FILE"
+	IFS=$'\n'
+	FILES=( $STR )
+
+	for x in ${FILES[@]};
+	do
+		DIFF=$(git diff origin/$BRANCH $x 2> /dev/null)
+		echo $x$'\n'"$DIFF"$'\n'$'\n'$'\n' >> "$DUMP_FILE"
+	done
 }
 
 alias grep="grep --color"
@@ -24,8 +48,9 @@ alias gplm="git pull origin master"
 alias go="git pull origin"
 alias gop="git push origin"
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
+alias control="cd ~/control2/days/; vim -p *.txt"
 
-control(){
+control2(){
 	d=`date +%Y-%m-%d`
 	mkdir ~/control/days/$d
 	~/control/scripts/create_files.pl
