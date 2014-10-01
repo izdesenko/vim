@@ -1,3 +1,4 @@
+# vim: syntax=sh
 export EDITOR=vim
 
 export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
@@ -17,6 +18,11 @@ gdo()  {
 gbdiff () {
 	BRANCH=$1
 	
+	if [ ! "$BRANCH" ]
+	then
+		BRANCH='master'
+	fi
+	
 	DUMP_FILE="BRANCH_DIFF.TXT"
 	
 	if [ ! -f $DUMP_FILE ]
@@ -25,7 +31,8 @@ gbdiff () {
 	fi
 
 	STR=$(git diff origin/$BRANCH --name-only)
-	echo LIST:$'\n'"$STR"$'\n'$'\n' > "$DUMP_FILE"
+	echo "# vim: syntax=git" > $DUMP_FILE
+	echo LIST:$'\n'"$STR"$'\n'$'\n' >> "$DUMP_FILE"
 	IFS=$'\n'
 	FILES=( $STR )
 
