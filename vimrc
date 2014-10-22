@@ -55,8 +55,9 @@ let php_folding=1
 set foldopen=all 
 
 let mojo_highlight_data=1
-au BufRead,BufNewFile *.epl set filetype=html.epl
-au BufRead,BufNewFile *.ep  set filetype=html.epl
+au BufRead,BufNewFile *.epl   set filetype=html.epl
+au BufRead,BufNewFile *.ep    set filetype=html.epl
+au BufRead,BufNewFile Rexfile set filetype=perl
 
 set wildmenu
 set wildmode=full
