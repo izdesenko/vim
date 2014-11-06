@@ -15,6 +15,29 @@ gdo()  {
 	git diff origin/$@
 }
 
+
+go()  {
+	BRANCH=$1
+	
+	if [ ! "$BRANCH" ]
+	then
+		BRANCH=$(git rev-parse --abbrev-ref HEAD)
+	fi
+
+	git pull origin $BRANCH
+}
+
+gop()  {
+	BRANCH=$1
+	
+	if [ ! "$BRANCH" ]
+	then
+		BRANCH=$(git rev-parse --abbrev-ref HEAD)
+	fi
+
+	git push origin $BRANCH
+}
+
 gbdiff () {
 	BRANCH=$1
 	
@@ -57,10 +80,6 @@ alias gil="git log --stat --graph --pretty=short --abbrev-commit"
 alias ga="git add "
 alias gc="git commit -m "
 alias gd="git diff HEAD "
-alias gpsm="git push origin master"
-alias gplm="git pull origin master"
-alias go="git pull origin"
-alias gop="git push origin"
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias control="cd ~/control2/days/; vim -p *.txt"
 
