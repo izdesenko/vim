@@ -1,12 +1,13 @@
 # vim: syntax=sh
 export EDITOR=vim
 
-export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
+# export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
 # umask 022
 
 LESSCHARSET=UTF-8
 
-source ~/bin/git-completion.bash
+# source ~/bin/git-completion.bash # Mac OS git-completion settings
+source /etc/bash_completion.d/git-prompt # Ubuntu git completion settings
 
 gdon() {
 	git diff origin/$1 --name-only
@@ -15,7 +16,7 @@ gdo()  {
 	git diff origin/$@
 }
 
-
+# pull from current branch
 go()  {
 	BRANCH=$1
 	
@@ -27,6 +28,7 @@ go()  {
 	git pull origin $BRANCH
 }
 
+# push to current branch
 gop()  {
 	BRANCH=$1
 	
