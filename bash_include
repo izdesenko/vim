@@ -1,13 +1,24 @@
 # vim: syntax=sh
 export EDITOR=vim
 
-# export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
+export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
 # umask 022
 
 LESSCHARSET=UTF-8
 
 # source ~/bin/git-completion.bash # Mac OS git-completion settings
 source /etc/bash_completion.d/git-prompt # Ubuntu git completion settings
+
+
+gdc() {
+	BRANCH=$1
+	
+	if [ ! "$BRANCH" ]
+	then
+		BRANCH=$(git rev-parse --abbrev-ref HEAD)
+	fi
+	git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative master..$BRANCH
+}
 
 gdon() {
 	git diff origin/$1 --name-only
