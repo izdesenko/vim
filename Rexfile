@@ -38,6 +38,17 @@ task "fetch", group => "production", sub {
 	say run $CD."git fetch origin";
 };
 
+desc 'Set "Check Point" - store last commit to rollback if problems will arrive.';
+task "checkpoint", group => "production", sub {
+	local $, = "\n";
+	
+	my ($now, $dayly, $monthly) = map {".last_commit.".strftime($_, localtime)} qw/%Y-%m-%d.%H:%M %Y-%m-%d %Y-%m/;
+	
+	say run $CD." git log --name-status HEAD^..HEAD > $now"     unless run $CD." [ -e $now ] && echo \"Found\"";
+	say run $CD." git log --name-status HEAD^..HEAD > $dayly"   unless run $CD." [ -e $dayly ] && echo \"Found\"";
+	say run $CD." git log --name-status HEAD^..HEAD > $monthly" unless run $CD." [ -e $monthly ] && echo \"Found\"";
+};
+
 desc "Релиз на боевых серверах. git pull origin master";
 task "release", group => "production", sub {
 	local $, = "\n";
@@ -53,7 +64,9 @@ task "run", group => "production", sub {
 desc "НЕ РАБОТАЕТ!!!! Откатываемся на боевых серверах. Из .last_commit.YYYY-mm-dd берем номер ревизии, в которой была раб.копия на момент неудачного release'а. И делаем git checkout <revision>";
 task "rollback", group => "production", sub {
 	local $, = "\n";
-	my $c = run $CD." cat .last_commit.".strftime('%Y-%m-%d', localtime);
+	
+	my @lt = localtime;
+	my $c = run $CD." cat .last_commit.".strftime('%Y-%m-%d', @lt);
 	
 	($c)  = ($c =~ /commit\s+([^\n]+)/);
 	if ($c) {
@@ -62,13 +75,39 @@ task "rollback", group => "production", sub {
 	}
 };
 
-desc 'Set "Check Point" - store last commit to rollback if problems will arrive.';
-task "checkpoint", group => "production", sub {
+task "rollback_test", group => "production", sub {
 	local $, = "\n";
 	
-	my ($day, $month) = map {".last_commit.".strftime($_, localtime)} qw/%Y-%m-%d %Y-%m/;
+	my @lt = localtime;
+	$lt[3] += 10;
+	my $c;
 	
-	say run $CD." git log --name-status HEAD^..HEAD > $day"   unless run $CD." [ -e $day ] && echo \"Found\"";
-	say run $CD." git log --name-status HEAD^..HEAD > $month" unless run $CD." [ -e $month ] && echo \"Found\"";
+	until ($c) {
+		my $fn = ".last_commit.".strftime('%Y-%m-%d', @lt);
+		print "$fn\n";
+		$c = run $CD." cat $fn" if run "-z $fn";
+		$lt[3]--;
+	}
+	
+	($c)  = ($c =~ /commit\s+([^\n]+)/);
+	print "$c\n";
+	# if ($c) {
+	# say run $CD." git checkout $c;";
+	# say run $CD."./bin/hypnorestart.sh";
+	# }
+};
+
+desc 'Hard release - merge master with RC without pushing to origin to be able to roll back all changes';
+task 'hard_release', 'group' => 'production', sub {
+	local $, = "\n";
+	
+	say run $CD."git pull origin RC;";
+};
+
+desc 'Hard rollback of hard release. Run git reset --hard origin/master to get off bad merge';
+task 'hard_rollback', 'group' => 'production', sub {
+	local $, = "\n";
+	
+	say run $CD."git reset --hard origin/master;";
 };
 
