@@ -1,0 +1,15 @@
+; .editorconfig
+
+root = true
+tab_width = 4
+
+[**.js]
+indent_style = tab
+
+[**.css]
+indent_style = tab
+
+[**.html]
+indent_style = tab
+brace_style = expand
+
