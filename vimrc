@@ -62,6 +62,8 @@ au BufRead,BufNewFile Rexfile set filetype=perl
 set wildmenu
 set wildmode=full
 
+set diffopt=filler,context:5,icase,iwhite,vertical
+
 map <cr> i<cr><esc>
 
 "these lines to prevent vim to remove tabs from empty lines
