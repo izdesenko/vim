@@ -7,7 +7,7 @@ export EDITOR=vim
 LESSCHARSET=UTF-8
 
 # source ~/bin/git-completion.bash # Mac OS git-completion settings
-source /etc/bash_completion.d/git-prompt # Ubuntu git completion settings
+# source /etc/bash_completion.d/git-prompt # Ubuntu git completion settings
 
 gdon() {
 	git diff origin/$1 --name-only
