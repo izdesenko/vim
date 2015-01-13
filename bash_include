@@ -7,7 +7,7 @@ export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w
 LESSCHARSET=UTF-8
 
 # source ~/bin/git-completion.bash # Mac OS git-completion settings
-# source /etc/bash_completion.d/git-prompt # Ubuntu git completion settings
+source /etc/bash_completion.d/git-prompt # Ubuntu git completion settings
 
 
 gdc() {
@@ -91,7 +91,7 @@ alias ll="ls -lAF"
 alias gis="git status"
 alias gil="git log --stat --graph --pretty=short --abbrev-commit"
 alias ga="git add "
-alias gc="git commit -m "
+alias gc='git commit --author="Ilya Zdesenko <iplugin@gmail.com>" -m '
 alias gd="git diff HEAD "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
