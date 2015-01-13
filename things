@@ -1,0 +1,4 @@
+add stored procedure to mongo shell to clean collections
+> db.system.js.insert({ '_id': 'purge', value: function(){ [ 'collection1', 'collection2', '...', ... ].forEach(function(c){ db[c].remove({}) })}})
+> db.eval('return purge()')
+

@@ -94,6 +94,7 @@ alias ga="git add "
 alias gc="git commit -m "
 alias gd="git diff HEAD "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
+alias gfo="git fetch origin"
 alias control="cd ~/control2/days/; vim -p *.txt"
 
 control2(){
