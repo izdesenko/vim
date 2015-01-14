@@ -89,6 +89,7 @@ gdow()  {
 alias grep="grep --color"
 alias ll="ls -lAF"
 alias gis="git status"
+alias giss="git status | grep --color=always -v .min.js | grep --color=always -v .min.css "
 alias gil="git log --stat --graph --pretty=short --abbrev-commit"
 alias ga="git add "
 alias gc='git commit --author="Ilya Zdesenko <iplugin@gmail.com>" -m '
