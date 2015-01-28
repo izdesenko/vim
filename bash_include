@@ -86,6 +86,10 @@ gdow()  {
 	git diff -w origin/$@
 }
 
+gisre() {
+	git -c color.ui=always -c color.status=always status | perl -lane "print pop @F if $1" | perl -wne 'chomp;print "$_ "'
+}
+
 alias grep="grep --color"
 alias ll="ls -lAF"
 alias gis="git -c color.ui=always -c color.status=always status"
