@@ -1,5 +1,8 @@
 # vim: syntax=sh
 export EDITOR=vim
+export XDEBUG_CONFIG="ide-key=vim"
+export LESS=' -R ' # less without word wrapp
+# export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 
 # export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
 # umask 022
@@ -9,7 +12,6 @@ LESSCHARSET=UTF-8
 # source ~/bin/git-completion.bash # Mac OS git-completion settings
 source /etc/bash_completion.d/git # Ubuntu git completion settings
 # source /etc/bash_completion.d/git-prompt # Ubuntu git completion settings
-
 
 gdc() {
 	BRANCH=$1
@@ -24,12 +26,10 @@ gdc() {
 gdon() {
 	$(git diff origin/$1 --name-only)
 }
-gdo()  {
+gdo() {
 	$(git diff origin/$@)
 }
-
-# pull from current branch
-go()  {
+go() {
 	BRANCH=$1
 	
 	if [ ! "$BRANCH" ]
@@ -102,6 +102,11 @@ alias gd="git diff HEAD "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
 alias control="cd ~/control2/days/; vim -p *.txt"
+
+alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
+alias apt_uppp='sudo apt-get update; sudo apt-get upgrade' 
+alias dcc='drush cc all'
+alias timestamp='date "+%s"'
 
 control2(){
 	d=`date +%Y-%m-%d`
