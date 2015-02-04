@@ -1,13 +1,14 @@
 # vim: syntax=sh
 export EDITOR=vim
 
-export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
+# export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
 # umask 022
 
 LESSCHARSET=UTF-8
 
 # source ~/bin/git-completion.bash # Mac OS git-completion settings
-source /etc/bash_completion.d/git-prompt # Ubuntu git completion settings
+source /etc/bash_completion.d/git # Ubuntu git completion settings
+# source /etc/bash_completion.d/git-prompt # Ubuntu git completion settings
 
 
 gdc() {
@@ -21,10 +22,10 @@ gdc() {
 }
 
 gdon() {
-	git diff origin/$1 --name-only
+	$(git diff origin/$1 --name-only)
 }
 gdo()  {
-	git diff origin/$@
+	$(git diff origin/$@)
 }
 
 # pull from current branch
@@ -112,3 +113,11 @@ control2(){
 
 alias mousetrick="x=0;y=0;while [[ $y -lt 500 ]] ; do xdotool mousemove --polar $x $y ; x=$(($x+3));y=$(($y+1)); sleep 0.001; done"
 
+
+let_it_snow(){
+	clear;while :;do echo $LINES $COLUMNS $(($RANDOM%$COLUMNS));sleep 0.1;done|gawk '{a[$3]=0;for(x in a) {o=a[x];a[x]=a[x]+1;printf "\033[%s;%sH ",o,x;printf "\033[%s;%sH*\033[0;0H",a[x],x;}}'
+}
+
+let_it_snow_big(){
+	clear;while :;do echo $LINES $COLUMNS $(($RANDOM%$COLUMNS)) $(printf "\u2744\n");sleep 0.1;done|gawk '{a[$3]=0;for(x in a) {o=a[x];a[x]=a[x]+1;printf "\033[%s;%sH ",o,x;printf "\033[%s;%sH%s \033[0;0H",a[x],x,$4;}}'	
+}
