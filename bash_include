@@ -97,6 +97,7 @@ alias giss="git -c color.ui=always -c color.status=always status | grep -v .min.
 alias gil="git log --stat --graph --pretty=short --abbrev-commit"
 alias ga="git add "
 alias gc='git commit --author="Ilya Zdesenko <iplugin@gmail.com>" -m '
+alias gca='git commit --author="Ilya Zdesenko <iplugin@gmail.com>" --amend -m '
 alias gd="git diff HEAD "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
