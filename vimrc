@@ -7,6 +7,7 @@ set shortmess+=|
 set mouse=a
 set hlsearch
 set incsearch
+set bg=light
 
 set noerrorbells 
 set visualbell
@@ -61,10 +62,20 @@ au BufRead,BufNewFile Rexfile set filetype=perl
 
 set wildmenu
 set wildmode=full
+set pastetoggle=<F11>
 
 set diffopt=filler,context:5,icase,iwhite,vertical
 
 map <cr> i<cr><esc>
+map Q :w<cr>
+
+" make tab in v mode ident code
+vmap <tab> >gv
+vmap <s-tab> <gv
+ 
+" make tab in normal mode ident code
+nmap <tab> I<tab><esc>
+nmap <s-tab> ^i<bs><esc>
 
 "these lines to prevent vim to remove tabs from empty lines
 
