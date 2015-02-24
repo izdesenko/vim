@@ -40,7 +40,7 @@ go() {
 	git pull origin $BRANCH
 }
 
-# push to current branch
+# push to current branch to all remotes
 gop()  {
 	BRANCH=$1
 	
@@ -48,8 +48,11 @@ gop()  {
 	then
 		BRANCH=$(git rev-parse --abbrev-ref HEAD)
 	fi
-
-	git push origin $BRANCH
+	
+	for R in $(git remote)
+	do
+		git push $R $BRANCH
+	done
 }
 
 gbdiff () {
@@ -97,8 +100,8 @@ alias gis="git -c color.ui=always -c color.status=always status"
 alias giss="git -c color.ui=always -c color.status=always status | grep -v .min.js | grep -v .min.css "
 alias gil="git log --stat --graph --pretty=short --abbrev-commit"
 alias ga="git add "
-alias gc='git commit --author="Ilya Zdesenko <iplugin@gmail.com>" -m '
-alias gca='git commit --author="Ilya Zdesenko <iplugin@gmail.com>" --amend -m '
+alias gc='git commit --author="Ilya Z <iplugin@gmail.com>" -m '
+alias gca='git commit --author="Ilya Z <iplugin@gmail.com>" --amend -m '
 alias gd="git diff HEAD "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
