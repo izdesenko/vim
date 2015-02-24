@@ -28,3 +28,6 @@
 [submodule "/home/www/.vim/bundle/jshint.vim"]
 	path = /home/www/.vim/bundle/jshint.vim
 	url = https://github.com/wookiehangover/jshint.vim.git
+[submodule "bundle/vim-jade"]
+	path = bundle/vim-jade
+	url = git://github.com/digitaltoad/vim-jade.git
