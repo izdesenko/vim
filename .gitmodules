@@ -7,9 +7,6 @@
 [submodule "bundle/supertab"]
 	path = bundle/supertab
 	url = git://github.com/vim-scripts/SuperTab.git
-[submodule "bundle/vim-fakeclip"]
-	path = bundle/vim-fakeclip
-	url = git://github.com/kana/vim-fakeclip.git
 [submodule "bundle/mojo.vim"]
 	path = bundle/mojo.vim
 	url = git://github.com/yko/mojo.vim.git
@@ -22,12 +19,6 @@
 [submodule "bundle/vim-jsbeautify"]
 	path = bundle/vim-jsbeautify
 	url = https://github.com/maksimr/vim-jsbeautify.git
-[submodule "bundle/syntastic"]
-	path = bundle/syntastic
-	url = https://github.com/scrooloose/syntastic.git
 [submodule "/home/www/.vim/bundle/jshint.vim"]
 	path = /home/www/.vim/bundle/jshint.vim
 	url = https://github.com/wookiehangover/jshint.vim.git
-[submodule "bundle/vim-jade"]
-	path = bundle/vim-jade
-	url = git://github.com/digitaltoad/vim-jade.git
