@@ -81,6 +81,7 @@ nmap <s-tab> ^i<bs><esc>
 
 let Tlist_Ctags_Cmd='/usr/bin/ctags-exuberant'
 let Tlist_Inc_Winwidth=0
+"let g:syntastic_javascript_checkers = ['jshint'] "<- this module removed
 
 highlight MatchParen ctermbg=blue guibg=lightyellow
 "highlight CursorLine ctermbg=8 cterm=NONE
