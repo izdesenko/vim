@@ -55,6 +55,10 @@ gop()  {
 	done
 }
 
+gim(){
+	vim -p $(git status | grep 'both modified' | sed -e 's/#[[:space:]]both modified[:[:space:]]*//g' | xargs echo -n)
+}
+
 gbdiff () {
 	BRANCH=$1
 	
@@ -105,7 +109,6 @@ alias gca='git commit --author="Ilya Z <iplugin@gmail.com>" --amend -m '
 alias gd="git diff HEAD "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
-alias gim="vim -p $(git status | grep 'both modified' | sed -e 's/#[[:space:]]both modified[:[:space:]]*//g' | xargs echo -n)"
 alias control="cd ~/control2/days/; vim -p *.txt"
 
 alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
