@@ -22,3 +22,6 @@
 [submodule "/home/www/.vim/bundle/jshint.vim"]
 	path = /home/www/.vim/bundle/jshint.vim
 	url = https://github.com/wookiehangover/jshint.vim.git
+[submodule "bundle/vim-javascript-syntax"]
+	path = bundle/vim-javascript-syntax
+	url = https://github.com/jelera/vim-javascript-syntax.git
