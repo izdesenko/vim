@@ -11,7 +11,7 @@ LESSCHARSET=UTF-8
 
 # source ~/bin/git-completion.bash # Mac OS git-completion settings
 # source /etc/bash_completion.d/git # Ubuntu git completion settings
-# source /etc/bash_completion.d/git-prompt # other Ubuntu git completion settings
+source /etc/bash_completion.d/git-prompt # other Ubuntu git completion settings
 
 gdc() {
 	BRANCH=$1
