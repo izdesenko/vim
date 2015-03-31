@@ -41,7 +41,7 @@ go() {
 }
 
 # push to current branch to all remotes
-gop()  {
+gop() {
 	BRANCH=$1
 	
 	if [ ! "$BRANCH" ]

@@ -9,6 +9,9 @@ set hlsearch
 set incsearch
 set bg=light
 
+set t_Co=256
+"colorscheme distinguished
+
 set noerrorbells 
 set visualbell
 "set t_vb= 
@@ -35,7 +38,8 @@ set number
 set scrolljump=1
 set path=.,,**
 
-set scrolloff=3
+set scrolloff=0
+"set scrolloff=9999 " to hold cursor in the middle of screen
 "allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 set complete-=k complete+=k
