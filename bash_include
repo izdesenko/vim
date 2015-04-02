@@ -98,6 +98,21 @@ gisre() {
 	git -c color.ui=always -c color.status=always status | perl -lane "print pop @F if $1" | perl -wne 'chomp;print "$_ "'
 }
 
+email(){
+	TO=$1
+	SUBJ=$2
+	FILE=$3
+	
+	CONTENT=$FILE
+	
+	if [ -f $FILE ]
+	then
+		CONTENT=$(cat $FILE)
+	fi
+	
+	echo $CONTENT | mail -s "$(echo -e "Тест рассылки\nContent-Type: text/html")" $TO
+}
+
 alias grep="grep --color"
 alias ll="ls -lAF"
 alias gis="git -c color.ui=always -c color.status=always status"
