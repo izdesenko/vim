@@ -9,7 +9,7 @@ export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w
 
 LESSCHARSET=UTF-8
 
-# source ~/bin/git-completion.bash # Mac OS git-completion settings
+source ~/bin/git-completion.bash # Mac OS git-completion settings
 # source /etc/bash_completion.d/git # Ubuntu git completion settings
 source /etc/bash_completion.d/git-prompt # other Ubuntu git completion settings
 
@@ -115,6 +115,7 @@ alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
 alias apt_uppp='sudo apt-get update; sudo apt-get upgrade' 
 alias dcc='drush cc all'
 alias timestamp='date "+%s"'
+alias download='curl -O '
 
 control2(){
 	d=`date +%Y-%m-%d`

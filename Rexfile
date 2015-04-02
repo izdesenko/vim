@@ -111,3 +111,11 @@ task 'hard_rollback', 'group' => 'production', sub {
 	say run $CD."git reset --hard origin/master;";
 };
 
+desc 'Get rid of .last_commit**** files';
+task 'flush', group => 'production', sub {
+	local $, = "\n";
+	
+	my @names = split /\s+/, run $CD.'echo .last_commit*';
+	print Dumper(\@names);
+};
+
