@@ -9,7 +9,7 @@ export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w
 
 LESSCHARSET=UTF-8
 
-source ~/bin/git-completion.bash # Mac OS git-completion settings
+# source ~/bin/git-completion.bash # Mac OS git-completion settings
 # source /etc/bash_completion.d/git # Ubuntu git completion settings
 source /etc/bash_completion.d/git-prompt # other Ubuntu git completion settings
 
@@ -100,7 +100,7 @@ gisre() {
 
 email(){
 	TO=$1
-	SUBJ=$2
+	SUBJ="$2\nContent-Type: text/html"
 	BODY=$3
 	
 	if [ "$#" -ne 3 ]; then
@@ -118,7 +118,7 @@ USAGE
 		BODY=$(cat $BODY)
 	fi
 	
-	echo $BODY | mail -s "$(echo -e "$SUBJ\nContent-Type: text/html")" $TO
+	echo $BODY | mail -s "$(echo -e "$SUBJ")" $TO
 	
 	echo "SENT"
 }
