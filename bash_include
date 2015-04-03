@@ -100,7 +100,7 @@ gisre() {
 
 email(){
 	TO=$1
-	SUBJ="$2\nContent-Type: text/html"
+	SUBJ="$2" # SUBJ="$2\nContent-Type: text/html"
 	BODY=$3
 	
 	if [ "$#" -ne 3 ]; then
@@ -118,7 +118,7 @@ USAGE
 		BODY=$(cat $BODY)
 	fi
 	
-	echo $BODY | mail -s "$(echo -e "$SUBJ")" $TO
+	echo $BODY | mail -a "Content-type: text/html" -s "$(echo $SUBJ)" $TO
 	
 	echo "SENT"
 }
