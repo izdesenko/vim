@@ -101,16 +101,26 @@ gisre() {
 email(){
 	TO=$1
 	SUBJ=$2
-	FILE=$3
+	BODY=$3
 	
-	CONTENT=$FILE
-	
-	if [ -f $FILE ]
-	then
-		CONTENT=$(cat $FILE)
+	if [ "$#" -ne 3 ]; then
+		cat <<USAGE
+Usage:
+email mail@example.org "Subject of email" "Email body ... "
+or
+email mail@example.org "Subject of email" /path/to/filename.html
+USAGE
+		return ;
 	fi
 	
-	echo $CONTENT | mail -s "$(echo -e "Тест рассылки\nContent-Type: text/html")" $TO
+	if [ -f "$BODY" ]
+	then
+		BODY=$(cat $BODY)
+	fi
+	
+	echo $BODY | mail -s "$(echo -e "$SUBJ\nContent-Type: text/html")" $TO
+	
+	echo "SENT"
 }
 
 alias grep="grep --color"
