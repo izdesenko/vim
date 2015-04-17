@@ -61,6 +61,11 @@ task "run", group => "production", sub {
 	say run $CD."./bin/hypnoreload.sh";
 };
 
+task "test", group => "production", sub {
+	local $, = "\n";
+	say run $CD."ls";
+};
+
 desc "НЕ РАБОТАЕТ!!!! Откатываемся на боевых серверах. Из .last_commit.YYYY-mm-dd берем номер ревизии, в которой была раб.копия на момент неудачного release'а. И делаем git checkout <revision>";
 task "rollback", group => "production", sub {
 	local $, = "\n";
