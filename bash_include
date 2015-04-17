@@ -9,9 +9,9 @@ export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w
 
 LESSCHARSET=UTF-8
 
-# source ~/bin/git-completion.bash # Mac OS git-completion settings
+source ~/bin/git-completion.bash # Mac OS git-completion settings
 # source /etc/bash_completion.d/git # Ubuntu git completion settings
-source /etc/bash_completion.d/git-prompt # other Ubuntu git completion settings
+# source /etc/bash_completion.d/git-prompt # other Ubuntu git completion settings
 
 gdc() {
 	BRANCH=$1
@@ -123,6 +123,21 @@ USAGE
 	echo "SENT"
 }
 
+rdom () { local IFS=\> ; read -d \< E C ; }
+
+parseJira(){
+	while rdom; do
+		if [ "$E" == "title" ]
+		then
+			echo "$C"
+		fi
+	done
+}
+
+htmlentities(){
+	perl -Mutf8 -MHTML::Entities -CS -pe 'decode_entities($_)'
+}
+
 alias grep="grep --color"
 alias ll="ls -lAF"
 alias gis="git -c color.ui=always -c color.status=always status"
@@ -141,6 +156,7 @@ alias apt_uppp='sudo apt-get update; sudo apt-get upgrade'
 alias dcc='drush cc all'
 alias timestamp='date "+%s"'
 alias download='curl -O '
+alias jira="curl -D- -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application/json; charset=UTF-8' '$jira_domain/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=assignee%3D+$jira_user+and+project+%3D+$jira_project+and+status+not+in+%28done%2CClosed%29&tempMax=1000' 2> /dev/null | htmlentities | parseJira"
 
 control2(){
 	d=`date +%Y-%m-%d`
