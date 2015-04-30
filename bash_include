@@ -24,10 +24,10 @@ gdc() {
 }
 
 gdon() {
-	$(git diff origin/$1 --name-only)
+	git diff origin/$1 --name-only
 }
 gdo() {
-	$(git diff origin/$@)
+	git diff origin/$@
 }
 go() {
 	BRANCH=$1
