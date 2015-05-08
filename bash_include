@@ -11,15 +11,12 @@ LESSCHARSET=UTF-8
 
 if [[ -e ~/bin/git-completion.bash ]]; then
 	# Mac OS git-completion settings 
-	echo "Mac OS";
 	source ~/bin/git-completion.bash	
 elif [[ -e /etc/bash_completion.d/git ]]; then
 	# Ubuntu git completion settings
-	echo "Ubuntu 1";
 	source /etc/bash_completion.d/git
 elif [[ -e /etc/bash_completion.d/git-prompt ]]; then
 	# other Ubuntu git completion settings
-	echo "Ubuntu 2";
 	source /etc/bash_completion.d/git-prompt
 fi
 
