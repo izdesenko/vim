@@ -9,3 +9,5 @@ git submodule foreach git pull origin master;
 # ln -s .vim/perldb .perldb; # install perl debugger config
 # echo "source ~/.vim/bash_include" >> ~/.bashrc # to include bash configs
 
+# init (if required) and update submodules
+# git submodule update --init --recursive
