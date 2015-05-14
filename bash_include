@@ -187,6 +187,7 @@ alias gd="git diff HEAD "
 alias gdw="git diff --word-diff HEAD "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
+alias grmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
 alias control="cd ~/control2/days/; vim -p *.txt"
 
 alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
