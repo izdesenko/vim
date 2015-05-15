@@ -4,6 +4,7 @@
 [submodule "bundle/perl-support"]
 	path = bundle/perl-support
 	url = https://github.com/vim-scripts/perl-support.vim.git
+	ignore = doc/tags
 [submodule "bundle/supertab"]
 	path = bundle/supertab
 	url = git://github.com/vim-scripts/SuperTab.git
