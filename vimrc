@@ -110,6 +110,14 @@ nnoremap O Ox<BS>
 iab <expr> xt strftime("%H:%M:%S")
 iab <expr> xd strftime("%Y-%m-%d")
 
+command JsBeautify call JsBeautify()
+command CSSBeautify call CSSBeautify()
+command HTMLBeautify call HTMLBeautify()
+
+command RJsBeautify call RangeJsBeautify()
+command RCSSBeautify call RangeCSSBeautify()
+command RHTMLBeautify call RangeHTMLBeautify()
+
 function MyTabLine()
     let tabline = ''
     for i in range(tabpagenr('$'))
