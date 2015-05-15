@@ -61,6 +61,7 @@ set foldopen=all
 
 let mojo_highlight_data=1
 let JSHintUpdateWriteOnly=1
+let g:syntastic_javascript_checkers = ['jshint']
 au BufRead,BufNewFile *.epl   set filetype=html.epl
 au BufRead,BufNewFile *.ep    set filetype=html.epl
 au BufRead,BufNewFile Rexfile set filetype=perl
