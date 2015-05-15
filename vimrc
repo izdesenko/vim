@@ -114,9 +114,9 @@ command JsBeautify call JsBeautify()
 command CSSBeautify call CSSBeautify()
 command HTMLBeautify call HTMLBeautify()
 
-command RJsBeautify call RangeJsBeautify()
-command RCSSBeautify call RangeCSSBeautify()
-command RHTMLBeautify call RangeHTMLBeautify()
+command -range=% RJsBeautify <line1>,<line2>call RangeJsBeautify()
+command -range=% RCSSBeautify <line1>,<line2>call RangeCSSBeautify()
+command -range=% RHTMLBeautify <line1>,<line2>call RangeHTMLBeautify()
 
 function MyTabLine()
     let tabline = ''

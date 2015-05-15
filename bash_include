@@ -1,6 +1,11 @@
 # vim: syntax=sh
 export EDITOR=vim
+export VISUAL=vim
 export XDEBUG_CONFIG="ide-key=vim"
+if [ $(uname -n) == 'hardy' ] || [ "$(whoami)" == "ilya" ]
+then
+	export GIT_EDITOR=vim
+fi
 export LESS=' -R ' # less without word wrapp
 # export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 
