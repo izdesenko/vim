@@ -4,6 +4,7 @@
 [submodule "bundle/perl-support"]
 	path = bundle/perl-support
 	url = https://github.com/vim-scripts/perl-support.vim.git
+	ignore = dirty
 [submodule "bundle/supertab"]
 	path = bundle/supertab
 	url = git://github.com/vim-scripts/SuperTab.git
@@ -19,9 +20,9 @@
 [submodule "bundle/vim-jsbeautify"]
 	path = bundle/vim-jsbeautify
 	url = https://github.com/maksimr/vim-jsbeautify.git
-[submodule "/home/www/.vim/bundle/jshint.vim"]
-	path = /home/www/.vim/bundle/jshint.vim
-	url = https://github.com/wookiehangover/jshint.vim.git
-[submodule "bundle/vim-javascript-syntax"]
-	path = bundle/vim-javascript-syntax
-	url = https://github.com/jelera/vim-javascript-syntax.git
+[submodule "bundle/nerdtree"]
+	path = bundle/nerdtree
+	url = git@github.com:scrooloose/nerdtree.git
+[submodule "bundle/syntastic"]
+	path = bundle/syntastic
+	url = git@github.com:scrooloose/syntastic.git

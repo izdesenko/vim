@@ -9,9 +9,16 @@ export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w
 
 LESSCHARSET=UTF-8
 
-# source ~/bin/git-completion.bash # Mac OS git-completion settings
-# source /etc/bash_completion.d/git # Ubuntu git completion settings
-source /etc/bash_completion.d/git-prompt # other Ubuntu git completion settings
+if [[ -e ~/bin/git-completion.bash ]]; then
+	# Mac OS git-completion settings 
+	source ~/bin/git-completion.bash	
+elif [[ -e /etc/bash_completion.d/git ]]; then
+	# Ubuntu git completion settings
+	source /etc/bash_completion.d/git
+elif [[ -e /etc/bash_completion.d/git-prompt ]]; then
+	# other Ubuntu git completion settings
+	source /etc/bash_completion.d/git-prompt
+fi
 
 gdc() {
 	BRANCH=$1
@@ -24,10 +31,10 @@ gdc() {
 }
 
 gdon() {
-	$(git diff origin/$1 --name-only)
+	git diff origin/$1 --name-only
 }
 gdo() {
-	$(git diff origin/$@)
+	git diff origin/$@
 }
 go() {
 	BRANCH=$1
@@ -41,7 +48,7 @@ go() {
 }
 
 # push to current branch to all remotes
-gop()  {
+gop() {
 	BRANCH=$1
 	
 	if [ ! "$BRANCH" ]
@@ -98,23 +105,98 @@ gisre() {
 	git -c color.ui=always -c color.status=always status | perl -lane "print pop @F if $1" | perl -wne 'chomp;print "$_ "'
 }
 
+gili(){
+	if [ "$#" -ne 3 ]; then
+		cat <<USAGE
+Usage:
+gili <path> <start> <end>
+For example:
+gili /path/to/file 100 120
+USAGE
+		return ;
+	fi
+	git log -p -- $1 -L $2-$3
+}
+
+email(){
+	TO=$1
+	SUBJ="$2" # SUBJ="$2\nContent-Type: text/html"
+	BODY=$3
+	
+	if [ "$#" -ne 3 ]; then
+		cat <<USAGE
+Usage:
+email mail@example.org "Subject of email" "Email body ... "
+or
+email mail@example.org "Subject of email" /path/to/filename.html
+USAGE
+		return ;
+	fi
+	
+	if [ -f "$BODY" ]
+	then
+		BODY=$(cat $BODY)
+	fi
+	
+	echo $BODY | mail -a "Content-type: text/html" -s "$(echo $SUBJ)" $TO
+	
+	echo "SENT"
+}
+
+rdom () { local IFS=\> ; read -d \< E C ; }
+
+parseJira(){
+	while rdom; do
+		if [ "$E" == "title" ]
+		then
+			echo "$C"
+		fi
+	done
+}
+
+htmlentities(){
+	perl -Mutf8 -MHTML::Entities -CS -pe 'decode_entities($_)'
+}
+
+who_uses_port(){
+	if [ ! "$1" ]
+	then 
+		echo "You should specify port number";
+		return 1;
+	fi
+	 
+	# for now i need this only for my old Darwin
+	if [ `uname` == 'Darwin' ]
+	then
+		lsof -n -i4TCP:$1 | grep LISTEN
+	else
+		netstat -tulpn | grep $1
+	fi
+}
+
 alias grep="grep --color"
 alias ll="ls -lAF"
 alias gis="git -c color.ui=always -c color.status=always status"
 alias giss="git -c color.ui=always -c color.status=always status | grep -v .min.js | grep -v .min.css "
 alias gil="git log --stat --graph --pretty=short --abbrev-commit"
 alias ga="git add "
-alias gc='git commit --author="Ilya Z <iplugin@gmail.com>" -m '
-alias gca='git commit --author="Ilya Z <iplugin@gmail.com>" --amend -m '
+alias gc='git commit -m '
+alias gci='git commit --author="Ilya Z <iplugin@gmail.com>" -m '
+alias gca='git commit --amend -m '
 alias gd="git diff HEAD "
+alias gdw="git diff --word-diff HEAD "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
+alias grmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
 alias control="cd ~/control2/days/; vim -p *.txt"
 
 alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
 alias apt_uppp='sudo apt-get update; sudo apt-get upgrade' 
 alias dcc='drush cc all'
 alias timestamp='date "+%s"'
+alias download='curl -O '
+alias jira="curl -D- -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application/json; charset=UTF-8' '$jira_domain/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=assignee%3D+$jira_user+and+project+%3D+$jira_project+and+status+not+in+%28done%2CClosed%29&tempMax=1000' 2> /dev/null | htmlentities | parseJira"
+
 
 control2(){
 	d=`date +%Y-%m-%d`
