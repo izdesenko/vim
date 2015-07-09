@@ -60,11 +60,10 @@ let php_folding=1
 set foldopen=all 
 
 let mojo_highlight_data=1
-let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_always_populate_loc_list = 1
+let JSHintUpdateWriteOnly=1
+let g:syntastic_javascript_checkers=['jshint']
+let g:syntastic_always_populate_loc_list=1
 let g:syntastic_check_on_open = 1
-let g:syntastic_warning_symbol = "!"
-
 au BufRead,BufNewFile *.epl   set filetype=html.epl
 au BufRead,BufNewFile *.ep    set filetype=html.epl
 au BufRead,BufNewFile Rexfile set filetype=perl

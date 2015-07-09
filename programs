@@ -1,12 +1,24 @@
-curl
-lynx
-google-chrome-stable
-google-chrome-stable				install
-vim
-node
-npm
-nginx
-docker						install
-mc						install
-wget						install
-whois
+linux
+	curl
+	lynx
+	google-chrome-stable
+	google-chrome-stable				install
+	vim
+	node
+	npm
+	nginx
+	docker						install
+	mc						install
+	wget						install
+	whois
+
+windows
+	xterm
+	putty
+	google-chrome
+	
+mac os
+	google chrome
+	macports
+	brew
+	goto: linux

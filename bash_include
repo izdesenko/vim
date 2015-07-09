@@ -189,7 +189,7 @@ alias gc='git commit -m '
 alias gci='git commit --author="Ilya Z <iplugin@gmail.com>" -m '
 alias gca='git commit --amend -m '
 alias gd="git diff HEAD "
-alias gdw="git diff --word-diff HEAD "
+alias gdw="git diff -w --word-diff "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
 alias grmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
