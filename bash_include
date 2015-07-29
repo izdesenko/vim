@@ -71,6 +71,10 @@ gim(){
 	vim -p $(git status | grep 'both modified' | sed -e 's/#[[:space:]]both modified[:[:space:]]*//g' | xargs echo -n)
 }
 
+conflist(){
+	git status | grep 'both modified' | sed -e 's/#[[:space:]]both modified[:[:space:]]*//g' | xargs echo -n
+}
+
 gbdiff () {
 	BRANCH=$1
 	
