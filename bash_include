@@ -206,6 +206,13 @@ alias timestamp='date "+%s"'
 alias download='curl -O '
 alias jira="curl -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application/json; charset=UTF-8' '$jira_domain/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=assignee%3D+$jira_user+AND+project+%3D+%22$jira_project%22+and+status+not+in+%28Done%2C+Closed%2C%22TO+TEST%22%29&tempMax=1000' 2> /dev/null | htmlentities | parseJira"
 
+permodver(){
+	for m in "$@"
+	do
+		perl -M${m} -e 'print "'$m'::$'$m'::VERSION\n"'
+	done
+}
+
 control2(){
 	d=`date +%Y-%m-%d`
 	mkdir ~/control/days/$d
