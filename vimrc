@@ -64,6 +64,7 @@ let JSHintUpdateWriteOnly=1
 let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_check_on_open = 1
+let g:loaded_syntastic_javascript_jsxhint_checker=1 "get rid of buggy checker
 au BufRead,BufNewFile *.epl   set filetype=html.epl
 au BufRead,BufNewFile *.ep    set filetype=html.epl
 au BufRead,BufNewFile Rexfile set filetype=perl
