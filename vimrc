@@ -61,7 +61,9 @@ set foldopen=all
 
 let mojo_highlight_data=1
 let JSHintUpdateWriteOnly=1
-let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_javascript_checkers=['jshint']
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_check_on_open = 1
 au BufRead,BufNewFile *.epl   set filetype=html.epl
 au BufRead,BufNewFile *.ep    set filetype=html.epl
 au BufRead,BufNewFile Rexfile set filetype=perl
@@ -87,7 +89,6 @@ nmap <s-tab> ^i<bs><esc>
 
 let Tlist_Ctags_Cmd='/usr/bin/ctags-exuberant'
 let Tlist_Inc_Winwidth=0
-"let g:syntastic_javascript_checkers = ['jshint'] "<- this module removed
 
 highlight MatchParen ctermbg=blue guibg=lightyellow
 "highlight CursorLine ctermbg=8 cterm=NONE

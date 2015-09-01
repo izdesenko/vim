@@ -36,10 +36,10 @@ gdc() {
 }
 
 gdon() {
-	git diff origin/$1 --name-only
+	git diff -w $@ --name-only
 }
 gdo() {
-	git diff origin/$@
+	git diff -w $@
 }
 go() {
 	BRANCH=$1
@@ -68,7 +68,11 @@ gop() {
 }
 
 gim(){
-	vim -p $(git status | grep 'both modified' | sed -e 's/#[[:space:]]both modified[:[:space:]]*//g' | xargs echo -n)
+	vim -p $( git status | grep 'both ' | sed 's/[ \t]*both[ a-z]*:[ \t]*//g' | xargs echo -n )
+}
+
+conflist(){
+	git status | grep 'both modified' | sed -e 's/#[[:space:]]both modified[:[:space:]]*//g' | xargs echo -n
 }
 
 gbdiff () {
@@ -189,7 +193,7 @@ alias gc='git commit -m '
 alias gci='git commit --author="Ilya Z <iplugin@gmail.com>" -m '
 alias gca='git commit --amend -m '
 alias gd="git diff HEAD "
-alias gdw="git diff --word-diff HEAD "
+alias gdw="git diff -w --word-diff "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
 alias grmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
@@ -200,7 +204,7 @@ alias apt_uppp='sudo apt-get update; sudo apt-get upgrade'
 alias dcc='drush cc all'
 alias timestamp='date "+%s"'
 alias download='curl -O '
-alias jira="curl -D- -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application/json; charset=UTF-8' '$jira_domain/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=assignee%3D+$jira_user+and+project+%3D+$jira_project+and+status+not+in+%28done%2CClosed%29&tempMax=1000' 2> /dev/null | htmlentities | parseJira"
+alias jira="curl -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application/json; charset=UTF-8' '$jira_domain/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=assignee%3D+$jira_user+AND+project+%3D+%22$jira_project%22+and+status+not+in+%28Done%2C+Closed%2C%22TO+TEST%22%29&tempMax=1000' 2> /dev/null | htmlentities | parseJira"
 
 permodver(){
 	for m in "$@"
@@ -208,7 +212,6 @@ permodver(){
 		perl -M${m} -e 'print "'$m'::$'$m'::VERSION\n"'
 	done
 }
-
 
 control2(){
 	d=`date +%Y-%m-%d`
