@@ -1,15 +1,16 @@
 linux
 	curl
-	lynx
+	docker						
 	google-chrome-stable
-	google-chrome-stable				install
-	vim
+	google-chrome-stable				
+	lynx
+	mc						
+	nginx
 	node
 	npm
-	nginx
-	docker						install
-	mc						install
-	wget						install
+	tmux
+	vim
+	wget						
 	whois
 
 windows
