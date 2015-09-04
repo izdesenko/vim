@@ -52,6 +52,15 @@ go() {
 	git pull origin $BRANCH
 }
 
+work(){
+	tmux attach -t ilya_session
+	if [ $? -eq 0 ]; then
+		echo OK
+	else
+		tmux new -s ilya_session
+	fi
+}
+
 # push to current branch to all remotes
 gop() {
 	BRANCH=$1
