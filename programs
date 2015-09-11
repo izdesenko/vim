@@ -9,6 +9,7 @@ linux
 	node
 	npm
 	tmux
+	tree
 	vim
 	wget						
 	whois
