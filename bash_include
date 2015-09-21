@@ -232,12 +232,26 @@ alias download='curl -O '
 alias jira="curl -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application/json; charset=UTF-8' '$jira_domain/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=assignee%3D+$jira_user+AND+project+%3D+%22$jira_project%22+and+status+not+in+%28Done%2C+Closed%2C%22TO+TEST%22%29&tempMax=1000' 2> /dev/null | htmlentities | parseJira"
 alias used_ports="lsof -i"
 alias used_ports2="netstat -tulpn"
+alias lynx='lynx -accept_all_cookies'
 
 permodver(){
 	for m in "$@"
 	do
 		perl -M${m} -e 'print "'$m'::$'$m'::VERSION\n"'
 	done
+}
+
+ncat(){
+	FILE=$1
+	START=$2
+	COUNT=$3
+	CMD="cat -n $FILE"
+	
+	if [ -n "$COUNT" ] ; then START=$(expr $START + $COUNT); fi
+	if [ -n "$START" ] ; then CMD="$CMD | head -n $START"; fi
+	if [ -n "$COUNT" ] ; then CMD="$CMD | tail -n $COUNT"; fi
+	
+	eval $CMD
 }
 
 control2(){
