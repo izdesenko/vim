@@ -58,6 +58,7 @@ set foldcolumn=2
 set foldlevel=1
 let php_folding=1
 set foldopen=all 
+set rnu
 
 let mojo_highlight_data=1
 let JSHintUpdateWriteOnly=1
