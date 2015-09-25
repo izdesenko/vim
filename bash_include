@@ -57,7 +57,7 @@ work(){
 	if [ $? -eq 0 ]; then
 		echo OK
 	else
-		tmux new -s ilya_session
+		tmux -f ~/.vim/tmux.conf new -s ilya_session
 	fi
 }
 
