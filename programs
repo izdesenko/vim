@@ -5,6 +5,7 @@ linux
 	google-chrome-stable				
 	lynx
 	mc						
+	mutt
 	nginx
 	node
 	npm
@@ -15,12 +16,13 @@ linux
 	whois
 
 windows
-	xterm
-	putty
 	google-chrome
+	putty
+	xterm
 	
 mac os
-	google chrome
-	macports
+	?macports
 	brew
+	docker-machine
+	google chrome
 	goto: linux
