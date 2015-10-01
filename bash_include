@@ -54,9 +54,7 @@ go() {
 
 work(){
 	tmux attach -t ilya_session
-	if [ $? -eq 0 ]; then
-		echo OK
-	else
+	if [ $? -ne 0 ]; then
 		tmux -f ~/.vim/tmux.conf new -s ilya_session
 	fi
 }
