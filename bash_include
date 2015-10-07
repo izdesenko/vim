@@ -53,11 +53,13 @@ go() {
 }
 
 work(){
-	tmux attach -t ilya_session
+	SESSION="ilya_session";
+	if [ "$1" ] ; then SESSION="$SESSION$1"; fi
+	tmux attach -t $SESSION
 	if [ $? -eq 0 ]; then
 		echo OK
 	else
-		tmux -f ~/.vim/tmux.conf new -s ilya_session
+		tmux -f ~/.vim/tmux.conf new -s $SESSION
 	fi
 }
 
