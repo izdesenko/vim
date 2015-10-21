@@ -72,6 +72,8 @@ au BufRead,BufNewFile *.epl   set filetype=html.epl
 au BufRead,BufNewFile *.ep    set filetype=html.epl
 au BufRead,BufNewFile Rexfile set filetype=perl
 
+let g:Perl_Perl = $PERL_BINARY
+
 set wildmenu
 set wildmode=full
 set pastetoggle=<F11>
