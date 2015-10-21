@@ -13,7 +13,7 @@
 	url = git://github.com/yko/mojo.vim.git
 [submodule "bundle/tagbar"]
 	path = bundle/tagbar
-	url = git@github.com:majutsushi/tagbar.git
+	url = git://github.com/majutsushi/tagbar.git
 [submodule "bundle/vim-colors-solarized"]
 	path = bundle/vim-colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git
@@ -22,7 +22,7 @@
 	url = https://github.com/maksimr/vim-jsbeautify.git
 [submodule "bundle/syntastic"]
 	path = bundle/syntastic
-	url = git@github.com:scrooloose/syntastic.git
+	url = git://github.com/scrooloose/syntastic.git
 [submodule "bundle/ctrlp"]
 	path = bundle/ctrlp
 	url = https://github.com/vim-scripts/ctrlp.vim.git
