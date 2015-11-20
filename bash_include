@@ -2,15 +2,12 @@
 export EDITOR=vim
 export VISUAL=vim
 export XDEBUG_CONFIG="ide-key=vim"
-if [ $(uname -n) == 'hardy' ] || [ "$(whoami)" == "ilya" ]
+if [ "$(whoami)" == "ilya" ]
 then
 	export GIT_EDITOR=vim
 fi
 export LESS=' -R ' # less without word wrapp
 # export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
-
-export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
-# umask 022
 
 LESSCHARSET=UTF-8
 
@@ -24,6 +21,9 @@ elif [[ -e /etc/bash_completion.d/git-prompt ]]; then
 	# other Ubuntu git completion settings
 	source /etc/bash_completion.d/git-prompt
 fi
+
+export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
+# umask 022
 
 gdc() {
 	BRANCH=$1
@@ -59,6 +59,13 @@ work(){
 	if [ $? -ne 0 ]; then
 		tmux -f ~/.vim/tmux.conf new -s $SESSION
 	fi
+}
+
+passh(){
+	PASS=${@: -1}
+	length=$(($#-1))
+	PARAMS=${@:1:$length}
+	expect -c 'spawn ssh '"$PARAMS"'; expect "password:" {send -- "'$PASS'\r"};interact;'
 }
 
 # push to current branch to all remotes
