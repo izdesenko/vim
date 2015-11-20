@@ -21,7 +21,7 @@ elif [[ -e /etc/bash_completion.d/git-prompt ]]; then
 	# other Ubuntu git completion settings
 	source /etc/bash_completion.d/git-prompt
 else
-	source ~/.vim/git-completion.bash
+	source ~/.vim/git-prompt.sh
 fi
 
 export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
@@ -67,7 +67,7 @@ passh(){
 	PASS=${@: -1}
 	length=$(($#-1))
 	PARAMS=${@:1:$length}
-	expect -c 'spawn ssh '"$PARAMS"'; expect "assword:" {send -- "'$PASS'\r"}; expect "ast login" {send "source ~/.vim/bashrc"};interact;'
+	expect -c 'spawn ssh '"$PARAMS"'; expect "assword:" {send -- "'$PASS'\r"}; expect "ast login" {send "source ~/.vim/bash_include"};interact;'
 }
 
 # push to current branch to all remotes
