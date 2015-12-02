@@ -251,6 +251,10 @@ permodver(){
 	done
 }
 
+treeps(){
+	ps auxwf | grep -B8 "$1"
+}
+
 ncat(){
 	FILE=$1
 	START=$2
