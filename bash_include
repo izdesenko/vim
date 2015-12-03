@@ -251,6 +251,10 @@ permodver(){
 	done
 }
 
+treeps(){
+	ps auxwf | grep -B8 "$1"
+}
+
 # jira_comment TASK-ID TEXT
 jira_comment(){
 	curl -D- -u '$jira_user:$jira_pass' -X POST --data '{\"body\":\"'$2'\"}' -H 'Content-Type: application/json' $jira_domain/rest/api/2/issue/$1/comment
