@@ -63,6 +63,7 @@ set rnu
 let mojo_highlight_data=1
 let JSHintUpdateWriteOnly=1
 let g:syntastic_javascript_checkers=['jshint']
+let g:syntastic_css_checkers = ['csslint']
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_check_on_open = 1
 let g:loaded_syntastic_javascript_jsxhint_checker=1 "get rid of buggy checker

@@ -251,6 +251,11 @@ permodver(){
 	done
 }
 
+# jira_comment TASK-ID TEXT
+jira_comment(){
+	curl -D- -u '$jira_user:$jira_pass' -X POST --data '{\"body\":\"'$2'\"}' -H 'Content-Type: application/json' $jira_domain/rest/api/2/issue/$1/comment
+}
+
 ncat(){
 	FILE=$1
 	START=$2
@@ -262,6 +267,11 @@ ncat(){
 	if [ -n "$COUNT" ] ; then CMD="$CMD | tail -n $COUNT"; fi
 	
 	eval $CMD
+}
+
+highlight_search(){
+	SEARCH=$1
+	grep --color -E $1'|$'
 }
 
 control2(){
