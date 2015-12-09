@@ -1,6 +1,7 @@
 linux
 	curl
 	docker						
+	expect
 	google-chrome-stable
 	google-chrome-stable				
 	lynx
