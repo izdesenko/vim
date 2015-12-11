@@ -60,6 +60,8 @@ let php_folding=1
 set foldopen=all 
 set rnu
 
+set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+
 let mojo_highlight_data=1
 let JSHintUpdateWriteOnly=1
 let g:syntastic_javascript_checkers=['jshint']
