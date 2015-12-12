@@ -52,13 +52,22 @@ set showmatch
 syntax on
 set background=light
 
-set foldenable
-set foldmethod=syntax
-set foldcolumn=2
-set foldlevel=1
-let php_folding=1
-set foldopen=all 
-set rnu
+set nocursorcolumn
+set nocursorline
+set norelativenumber
+syntax sync minlines=256
+
+
+set nofoldenable
+"set foldenable=0
+"set foldmethod=syntax
+"set foldcolumn=2
+"set foldlevel=1
+"let php_folding=1
+"set foldopen=all 
+"set rnu
+
+set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
 let mojo_highlight_data=1
 let JSHintUpdateWriteOnly=1
@@ -66,6 +75,7 @@ let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_css_checkers = ['csslint']
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_check_on_open = 1
+" let g:loaded_syntastic_notifier_cursor = 1
 let g:loaded_syntastic_javascript_jsxhint_checker=1 "get rid of buggy checker
 let g:ctrlp_tabpage_position = 'ac'
 let g:ctrlp_open_new_file = 't'
@@ -108,8 +118,21 @@ cnoreabbrev <expr> TABR ((getcmdtype() is# ':' && getcmdline() is# 'tabr')?('TAB
 cnoreabbrev <expr> TABL ((getcmdtype() is# ':' && getcmdline() is# 'tabl')?('TABL'):('tabl'))
 cnoreabbrev <expr> TABE ((getcmdtype() is# ':' && getcmdline() is# 'tabe')?('TABE'):('tabe'))
 
+hi PComment guifg=#5f5fff guibg=none guisp=none ctermfg=117 ctermbg=none
+hi! link perlComment PComment
+
+"hi PVariables guifg=#005f00 guibg=none guisp=none gui=bold ctermfg=30 ctermbg=none cterm=bold
+"hi! link perlVarPlain PVariables
+
+hi PFunction guibg=none guisp=none ctermfg=30 ctermbg=none cterm=bold
+hi! link perlSubName PFunction
+
+"hi Type guifg=#008787 guibg=NONE guisp=NONE gui=bold ctermfg=30 ctermbg=NONE cterm=bold
+"hi! link PerlString Type
+"hi def link PerlString perlPackageRef
+"hi def link PerlString perlPackageRef
 hi def link PerlString Comment
-hi def link PerlComment Comment
+"hi def link PerlComment Comment
 hi DiffChange   ctermbg=LightMagenta	guibg=LightMagenta
 hi DiffText   ctermbg=Magenta	guibg=Magenta
 
@@ -176,4 +199,7 @@ function! XTermPasteBegin()
   set pastetoggle=<Esc>[201~
   set paste
   return ""
+endfunction
+
+function! s:Highlight_Matching_Pair()
 endfunction

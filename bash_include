@@ -67,7 +67,7 @@ passh(){
 	PASS=${@: -1}
 	length=$(($#-1))
 	PARAMS=${@:1:$length}
-	expect -c 'spawn ssh '"$PARAMS"'; expect "assword:" {send -- "'$PASS'\r"}; expect "ast login" {send "source ~/.vim/bash_include"};interact;'
+	expect -c 'set timeout 3; spawn ssh '"$PARAMS"'; expect "ast login" {send "source ~/.vim/bash_include\r";interact;}; expect "assword:" {send -- "'$PASS'\r"};send "source ~/.vim/bash_include\r";interact;'
 }
 
 # push to current branch to all remotes
@@ -86,7 +86,7 @@ gop() {
 }
 
 gim(){
-	vim -p $( git status | grep 'both ' | sed 's/#[ \t]*both[ a-z]*:[ \t]*//g' | xargs echo -n )
+	vim -p $( git status | grep 'both ' | sed 's/#*[ 	]*both[ a-z]*:[ 	]*//g' | xargs echo -n )
 }
 
 conflist(){
