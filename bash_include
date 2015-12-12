@@ -238,7 +238,7 @@ alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
 alias apt_uppp='sudo apt-get update; sudo apt-get upgrade' 
 alias dcc='drush cc all'
 alias timestamp='date "+%s"'
-alias download='curl -O '
+alias download='curl --progress-bar --fail -O '
 alias jira="curl -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application/json; charset=UTF-8' '$jira_domain/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=assignee%3D+$jira_user+AND+project+%3D+%22$jira_project%22+and+status+not+in+%28Done%2C+Closed%2C%22TO+TEST%22%29&tempMax=1000' 2> /dev/null | htmlentities | parseJira"
 alias used_ports="lsof -i"
 alias used_ports2="netstat -tulpn"
