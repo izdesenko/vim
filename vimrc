@@ -82,6 +82,7 @@ let g:ctrlp_open_new_file = 't'
 au BufRead,BufNewFile *.epl   set filetype=html.epl
 au BufRead,BufNewFile *.ep    set filetype=html.epl
 au BufRead,BufNewFile Rexfile set filetype=perl
+au BufNewFile,BufRead *.ejs   set filetype=html
 
 if !empty($PERL_BINARY)
 	let g:Perl_Perl = $PERL_BINARY
