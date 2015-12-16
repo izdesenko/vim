@@ -86,7 +86,9 @@ gop() {
 }
 
 gim(){
-	vim -p $( git status | grep 'both ' | sed 's/#*[ 	]*both[ a-z]*:[ 	]*//g' | xargs echo -n )
+	FILES=$( git status | grep 'both ' | sed 's/#*[ 	]*both[ a-z]*:[ 	]*//g' | xargs echo -n )
+	echo $FILES
+	vim -p $FILES
 }
 
 conflist(){

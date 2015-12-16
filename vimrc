@@ -57,7 +57,6 @@ set nocursorline
 set norelativenumber
 syntax sync minlines=256
 
-
 set nofoldenable
 "set foldenable=0
 "set foldmethod=syntax
