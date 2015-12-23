@@ -57,7 +57,6 @@ set nocursorline
 set norelativenumber
 syntax sync minlines=256
 
-
 set nofoldenable
 "set foldenable=0
 "set foldmethod=syntax
@@ -67,7 +66,8 @@ set nofoldenable
 "set foldopen=all 
 "set rnu
 
-set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+"set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+set statusline=%<%f\ %h%m%r(%{fugitive#head(7)})%=%-14.(%l,%c%V%)\ %P
 
 let mojo_highlight_data=1
 let JSHintUpdateWriteOnly=1
