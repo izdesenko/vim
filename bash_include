@@ -252,6 +252,35 @@ alias used_ports2="netstat -tulpn"
 alias lynx='lynx -accept_all_cookies'
 alias random="cat /dev/urandom | tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | head -n 1"
 
+
+curlh(){
+	URL=$1
+	POST=""
+	if [ $2 ] ; then POST=(-X POST -d $2); fi
+	CMD=(
+	curl -v
+		-c cookies.txt
+		-b cookies.txt
+		
+		$POST
+		
+		-A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+		
+		-H "Connection: keep-alive"
+		-H "Pragma: no-cache"
+		-H "Cache-Control: no-cache"
+		-H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+		-H "Upgrade-Insecure-Requests: 1" 
+		-H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36" 
+		-H "Accept-Language: ru,en-GB;q=0.8,en;q=0.6" 
+		
+		$URL
+	)
+	
+	"${CMD[@]}"
+}
+
+
 permodver(){
 	for m in "$@"
 	do
