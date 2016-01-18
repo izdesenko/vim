@@ -250,7 +250,16 @@ alias jira="curl -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application
 alias used_ports="lsof -i"
 alias used_ports2="netstat -tulpn"
 alias lynx='lynx -accept_all_cookies'
-alias random="cat /dev/urandom | tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | head -n 1"
+#alias random="cat /dev/urandom | tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | head -n 1"
+
+random(){
+	HEAD="head -n 1"
+	if [ ! -z $1 ]
+	then
+		HEAD="head -c $1"
+	fi
+	echo $(cat /dev/urandom | tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | $HEAD)
+}
 
 
 curlh(){
