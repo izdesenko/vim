@@ -27,6 +27,7 @@ set noautoread
 "set showtabline=2
   
 set autoindent
+set autochdir
 filetype on
 filetype plugin on
 filetype indent on
