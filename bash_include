@@ -324,6 +324,19 @@ highlight_search(){
 	grep --color -E $1'|$'
 }
 
+str_len(){
+	echo "${#1}"
+}
+
+strindex(){
+  x="${1%%$2*}"
+  [[ $x = $1 ]] && echo -1 || echo ${#x}
+}
+
+translit(){
+	echo $1|sed 'y/абвгджзийклмнопрстуфхыэе/abvgdjzijklmnoprstufhyee/'|sed 's/[ьъ]//g;s/ё/yo/g;s/ц/ts/g;s/ч/ch/g;s/ш/sh/g;s/щ/sh/g;s/ю/yu/g;s/я/ya/g;s/[ \t]/_/g'
+}
+
 control2(){
 	d=`date +%Y-%m-%d`
 	mkdir ~/control/days/$d
