@@ -76,6 +76,12 @@ work(){
 	fi
 }
 
+share_work(){
+	# TODO implement more accurate way to select session to share and new session name
+	SESSION='ilya1'
+	tmux new-session -t $SESSION -s "ilya_shared1"
+}
+
 passh(){
 	PASS=${@: -1}
 	length=$(($#-1))
