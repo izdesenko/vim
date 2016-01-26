@@ -54,6 +54,14 @@ go() {
 	git pull origin $BRANCH
 }
 
+gof(){
+	go
+	
+	git submodule update --init --recursive
+	git submodule foreach git checkout master
+	git submodule foreach git pull origin master
+}
+
 work(){
 	SESSION="ilya";
 	if [ "$1" ]
@@ -66,6 +74,12 @@ work(){
 	if [ $? -ne 0 ]; then
 		tmux -f ~/.vim/tmux.conf new -s $SESSION
 	fi
+}
+
+share_work(){
+	# TODO implement more accurate way to select session to share and new session name
+	SESSION='ilya1'
+	tmux new-session -t $SESSION -s "ilya_shared1"
 }
 
 passh(){
@@ -223,6 +237,41 @@ docker_log(){
 		echo "$content"
 	done
 }
+
+wiki_random(){
+	curl -L https://en.wikipedia.org/wiki/Special:Random 2> /dev/null
+}
+
+wiki_random_title(){
+	HTML="$(wiki_random)"
+	HTML=${HTML##*<title>}
+	HTML=${HTML%%</title>*}
+	echo "$HTML"
+}
+
+strip_tags(){
+	echo "$1" | sed -e 's/<[^>]*>/ /g'
+}
+
+wiki_random_body(){
+	HTML="$(wiki_random)"
+	# HTML=${HTML##*<body}
+	# HTML=${HTML%%</body>*}
+	
+	HTML=$(echo "$HTML" | tr '\n\t' ' ')                # get rid of newlines because otherwise we'll get problems with stripping tags by sed
+	HTML=$(echo "$HTML" | sed -e 's/.*<body[^>]*>//g')
+	HTML=$(echo "$HTML" | sed -e 's/<\/body>.*//g')
+	
+	HTML=$(echo "$HTML" | sed -e 's/<style[^>]*>.*<\/style>//g')
+	HTML=$(echo "$HTML" | sed -e 's/<script[^>]*>.*<\/script>//g')
+	
+	strip_tags "$HTML"
+}
+
+if [ -z "$(type tailf 2> /dev/null)" ]
+then
+	alias tailf="tail -f "
+fi
 
 alias grep="grep --color"
 alias ll="ls -lAF"
