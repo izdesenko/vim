@@ -269,12 +269,16 @@ wiki_random_body(){
 }
 
 top_folders(){
+	
+	HEAD=" cat "
+	if [ -n "$1" ]; then HEAD=" head -n $1 "; fi
+	
+	FOLDER="$2"
+	if [ -z "$2" ]; then FOLDER="$(pwd)"; fi
 
-	if [ -z "$1" ]; then 1="$(pwd)"; fi
-
-	find "$@" -type d -print0 2>/dev/null | while IFS= read -r -d '' file; do 
+	find "$FOLDER" -type d -print0 2>/dev/null | while IFS= read -r -d '' file; do 
 		echo -e `ls -A "$file" 2>/dev/null | wc -l`":\t $file"
-	done | sort -nr | head | awk '{print $0}'
+	done | sort -nr | $HEAD | awk '{print $0}'
 }
 
 if [ -z "$(type tailf 2> /dev/null)" ]
