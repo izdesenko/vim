@@ -384,7 +384,19 @@ strindex(){
 }
 
 translit(){
-	echo $1|sed 'y/абвгджзийклмнопрстуфхыэе/abvgdjzijklmnoprstufhyee/'|sed 's/[ьъ]//g;s/ё/yo/g;s/ц/ts/g;s/ч/ch/g;s/ш/sh/g;s/щ/sh/g;s/ю/yu/g;s/я/ya/g;s/[ \t]/_/g'
+	RE1='y/абвгджзийклмнопрстуфхыэеАБВГДЖЗИЙКЛМНОПРСТУФХЫЭЕ/abvgdjzijklmnoprstufhyeeABVGDJZIJKLMNOPRSTUFHYEE/'
+	RE2='s/[ьъ]//g;s/ё/yo/g;s/ц/ts/g;s/ч/ch/g;s/ш/sh/g;s/щ/sh/g;s/ю/yu/g;s/я/ya/g;s/[ \t]/_/g'
+	
+	echo $1
+	
+	if [ -n "$1" ]
+	then
+		echo "argument"
+		echo "$1" | sed "$RE1" |sed "$RE2"
+	else 
+		echo "stdin"
+		sed "$RE1" | sed "$RE2"
+	fi
 }
 
 control2(){
