@@ -408,19 +408,25 @@ strindex(){
 }
 
 translit(){
-	RE1='y/абвгджзийклмнопрстуфхыэеАБВГДЖЗИЙКЛМНОПРСТУФХЫЭЕ/abvgdjzijklmnoprstufhyeeABVGDJZIJKLMNOPRSTUFHYEE/'
-	RE2='s/[ьъ]//g;s/ё/yo/g;s/ц/ts/g;s/ч/ch/g;s/ш/sh/g;s/щ/sh/g;s/ю/yu/g;s/я/ya/g;s/[ \t]/_/g'
-	
-	echo $1
+	R='y/абвгджзийклмнопрстуфхыэеАБВГДЖЗИЙКЛМНОПРСТУФХЫЭЕ/abvgdjzijklmnoprstufhyeeABVGDJZIJKLMNOPRSTUFHYEE/;s/[ьъ]//g;s/ё/yo/g;s/ц/ts/g;s/ч/ch/g;s/ш/sh/g;s/щ/sh/g;s/ю/yu/g;s/я/ya/g;s/[ \t]/_/g;s/[ЬЪ]//g;s/Ё/Yo/g;s/Ц/Ts/g;s/Ч/Ch/g;s/Ш/Sh/g;s/Щ/Sh/g;s/Ю/Yu/g;s/Я/Ya/g;s/[ \t]/_/g'
 	
 	if [ -n "$1" ]
 	then
-		echo "argument"
-		echo "$1" | sed "$RE1" |sed "$RE2"
+		echo "$1" | sed "$R"
 	else 
-		echo "stdin"
-		sed "$RE1" | sed "$RE2"
+		sed "$R"
 	fi
+}
+
+m4b_to_mp3(){
+	RM_SRC="$1"
+	if [ -n "$2" ]; then SUDO="sudo "; fi
+	for f in *.m4b;
+	do
+		t="$(echo $f|sed 's/\.m4b//')";
+		$SUDO ffmpeg -i $f -acodec libmp3lame -vsync 2 "$t.mp3"
+		if [ -n "$RM_SRC" ]; then $SUDO rm $f; fi
+	done
 }
 
 control2(){
