@@ -314,6 +314,7 @@ alias grmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
 alias control="cd ~/control2/days/; vim -p *.txt"
 alias vim="vim -p"
 alias VIM="vim"
+alias FG="fg"
 alias free_space="df . -h"
 
 alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
