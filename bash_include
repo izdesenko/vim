@@ -54,13 +54,32 @@ go() {
 	git pull origin $BRANCH
 }
 
+gof(){
+	go
+	
+	git submodule update --init --recursive
+	git submodule foreach git checkout master
+	git submodule foreach git pull origin master
+}
+
 work(){
-	SESSION="ilya_session";
-	if [ "$1" ] ; then SESSION="$SESSION$1"; fi
+	SESSION="ilya";
+	if [ "$1" ]
+	then
+		SESSION="$SESSION$1";
+	else
+		SESSION=$SESSION"1";
+	fi
 	tmux attach -t $SESSION
 	if [ $? -ne 0 ]; then
 		tmux -f ~/.vim/tmux.conf new -s $SESSION
 	fi
+}
+
+share_work(){
+	# TODO implement more accurate way to select session to share and new session name
+	SESSION='ilya1'
+	tmux new-session -t $SESSION -s "ilya_shared1"
 }
 
 passh(){
@@ -219,6 +238,65 @@ docker_log(){
 	done
 }
 
+wiki_random(){
+	curl -L https://en.wikipedia.org/wiki/Special:Random 2> /dev/null
+}
+
+wiki_random_title(){
+	HTML="$(wiki_random)"
+	HTML=${HTML##*<title>}
+	HTML=${HTML%%</title>*}
+	echo "$HTML"
+}
+
+strip_tags(){
+	echo "$1" | sed -e 's/<[^>]*>/ /g'
+}
+
+wiki_random_body(){
+	HTML="$(wiki_random)"
+	# HTML=${HTML##*<body}
+	# HTML=${HTML%%</body>*}
+	
+	HTML=$(echo "$HTML" | tr '\n\t' ' ')                # get rid of newlines because otherwise we'll get problems with stripping tags by sed
+	HTML=$(echo "$HTML" | sed -e 's/.*<body[^>]*>//g')
+	HTML=$(echo "$HTML" | sed -e 's/<\/body>.*//g')
+	
+	HTML=$(echo "$HTML" | sed -e 's/<style[^>]*>.*<\/style>//g')
+	HTML=$(echo "$HTML" | sed -e 's/<script[^>]*>.*<\/script>//g')
+	
+	strip_tags "$HTML"
+}
+
+html_extract_tag(){
+	TAG="$1"
+	HTML="$2"
+	
+	HTML=$(echo "$HTML" | tr '\n\t' ' ')
+	HTML=$(echo "$HTML" | sed -e "s/.*<$TAG[^>]*>//g")
+	HTML=$(echo "$HTML" | sed -e "s/<\\/$TAG>.*//g")
+	
+	strip_tags "$HTML"
+}
+
+top_folders(){
+	
+	HEAD=" cat "
+	if [ -n "$1" ]; then HEAD=" head -n $1 "; fi
+	
+	FOLDER="$2"
+	if [ -z "$2" ]; then FOLDER="$(pwd)"; fi
+
+	find "$FOLDER" -type d -print0 2>/dev/null | while IFS= read -r -d '' file; do 
+		echo -e `ls -A "$file" 2>/dev/null | wc -l`":\t $file"
+	done | sort -nr | $HEAD | awk '{print $0}'
+}
+
+if [ -z "$(type tailf 2> /dev/null)" ]
+then
+	alias tailf="tail -f "
+fi
+
 alias grep="grep --color"
 alias ll="ls -lAF"
 alias gis="git -c color.ui=always -c color.status=always status"
@@ -234,7 +312,10 @@ alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
 alias grmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
 alias control="cd ~/control2/days/; vim -p *.txt"
+alias vim="vim -p"
 alias VIM="vim"
+alias FG="fg"
+alias free_space="df . -h"
 
 alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
 alias apt_uppp='sudo apt-get update; sudo apt-get upgrade' 
@@ -245,6 +326,45 @@ alias jira="curl -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application
 alias used_ports="lsof -i"
 alias used_ports2="netstat -tulpn"
 alias lynx='lynx -accept_all_cookies'
+#alias random="cat /dev/urandom | tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | head -n 1"
+
+random(){
+	HEAD="head -n 1"
+	if [ ! -z $1 ]
+	then
+		HEAD="head -c $1"
+	fi
+	echo $(cat /dev/urandom | tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | $HEAD)
+}
+
+
+curlh(){
+	URL=$1
+	POST=""
+	if [ $2 ] ; then POST=(-X POST -d $2); fi
+	CMD=(
+	curl -v
+		-c cookies.txt
+		-b cookies.txt
+		
+		$POST
+		
+		-A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+		
+		-H "Connection: keep-alive"
+		-H "Pragma: no-cache"
+		-H "Cache-Control: no-cache"
+		-H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+		-H "Upgrade-Insecure-Requests: 1" 
+		-H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36" 
+		-H "Accept-Language: ru,en-GB;q=0.8,en;q=0.6" 
+		
+		$URL
+	)
+	
+	"${CMD[@]}"
+}
+
 
 permodver(){
 	for m in "$@"
@@ -278,6 +398,37 @@ ncat(){
 highlight_search(){
 	SEARCH=$1
 	grep --color -E $1'|$'
+}
+
+str_len(){
+	echo "${#1}"
+}
+
+strindex(){
+  x="${1%%$2*}"
+  [[ $x = $1 ]] && echo -1 || echo ${#x}
+}
+
+translit(){
+	R='y/абвгджзийклмнопрстуфхыэеАБВГДЖЗИЙКЛМНОПРСТУФХЫЭЕ/abvgdjzijklmnoprstufhyeeABVGDJZIJKLMNOPRSTUFHYEE/;s/[ьъ]//g;s/ё/yo/g;s/ц/ts/g;s/ч/ch/g;s/ш/sh/g;s/щ/sh/g;s/ю/yu/g;s/я/ya/g;s/[ \t]/_/g;s/[ЬЪ]//g;s/Ё/Yo/g;s/Ц/Ts/g;s/Ч/Ch/g;s/Ш/Sh/g;s/Щ/Sh/g;s/Ю/Yu/g;s/Я/Ya/g;s/[ \t]/_/g'
+	
+	if [ -n "$1" ]
+	then
+		echo "$1" | sed "$R"
+	else 
+		sed "$R"
+	fi
+}
+
+m4b_to_mp3(){
+	RM_SRC="$1"
+	if [ -n "$2" ]; then SUDO="sudo "; fi
+	for f in *.m4b;
+	do
+		t="$(echo $f|sed 's/\.m4b//')";
+		$SUDO ffmpeg -i $f -acodec libmp3lame -vsync 2 "$t.mp3"
+		if [ -n "$RM_SRC" ]; then $SUDO rm $f; fi
+	done
 }
 
 control2(){

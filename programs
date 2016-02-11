@@ -9,7 +9,8 @@ linux
 	mutt
 	nginx
 	node
-	npm
+		npm
+		npm install jshint express-generator express winston mongodb
 	tmux
 	tree
 	vim
