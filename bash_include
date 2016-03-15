@@ -100,7 +100,7 @@ gop() {
 	
 	for R in $(git remote)
 	do
-		git push $R $BRANCH
+		GIT_SSH_COMMAND="ssh -o ConnectTimeout=10 " git push $R $BRANCH
 	done
 }
 
