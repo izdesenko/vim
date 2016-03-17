@@ -80,6 +80,7 @@ let g:syntastic_check_on_open = 1
 let g:loaded_syntastic_javascript_jsxhint_checker=1 "get rid of buggy checker
 let g:ctrlp_tabpage_position = 'ac'
 let g:ctrlp_open_new_file = 't'
+let g:ctrlp_custom_ignore = {'dir': '\v[\/]node_modules$'}
 au BufRead,BufNewFile *.epl   set filetype=html.epl
 au BufRead,BufNewFile *.ep    set filetype=html.epl
 au BufRead,BufNewFile Rexfile set filetype=perl
