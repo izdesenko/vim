@@ -21,7 +21,8 @@ function print_st() {
 
 function list_file() {
   fn=$1
-  dims=$(php -r 'if (!is_file($argv[1])) exit(1); $a = getimagesize($argv[1]); if ($a==FALSE) exit(1); else { echo $a[0] . "x" .$a[1]; exit(0); }' "$fn")
+  # dims=$(php -r 'if (!is_file($argv[1])) exit(1); $a = getimagesize($argv[1]); if ($a==FALSE) exit(1); else { echo $a[0] . "x" .$a[1]; exit(0); }' "$fn")
+  dims=$(identify -format "%[fx:w]x%[fx:h]")
   rc=$?
   if [[ $rc == 0 ]] ; then
     print_osc
