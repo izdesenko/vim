@@ -111,7 +111,8 @@ gim(){
 }
 
 conflist(){
-	git status | grep 'both modified' | sed -e 's/#[[:space:]]both modified[:[:space:]]*//g' | xargs echo -n
+	git status | grep 'both ' | sed 's/#*[ 	]*both[ a-z]*:[ 	]*//g' | xargs echo -n
+	echo ""
 }
 
 gbdiff () {
