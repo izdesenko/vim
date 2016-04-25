@@ -75,18 +75,24 @@ set statusline=%<%f\ %h%m%r(%{fugitive#head(7)})%=%-14.(%l,%c%V%)\ %P
 
 let mojo_highlight_data=1
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_javascript_eslint_generic = 1
+"let g:syntastic_debug=3
+"let g:syntastic_mode_map = {'mode': 'active','active_filetypes':['python','javascript'],'passive_filetypes':[]}
+
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_javascript_eslint_generic = 0
 let g:syntastic_loc_list_height = 5
-let g:syntastic_auto_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
 let g:syntastic_javascript_checkers = ['eslint']
+"let g:syntastic_javascript_eslint_exec = '/usr/bin/eslint'
 
 let g:syntastic_error_symbol = '❌'
 let g:syntastic_style_error_symbol = '⁉️'
 let g:syntastic_warning_symbol = '⚠️'
 let g:syntastic_style_warning_symbol = '💩'
+
+let g:syntastic_aggregate_errors = 1
 
 highlight link SyntasticErrorSign SignColumn
 highlight link SyntasticWarningSign SignColumn
