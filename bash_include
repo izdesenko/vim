@@ -421,6 +421,10 @@ strindex(){
   [[ $x = $1 ]] && echo -1 || echo ${#x}
 }
 
+network_ips(){
+	arp -a | sed -n 's/[^(]*(\([^)]*\).*/\1/p'
+}
+
 translit(){
 	R='y/абвгджзийклмнопрстуфхыэеАБВГДЖЗИЙКЛМНОПРСТУФХЫЭЕ/abvgdjzijklmnoprstufhyeeABVGDJZIJKLMNOPRSTUFHYEE/;s/[ьъ]//g;s/ё/yo/g;s/ц/ts/g;s/ч/ch/g;s/ш/sh/g;s/щ/sh/g;s/ю/yu/g;s/я/ya/g;s/[ \t]/_/g;s/[ЬЪ]//g;s/Ё/Yo/g;s/Ц/Ts/g;s/Ч/Ch/g;s/Ш/Sh/g;s/Щ/Sh/g;s/Ю/Yu/g;s/Я/Ya/g;s/[ \t]/_/g'
 	

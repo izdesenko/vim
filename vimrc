@@ -69,6 +69,11 @@ set nofoldenable
 "set foldopen=all 
 "set rnu
 
+
+"let g:netrw_list_hide='[\/]$,\<core\%(\.\d\+\)\=,\.[a-np-z]$,\.h$,\.c$,\.cpp$,*,\.o$,\.obj$,\.info$,\.swp$,\.bak$,\~$'
+"let g:netrw_list_hide='[\/]$,\<core\%(\.\d\+\)\=,\.swp$,\.bak$,\~$'
+let g:netrw_list_hide='^.\/$,\.swp$,\.bak$,\~'
+
 "set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 set statusline=%<%f\ %h%m%r(%{fugitive#head(7)})%=%-14.(%l,%c%V%)\ %P
 set statusline+=%#warningmsg#
@@ -78,7 +83,6 @@ set statusline+=%*
 let mojo_highlight_data=1
 
 "let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_javascript_eslint_generic = 1
 "let g:syntastic_debug = 32  "debug checkers
 let g:syntastic_loc_list_height = 7
 let g:syntastic_aggregate_errors = 1
@@ -86,9 +90,12 @@ let g:syntastic_aggregate_errors = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
 let g:syntastic_javascript_checkers = ['eslint']
+"let g:syntastic_javascript_eslint_exec = '/usr/bin/eslint'
 
 let g:syntastic_error_symbol = 'XX'
 let g:syntastic_warning_symbol = '!'
+
+let g:syntastic_aggregate_errors = 1
 
 highlight link SyntasticErrorSign SignColumn
 highlight link SyntasticWarningSign SignColumn
