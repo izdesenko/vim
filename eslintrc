@@ -108,7 +108,7 @@
 		"no-implied-eval": "error",
 		"no-proto": "error",
 		"no-this-before-super": "error",
-		"no-unused-vars": ["warn",{"argsIgnorePattern":"^(n|next|ex?|err)$"}],
+		"no-unused-vars": ["warn",{"argsIgnorePattern":"next|ex?"}],
 		"brace-style": "off",
 		"func-names": "off",
 		"no-empty-character-class": "error",
