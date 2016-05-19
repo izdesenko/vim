@@ -195,7 +195,18 @@
 		"indent": ["error","tab"],
 		"init-declarations": "off",
 		"jsx-quotes": "off",
-		"key-spacing": ["error", {"beforeColon": false, "afterColon": true, "mode": "minimum"}],
+		"key-spacing": ["warn", {
+			"singleLine": {
+				"beforeColon": false,
+				"afterColon": false,
+				"mode": "minimum"
+			},
+			"multiLine": {
+				"beforeColon": false,
+				"afterColon": true,
+				"mode": "minimum"
+			}
+		}],
 		"keyword-spacing": "off",
 		"lines-around-comment": "off",
 		"max-depth": "off",
@@ -214,7 +225,7 @@
 		"one-var": "off",
 		"one-var-declaration-per-line": "off",
 		"operator-assignment": ["error", "always"],
-		"operator-linebreak": ["error","after",{"overrides": {"?":"before",":":"before"} ],
+		"operator-linebreak": ["error","after",{"overrides": {"?":"before",":":"before"}} ],
 		"padded-blocks": ["warn","never"],
 		"prefer-arrow-callback": "off",
 		"prefer-const": "off",
