@@ -47,7 +47,6 @@ set scrolloff=0
 set backspace=indent,eol,start
 set complete-=k complete+=k
 
-set ignorecase
 set showmode    "show current mode down the bottom
 set showcmd     "show incomplete cmds down the bottom
 set ruler
@@ -125,6 +124,7 @@ endif
 
 set wildmenu
 set wildmode=full
+set wildignorecase
 set pastetoggle=<F11>
 
 set diffopt=filler,context:5,icase,iwhite,vertical

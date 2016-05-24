@@ -8,6 +8,8 @@ then
 	export GIT_EDITOR=vim
 fi
 export LESS=' -R ' # less without word wrapp
+export TERM='xterm-256color'
+
 # export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 
 LESSCHARSET=UTF-8
@@ -38,6 +40,11 @@ gdc() {
 	git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative master..$BRANCH
 }
 
+# git log for specific extensions
+gile(){
+	git log -p --  "$@"
+}
+
 gdon() {
 	git diff -w $@ --name-only
 }
@@ -51,7 +58,7 @@ go() {
 	then
 		BRANCH=$(git rev-parse --abbrev-ref HEAD)
 	fi
-
+	
 	git pull origin $BRANCH
 }
 
