@@ -1,5 +1,7 @@
 set nocompatible
 
+set shell=/bin/bash\ -i
+
 call pathogen#incubate()
 call pathogen#helptags()
 
@@ -45,7 +47,6 @@ set scrolloff=0
 set backspace=indent,eol,start
 set complete-=k complete+=k
 
-set ignorecase
 set showmode    "show current mode down the bottom
 set showcmd     "show incomplete cmds down the bottom
 set ruler
@@ -67,30 +68,37 @@ set nofoldenable
 "set foldopen=all 
 "set rnu
 
+
+"let g:netrw_list_hide='[\/]$,\<core\%(\.\d\+\)\=,\.[a-np-z]$,\.h$,\.c$,\.cpp$,*,\.o$,\.obj$,\.info$,\.swp$,\.bak$,\~$'
+"let g:netrw_list_hide='[\/]$,\<core\%(\.\d\+\)\=,\.swp$,\.bak$,\~$'
+let g:netrw_list_hide='^.\/$,\.swp$,\.bak$,\~'
+
 "set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 set statusline=%<%f\ %h%m%r(%{fugitive#head(7)})%=%-14.(%l,%c%V%)\ %P
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 let mojo_highlight_data=1
 
-"let g:syntastic_debug=3
-"let g:syntastic_mode_map = {'mode': 'active','active_filetypes':['python','javascript'],'passive_filetypes':[]}
-
 "let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_javascript_eslint_generic = 0
-let g:syntastic_loc_list_height = 5
+"let g:syntastic_debug = 32  "debug checkers
+let g:syntastic_loc_list_height = 7
+let g:syntastic_aggregate_errors = 1
 "let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
 let g:syntastic_javascript_checkers = ['eslint']
 "let g:syntastic_javascript_eslint_exec = '/usr/bin/eslint'
 
-let g:syntastic_error_symbol = '❌'
-let g:syntastic_style_error_symbol = '⁉️'
-let g:syntastic_warning_symbol = '⚠️'
-let g:syntastic_style_warning_symbol = '💩'
+"let g:syntastic_error_symbol = '❌'
+let g:syntastic_error_symbol = 'XX'
+"let g:syntastic_style_error_symbol = '⁉️'
+let g:syntastic_style_error_symbol = '??'
+"let g:syntastic_warning_symbol = '⚠️'
+let g:syntastic_warning_symbol = '!!'
+"let g:syntastic_style_warning_symbol = '💩'
+let g:syntastic_style_warning_symbol = '#%'
 
 let g:syntastic_aggregate_errors = 1
 
@@ -116,6 +124,7 @@ endif
 
 set wildmenu
 set wildmode=full
+set wildignorecase
 set pastetoggle=<F11>
 
 set diffopt=filler,context:5,icase,iwhite,vertical

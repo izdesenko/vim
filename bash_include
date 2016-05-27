@@ -2,11 +2,14 @@
 export EDITOR=vim
 export VISUAL=vim
 export XDEBUG_CONFIG="ide-key=vim"
+export GREP_OPTIONS='--color=auto --exclude=*.swp --exclude-dir=.git'
 if [ "$(whoami)" == "ilya" ]
 then
 	export GIT_EDITOR=vim
 fi
 export LESS=' -R ' # less without word wrapp
+export TERM='xterm-256color'
+
 # export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 
 LESSCHARSET=UTF-8
@@ -37,6 +40,11 @@ gdc() {
 	git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative master..$BRANCH
 }
 
+# git log for specific extensions
+gile(){
+	git log -p --  "$@"
+}
+
 gdon() {
 	git diff -w $@ --name-only
 }
@@ -50,7 +58,7 @@ go() {
 	then
 		BRANCH=$(git rev-parse --abbrev-ref HEAD)
 	fi
-
+	
 	git pull origin $BRANCH
 }
 
@@ -308,7 +316,7 @@ fi
 
 
 alias mtail="less +F "
-alias grep="grep --color"
+# alias grep="grep --color"
 alias ll="ls -lAF"
 alias gis="git -c color.ui=always -c color.status=always status"
 alias giss="git -c color.ui=always -c color.status=always status | grep -v .min.js | grep -v .min.css "
@@ -419,6 +427,10 @@ str_len(){
 strindex(){
   x="${1%%$2*}"
   [[ $x = $1 ]] && echo -1 || echo ${#x}
+}
+
+network_ips(){
+	arp -a | sed -n 's/[^(]*(\([^)]*\).*/\1/p'
 }
 
 translit(){
