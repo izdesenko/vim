@@ -2,7 +2,7 @@
 export EDITOR=vim
 export VISUAL=vim
 export XDEBUG_CONFIG="ide-key=vim"
-export GREP_OPTIONS='--color=auto --exclude=*.swp --exclude-dir=.git'
+export GREP_OPTIONS='--color=auto --exclude=*.swp --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp'
 if [ "$(whoami)" == "ilya" ]
 then
 	export GIT_EDITOR=vim
