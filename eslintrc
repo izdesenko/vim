@@ -181,7 +181,7 @@
 		"complexity": ["off",11],
 		"computed-property-spacing": ["error","never"],
 		"consistent-return": "off",
-		"consistent-this": ["error","self"],
+		"consistent-this": ["error","s"],
 		"constructor-super": "error",
 		"dot-location": ["error","property"],
 		"dot-notation": ["error",{"allowKeywords": true}],
@@ -211,6 +211,7 @@
 			"error",{
 				"before":false,"after":false,"overrides":{
 					"return":{"after":true,"before":true},
+					"continue":{"after":true,"before":true},
 					"throw":{"after":true,"before":true},
 					"this":{"after":true,"before":true},
 					"case":{"after":true,"before":false}
