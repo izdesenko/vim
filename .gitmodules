@@ -48,3 +48,6 @@
 [submodule "bundle/node-vim-debugger"]
 	path = bundle/node-vim-debugger
 	url = https://github.com/sidorares/node-vim-debugger.git
+[submodule "bundle/loupe"]
+	path = bundle/loupe
+	url = https://github.com/wincent/loupe.git
