@@ -58,9 +58,9 @@ go() {
 gof(){
 	go
 	
-	git submodule update --init --recursive
-	git submodule foreach git checkout master
-	git submodule foreach git pull origin master
+	git submodule update --init --recursive ;
+	git submodule foreach git checkout master ;
+	git submodule foreach git pull origin master ;
 }
 
 work(){
@@ -75,12 +75,6 @@ work(){
 	if [ $? -ne 0 ]; then
 		tmux -f ~/.vim/tmux.conf new -s $SESSION
 	fi
-}
-
-share_work(){
-	# TODO implement more accurate way to select session to share and new session name
-	SESSION='ilya1'
-	tmux new-session -t $SESSION -s "ilya_shared1"
 }
 
 passh(){
