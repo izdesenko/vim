@@ -58,7 +58,7 @@ task "release", group => "production", sub {
 desc "Запуск на боевых серверах. ./bin/hypnorestart.sh";
 task "run", group => "production", sub {
 	local $, = "\n";
-	say run $CD."./bin/hypnoreload.sh";
+	say run $CD."./bin/hypnorestart.sh";
 };
 
 task "test", group => "production", sub {
