@@ -102,7 +102,7 @@ gop() {
 gim(){
 	FILES=$( git status | grep 'both ' | sed 's/#*[ 	]*both[ a-z]*:[ 	]*//g' | xargs echo -n )
 	echo $FILES
-	vim -p $FILES
+	eval "vim -p $FILES"
 }
 
 conflist(){
