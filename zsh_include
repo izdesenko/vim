@@ -1,0 +1,463 @@
+# vim: syntax=sh
+export EDITOR=vim
+export VISUAL=vim
+export XDEBUG_CONFIG="ide-key=vim"
+export GREP_OPTIONS='--color=auto --exclude=*.swp --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp'
+export LESS=' -R ' # less without word wrapp
+export TERM='xterm-256color'
+
+# export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+
+LESSCHARSET=UTF-8
+
+if [[ -e ~/bin/git-completion.bash ]]; then
+	# Mac OS git-completion settings 
+	source ~/bin/git-completion.bash	
+elif [[ -e /etc/bash_completion.d/git ]]; then
+	# Ubuntu git completion settings
+	source /etc/bash_completion.d/git
+elif [[ -e /etc/bash_completion.d/git-prompt ]]; then
+	# other Ubuntu git completion settings
+	source /etc/bash_completion.d/git-prompt
+else
+	source ~/.vim/git-prompt.sh
+fi
+
+gdc() {
+	BRANCH=$1
+	
+	if [ ! "$BRANCH" ]
+	then
+		BRANCH=$(git rev-parse --abbrev-ref HEAD)
+	fi
+	git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative master..$BRANCH
+}
+
+# git log for specific extensions
+gile(){
+	git log -p --  "$@"
+}
+
+gdon() {
+	git diff -w $@ --name-only
+}
+gdo() {
+	git diff -w $@
+}
+go() {
+	BRANCH=$1
+	
+	if [ ! "$BRANCH" ]
+	then
+		BRANCH=$(git rev-parse --abbrev-ref HEAD)
+	fi
+	
+	git pull origin $BRANCH
+}
+
+gof(){
+	go
+	
+	git submodule update --init --recursive ;
+	git submodule foreach git checkout master ;
+	git submodule foreach git pull origin master ;
+}
+
+work(){
+	SESSION="ilya";
+	if [ "$1" ]
+	then
+		SESSION="$SESSION$1";
+	else
+		SESSION=$SESSION"1";
+	fi
+	tmux attach -t $SESSION
+	if [ $? -ne 0 ]; then
+		tmux -f ~/.vim/tmux.conf new -s $SESSION
+	fi
+}
+
+passh(){
+	PASS=${@: -1}
+	length=$(($#-1))
+	PARAMS=${@:1:$length}
+	expect -c 'set timeout 3; spawn ssh '"$PARAMS"'; expect "ast login" {send "source ~/.vim/bash_include\r";interact;}; expect "assword:" {send -- "'$PASS'\r"};send "source ~/.vim/bash_include\r";interact;'
+}
+
+# push to current branch to all remotes
+gop() {
+	BRANCH=$1
+	
+	if [ ! "$BRANCH" ]
+	then
+		BRANCH=$(git rev-parse --abbrev-ref HEAD)
+	fi
+	
+	for R in $(git remote)
+	do
+		GIT_SSH_COMMAND="ssh -o ConnectTimeout=10 " git push $R $BRANCH
+	done
+}
+
+gim(){
+	FILES=$( git status | grep 'both ' | sed 's/#*[ 	]*both[ a-z]*:[ 	]*//g' | xargs echo -n )
+	echo $FILES
+	eval "vim -p $FILES"
+}
+
+conflist(){
+	git status | grep 'both ' | sed 's/#*[ 	]*both[ a-z]*:[ 	]*//g' | xargs echo -n
+	echo ""
+}
+
+gbdiff () {
+	BRANCH=$1
+	
+	if [ ! "$BRANCH" ]
+	then
+		BRANCH='master'
+	fi
+	
+	DUMP_FILE="BRANCH_DIFF.TXT"
+	
+	if [ ! -f $DUMP_FILE ]
+	then
+		touch $DUMP_FILE
+	fi
+
+	STR=$(git diff origin/$BRANCH --name-only)
+	echo "# vim: syntax=git" > $DUMP_FILE
+	echo LIST:$'\n'"$STR"$'\n'$'\n' >> "$DUMP_FILE"
+	IFS=$'\n'
+	FILES=( $STR )
+
+	for x in ${FILES[@]};
+	do
+		DIFF=$(git diff origin/$BRANCH $x 2> /dev/null)
+		echo $x$'\n'"$DIFF"$'\n'$'\n'$'\n' >> "$DUMP_FILE"
+	done
+}
+
+gdonw() {
+	git diff origin/$1 --name-only -w
+}
+gdow()  {
+	git diff -w origin/$@
+}
+
+gisre() {
+	git -c color.ui=always -c color.status=always status | perl -lane "print pop @F if $1" | perl -wne 'chomp;print "$_ "'
+}
+
+gili(){
+	if [ "$#" -ne 3 ]; then
+		cat <<USAGE
+Usage:
+gili <path> <start> <end>
+For example:
+gili /path/to/file 100 120
+USAGE
+		return ;
+	fi
+	git log -p -- $1 -L $2-$3
+}
+
+email(){
+	TO=$1
+	SUBJ="$2" # SUBJ="$2\nContent-Type: text/html"
+	BODY=$3
+	
+	if [ "$#" -ne 3 ]; then
+		cat <<USAGE
+Usage:
+email mail@example.org "Subject of email" "Email body ... "
+or
+email mail@example.org "Subject of email" /path/to/filename.html
+USAGE
+		return ;
+	fi
+	
+	if [ -f "$BODY" ]
+	then
+		BODY=$(cat $BODY)
+	fi
+	
+	echo $BODY | mail -a "Content-type: text/html" -s "$(echo $SUBJ)" $TO
+	
+	echo "SENT"
+}
+
+rdom () { local IFS=\> ; read -d \< E C ; }
+
+parseJira(){
+	while rdom; do
+		if [ "$E" == "title" ]
+		then
+			echo "$C"
+		fi
+	done
+}
+
+htmlentities(){
+	perl -Mutf8 -MHTML::Entities -CS -pe 'decode_entities($_)'
+}
+
+who_uses_port(){
+	if [ ! "$1" ]
+	then 
+		echo "You should specify port number";
+		return 1;
+	fi
+	 
+	# for now i need this only for my old Darwin
+	if [ `uname` == 'Darwin' ]
+	then
+		lsof -n -i4TCP:$1 | grep LISTEN
+	else
+		netstat -tulpn | grep $1
+	fi
+}
+
+docker_log(){
+	DOCKER=`which docker`
+
+	if [ "$#" -ne 1 ]; then
+		echo "Usage: $0 IMAGE"
+		exit 0
+	fi
+
+	for commit in $($DOCKER history $1 | sed 1d | awk '{ print $1 }')
+	do
+		content="$commit
+		$($DOCKER inspect $commit | tr -d '\"' | grep 'Created\|Author\|Comment')"
+		echo "$content"
+	done
+}
+
+wiki_random(){
+	LANG='en'
+	if [ -n "$WIKI_UTF8" ];
+	then
+		RANDOM=$$$(date +%s)
+		LANGS=(en de ru ar ko ja zh)
+		LANG=${LANGS[$RANDOM % ${#LANGS[@]} ]}
+	fi
+	
+	curl -L "https://${LANG}.wikipedia.org/wiki/Special:Random" 2> /dev/null
+}
+
+wiki_random_title(){
+	HTML="$(wiki_random)"
+	HTML=${HTML##*<title>}
+	HTML=${HTML%%</title>*}
+	echo "$HTML"
+}
+
+strip_tags(){
+	echo "$1" | sed -e 's/<[^>]*>/ /g'
+}
+
+wiki_random_body(){
+	HTML="$(wiki_random)"
+	# HTML=${HTML##*<body}
+	# HTML=${HTML%%</body>*}
+	
+	HTML=$(echo "$HTML" | tr '\n\t' ' ')                # get rid of newlines because otherwise we'll get problems with stripping tags by sed
+	HTML=$(echo "$HTML" | sed -e 's/.*<body[^>]*>//g')
+	HTML=$(echo "$HTML" | sed -e 's/<\/body>.*//g')
+	
+	HTML=$(echo "$HTML" | sed -e 's/<style[^>]*>.*<\/style>//g')
+	HTML=$(echo "$HTML" | sed -e 's/<script[^>]*>.*<\/script>//g')
+	
+	strip_tags "$HTML"
+}
+
+html_extract_tag(){
+	TAG="$1"
+	HTML="$2"
+	
+	HTML=$(echo "$HTML" | tr '\n\t' ' ')
+	HTML=$(echo "$HTML" | sed -e "s/.*<$TAG[^>]*>//g")
+	HTML=$(echo "$HTML" | sed -e "s/<\\/$TAG>.*//g")
+	
+	strip_tags "$HTML"
+}
+
+top_folders(){
+	
+	HEAD=" cat "
+	if [ -n "$1" ]; then HEAD=" head -n $1 "; fi
+	
+	FOLDER="$2"
+	if [ -z "$2" ]; then FOLDER="$(pwd)"; fi
+
+	find "$FOLDER" -type d -print0 2>/dev/null | while IFS= read -r -d '' file; do 
+		echo -e `ls -A "$file" 2>/dev/null | wc -l`":\t $file"
+	done | sort -nr | $HEAD | awk '{print $0}'
+}
+
+if [ -z "$(type tailf 2> /dev/null)" ]
+then
+	alias tailf="tail -f "
+fi
+
+
+alias mtail="less +F "
+# alias grep="grep --color"
+alias ll="ls -lAF"
+alias gis="git -c color.ui=always -c color.status=always status"
+alias giss="git -c color.ui=always -c color.status=always status | grep -v .min.js | grep -v .min.css "
+alias gil="git log --stat --graph --pretty=short --abbrev-commit"
+alias ga="git add "
+alias gc='git commit -m '
+alias gci='git commit --author="Ilya Z <iplugin@gmail.com>" -m '
+alias gca='git commit --amend -m '
+alias gd="git diff HEAD "
+alias gdw="git diff -w --word-diff "
+alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
+alias gfo="git fetch origin"
+alias grmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
+alias vim="vim -p"
+alias control="cd ~/control2/days/; vim +7 time.txt plan.txt ideas.txt -c 'normal zt'"
+alias VIM="vim"
+alias FG="fg"
+alias free_space="df . -h"
+
+alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
+alias apt_uppp='sudo apt-get update; sudo apt-get upgrade' 
+alias dcc='drush cc all'
+alias timestamp='date "+%s"'
+alias download='curl --progress-bar --fail -O '
+alias jira="curl -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application/json; charset=UTF-8' '$jira_domain/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=assignee%3D+$jira_user+AND+project+%3D+%22$jira_project%22+and+status+not+in+%28Done%2C+Closed%2C%22TO+TEST%22%29&tempMax=1000' 2> /dev/null | htmlentities | parseJira"
+alias used_ports="lsof -i"
+alias used_ports2="netstat -tulpn"
+alias lynx='lynx -accept_all_cookies'
+alias mc='/usr/share/mc/bin/mc-wrapper.sh'
+#alias random="cat /dev/urandom | tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | head -n 1"
+
+random(){
+	HEAD="head -n 1"
+	if [ ! -z $1 ]
+	then
+		HEAD="head -c $1"
+	fi
+	echo $(cat /dev/urandom | tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | $HEAD)
+}
+
+
+curlh(){
+	URL=$1
+	POST=""
+	if [ $2 ] ; then POST=(-X POST -d $2); fi
+	CMD=(
+	curl -v
+		-c cookies.txt
+		-b cookies.txt
+		
+		$POST
+		
+		-A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+		
+		-H "Connection: keep-alive"
+		-H "Pragma: no-cache"
+		-H "Cache-Control: no-cache"
+		-H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+		-H "Upgrade-Insecure-Requests: 1" 
+		-H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36" 
+		-H "Accept-Language: ru,en-GB;q=0.8,en;q=0.6" 
+		
+		$URL
+	)
+	
+	"${CMD[@]}"
+}
+
+
+permodver(){
+	for m in "$@"
+	do
+		perl -M${m} -e 'print "'$m'::$'$m'::VERSION\n"'
+	done
+}
+
+treeps(){
+	ps auxwf | grep -B8 "$1"
+}
+
+# jira_comment TASK-ID TEXT
+jira_comment(){
+	curl -D- -u '$jira_user:$jira_pass' -X POST --data '{\"body\":\"'$2'\"}' -H 'Content-Type: application/json' $jira_domain/rest/api/2/issue/$1/comment
+}
+
+ncat(){
+	FILE=$1
+	START=$2
+	COUNT=$3
+	CMD="cat -n $FILE"
+	
+	if [ -n "$COUNT" ] ; then START=$(expr $START + $COUNT); fi
+	if [ -n "$START" ] ; then CMD="$CMD | head -n $START"; fi
+	if [ -n "$COUNT" ] ; then CMD="$CMD | tail -n $COUNT"; fi
+	
+	eval $CMD
+}
+
+highlight_search(){
+	SEARCH=$1
+	grep --color -E $1'|$'
+}
+
+str_len(){
+	echo "${#1}"
+}
+
+strindex(){
+  x="${1%%$2*}"
+  [[ $x = $1 ]] && echo -1 || echo ${#x}
+}
+
+network_ips(){
+	arp -a | sed -n 's/[^(]*(\([^)]*\).*/\1/p'
+}
+
+translit(){
+	R='y/абвгджзийклмнопрстуфхыэеАБВГДЖЗИЙКЛМНОПРСТУФХЫЭЕ/abvgdjzijklmnoprstufhyeeABVGDJZIJKLMNOPRSTUFHYEE/;s/[ьъ]//g;s/ё/yo/g;s/ц/ts/g;s/ч/ch/g;s/ш/sh/g;s/щ/sh/g;s/ю/yu/g;s/я/ya/g;s/[ \t]/_/g;s/[ЬЪ]//g;s/Ё/Yo/g;s/Ц/Ts/g;s/Ч/Ch/g;s/Ш/Sh/g;s/Щ/Sh/g;s/Ю/Yu/g;s/Я/Ya/g;s/[ \t]/_/g'
+	
+	if [ -n "$1" ]
+	then
+		echo "$1" | sed "$R"
+	else 
+		sed "$R"
+	fi
+}
+
+m4b_to_mp3(){
+	RM_SRC="$1"
+	if [ -n "$2" ]; then SUDO="sudo "; fi
+	for f in *.m4b;
+	do
+		t="$(echo $f|sed 's/\.m4b//')";
+		$SUDO ffmpeg -i $f -acodec libmp3lame -vsync 2 "$t.mp3"
+		if [ -n "$RM_SRC" ]; then $SUDO rm $f; fi
+	done
+}
+
+control2(){
+	d=`date +%Y-%m-%d`
+	mkdir ~/control/days/$d
+	~/control/scripts/create_files.pl
+	cd ~/control/days/$d
+	vim -p *.txt
+}
+
+alias mousetrick="x=0;y=0;while [[ $y -lt 500 ]] ; do xdotool mousemove --polar $x $y ; x=$(($x+3));y=$(($y+1)); sleep 0.001; done"
+
+
+let_it_snow(){
+	clear;while :;do echo $LINES $COLUMNS $(($RANDOM%$COLUMNS));sleep 0.1;done|gawk '{a[$3]=0;for(x in a) {o=a[x];a[x]=a[x]+1;printf "\033[%s;%sH ",o,x;printf "\033[%s;%sH*\033[0;0H",a[x],x;}}'
+}
+
+let_it_snow_big(){
+	clear;while :;do echo $LINES $COLUMNS $(($RANDOM%$COLUMNS)) $(printf "\u2744\n");sleep 0.1;done|gawk '{a[$3]=0;for(x in a) {o=a[x];a[x]=a[x]+1;printf "\033[%s;%sH ",o,x;printf "\033[%s;%sH%s \033[0;0H",a[x],x,$4;}}'	
+}
+
