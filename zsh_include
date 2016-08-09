@@ -3,16 +3,12 @@ export EDITOR=vim
 export VISUAL=vim
 export XDEBUG_CONFIG="ide-key=vim"
 export GREP_OPTIONS='--color=auto --exclude=*.swp --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp'
-if [ "$(whoami)" == "ilya" ]
-then
-	export GIT_EDITOR=vim
-fi
-export LESS=' -RSx4 ' # less without word wrapp
+export LESS=' -R ' # less without word wrapp
 export TERM='xterm-256color'
 
 # export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 
-LESSCHARSET="UTF-8"
+LESSCHARSET=UTF-8
 
 if [[ -e ~/bin/git-completion.bash ]]; then
 	# Mac OS git-completion settings 
@@ -26,9 +22,6 @@ elif [[ -e /etc/bash_completion.d/git-prompt ]]; then
 else
 	source ~/.vim/git-prompt.sh
 fi
-
-export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;00m\]\h \[\033[01;34m\]\w\[\033[01;35m\]$(__git_ps1 "(%s)")\$ \[\033[00m\]'
-# umask 022
 
 gdc() {
 	BRANCH=$1
@@ -65,9 +58,9 @@ go() {
 gof(){
 	go
 	
-	git submodule update --init --recursive
-	git submodule foreach git checkout master
-	git submodule foreach git pull origin master
+	git submodule update --init --recursive ;
+	git submodule foreach git checkout master ;
+	git submodule foreach git pull origin master ;
 }
 
 work(){
@@ -82,12 +75,6 @@ work(){
 	if [ $? -ne 0 ]; then
 		tmux -f ~/.vim/tmux.conf new -s $SESSION
 	fi
-}
-
-share_work(){
-	# TODO implement more accurate way to select session to share and new session name
-	SESSION='ilya1'
-	tmux new-session -t $SESSION -s "ilya_shared1"
 }
 
 passh(){
@@ -115,7 +102,7 @@ gop() {
 gim(){
 	FILES=$( git status | grep 'both ' | sed 's/#*[ 	]*both[ a-z]*:[ 	]*//g' | xargs echo -n )
 	echo $FILES
-	vim -p $FILES
+	eval "vim -p $FILES"
 }
 
 conflist(){

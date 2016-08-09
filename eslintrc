@@ -97,7 +97,7 @@
 		"no-empty": ["error",{"allowEmptyCatch":true}],
 		"no-empty-function": "off",
 		"no-func-assign": "error",
-		"no-extra-parens": "error",
+		"no-extra-parens": ["error","all",{"conditionalAssign":false}],
 		"no-extra-semi": "error",
 		"no-mixed-spaces-and-tabs": "error",
 		"linebreak-style": ["error","unix"],
@@ -161,7 +161,7 @@
 		"no-useless-concat": "error",
 		"no-useless-constructor": "error",
 		"no-useless-escape": "error",
-		"no-void": "error",
+		"no-void": "off",
 		"no-var": "off",
 		"no-warning-comments": "off",
 		"no-with": "error",
@@ -181,7 +181,7 @@
 		"complexity": ["off",11],
 		"computed-property-spacing": ["error","never"],
 		"consistent-return": "off",
-		"consistent-this": ["error","self"],
+		"consistent-this": ["error","s"],
 		"constructor-super": "error",
 		"dot-location": ["error","property"],
 		"dot-notation": ["error",{"allowKeywords": true}],
@@ -207,7 +207,18 @@
 				"mode": "minimum"
 			}
 		}],
-		"keyword-spacing": ["error",{"before":false,"after":false,"overrides":{"return":{"after":true,"before":true},"throw":{"after":true,"before":true}}}],
+		"keyword-spacing": [
+			"error",{
+				"before":false,"after":false,"overrides":{
+					"return":{"after":true,"before":true},
+					"continue":{"after":true,"before":true},
+					"throw":{"after":true,"before":true},
+					"this":{"after":true,"before":true},
+					"new":{"after":true,"before":true},
+					"case":{"after":true,"before":false}
+				}
+			}
+		],
 		"lines-around-comment": "off",
 		"max-depth": "off",
 		"max-len": "off",
@@ -225,7 +236,7 @@
 		"one-var": "off",
 		"one-var-declaration-per-line": "off",
 		"operator-assignment": ["error", "always"],
-		"operator-linebreak": ["error","after",{"overrides": {"?":"before",":":"before"}} ],
+		"operator-linebreak": ["error","after",{"overrides": {"?":"before",":":"before","||":"before"}} ],
 		"padded-blocks": ["warn","never"],
 		"prefer-arrow-callback": "off",
 		"prefer-const": "off",
