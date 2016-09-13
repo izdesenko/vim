@@ -102,6 +102,8 @@ let g:syntastic_style_warning_symbol = '#%'
 
 let g:syntastic_aggregate_errors = 1
 
+let g:LoupeVeryMagic=0
+
 highlight link SyntasticErrorSign SignColumn
 highlight link SyntasticWarningSign SignColumn
 highlight link SyntasticStyleErrorSign SignColumn

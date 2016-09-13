@@ -181,7 +181,6 @@
 		"complexity": ["off",11],
 		"computed-property-spacing": ["error","never"],
 		"consistent-return": "off",
-		"consistent-this": ["error","s"],
 		"constructor-super": "error",
 		"dot-location": ["error","property"],
 		"dot-notation": ["error",{"allowKeywords": true}],
