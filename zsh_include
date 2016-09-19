@@ -84,6 +84,18 @@ passh(){
 	expect -c 'set timeout 3; spawn ssh '"$PARAMS"'; expect "ast login" {send "source ~/.vim/bash_include\r";interact;}; expect "assword:" {send -- "'$PASS'\r"};send "source ~/.vim/bash_include\r";interact;'
 }
 
+_gc(){
+	if [ ! "$1" ]
+	then
+		git commit
+	else
+		git commit -m "$1"
+	fi
+}
+
+# i don't know why does it happen, but if i just create function gc then git status crashes shell :(
+alias gc="_gc"
+
 # push to current branch to all remotes
 gop() {
 	BRANCH=$1
@@ -309,7 +321,6 @@ alias gis="git -c color.ui=always -c color.status=always status"
 alias giss="git -c color.ui=always -c color.status=always status | grep -v .min.js | grep -v .min.css "
 alias gil="git log --stat --graph --pretty=short --abbrev-commit"
 alias ga="git add "
-alias gc='git commit -m '
 alias gci='git commit --author="Ilya Z <iplugin@gmail.com>" -m '
 alias gca='git commit --amend -m '
 alias gd="git diff HEAD "
