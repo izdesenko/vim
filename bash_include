@@ -331,6 +331,7 @@ alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
 alias grmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
 alias vim="vim -p"
+alias view="view -p"
 alias control="cd ~/control2/days/; vim +7 time.txt plan.txt ideas.txt -c 'normal zt'"
 alias VIM="vim"
 alias FG="fg"
