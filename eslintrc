@@ -209,12 +209,14 @@
 		"keyword-spacing": [
 			"error",{
 				"before":false,"after":false,"overrides":{
-					"return":{"after":true,"before":true},
+					"case":{"after":true,"before":false},
 					"continue":{"after":true,"before":true},
-					"throw":{"after":true,"before":true},
-					"this":{"after":true,"before":true},
+					"delete":{"after":true,"before":true},
 					"new":{"after":true,"before":true},
-					"case":{"after":true,"before":false}
+					"return":{"after":true,"before":true},
+					"this":{"after":true,"before":true},
+					"throw":{"after":true,"before":true},
+					"yield":{"after":true,"before":true}
 				}
 			}
 		],
