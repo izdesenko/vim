@@ -52,3 +52,6 @@
 [submodule "bundle/loupe"]
 	path = bundle/loupe
 	url = https://github.com/wincent/loupe.git
+[submodule "bundle/BlockDiff"]
+	path = bundle/BlockDiff
+	url = git@github.com:vim-scripts/BlockDiff.git
