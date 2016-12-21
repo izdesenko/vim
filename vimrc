@@ -33,6 +33,8 @@ set autoindent
 filetype on
 filetype plugin on
 filetype indent on
+set fileformat=unix
+set fileformats=unix,dos
 set ignorecase
 set smartcase
 set textwidth=0
