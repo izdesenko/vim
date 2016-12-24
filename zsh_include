@@ -9,6 +9,7 @@ export TERM='xterm-256color'
 # export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 
 LESSCHARSET=UTF-8
+NODE_REPL_HISTORY="~/.vim/.node_repl_history"
 
 if [[ -e ~/bin/git-completion.bash ]]; then
 	# Mac OS git-completion settings 
