@@ -2,7 +2,7 @@
 export EDITOR=vim
 export VISUAL=vim
 export XDEBUG_CONFIG="ide-key=vim"
-export GREP_OPTIONS='--color=auto --exclude=*.swp --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp'
+# export GREP_OPTIONS='--color=auto --exclude=*.swp --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp'
 export LESS=' -R ' # less without word wrapp
 export TERM='xterm-256color'
 
@@ -24,7 +24,7 @@ else
 	source ~/.vim/git-prompt.sh
 fi
 
-gdc() {
+gdc(){
 	BRANCH=$1
 	
 	if [ ! "$BRANCH" ]
@@ -314,9 +314,8 @@ then
 	alias tailf="tail -f "
 fi
 
-
 alias mtail="less +F -S "
-# alias grep="grep --color"
+alias grep="grep --color=auto --exclude=*.swp --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp"
 alias ll="ls -lAF"
 alias gis="git -c color.ui=always -c color.status=always status"
 alias giss="git -c color.ui=always -c color.status=always status | grep -v .min.js | grep -v .min.css "
