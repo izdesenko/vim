@@ -9,6 +9,7 @@ export TERM='xterm-256color'
 # export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 
 LESSCHARSET=UTF-8
+NODE_REPL_HISTORY="~/.vim/.node_repl_history"
 
 if [[ -e ~/bin/git-completion.bash ]]; then
 	# Mac OS git-completion settings 
@@ -344,7 +345,9 @@ alias jira="curl -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application
 alias used_ports="lsof -i"
 alias used_ports2="netstat -tulpn"
 alias lynx='lynx -accept_all_cookies'
-alias mc='/usr/share/mc/bin/mc-wrapper.sh'
+if [[ -e /usr/share/mc/bin/mc-wrapper.sh ]]; then
+	alias mc='/usr/share/mc/bin/mc-wrapper.sh'
+fi
 #alias random="cat /dev/urandom | tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | head -n 1"
 
 random(){

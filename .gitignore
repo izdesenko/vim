@@ -1,4 +1,5 @@
 .netrwhis*
+.node_repl_history
 
 bundle/perl-support/doc/tags
 bundle/ctrlp/doc/tags
