@@ -52,3 +52,6 @@
 [submodule "bundle/loupe"]
 	path = bundle/loupe
 	url = https://github.com/wincent/loupe.git
+[submodule "bundle/typescript-vim"]
+	path = bundle/typescript-vim
+	url = https://github.com/leafgarland/typescript-vim.git
