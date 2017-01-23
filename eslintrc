@@ -82,7 +82,7 @@
 		"no-class-assign": "error",
 		"no-cond-assign": "off",
 		"no-confusing-arrow": "off",
-		"no-console": "error",
+		"no-console": "warn",
 		"no-const-assign": "error",
 		"no-constant-condition": "error",
 		"no-continue": "off",
