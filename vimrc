@@ -121,6 +121,11 @@ au BufRead,BufNewFile *.epl   set filetype=html.epl
 au BufRead,BufNewFile *.ep    set filetype=html.epl
 au BufRead,BufNewFile Rexfile set filetype=perl
 au BufNewFile,BufRead *.ejs   set filetype=html
+au BufNewFile,BufRead *.cjsx set filetype=javascript.jsx
+au BufRead,BufNewFile *.coffee set filetype=javascript.coffee
+au BufRead,BufNewFile *.module set filetype=php
+au BufRead,BufNewFile *.ts set filetype=typescript
+
 
 if !empty($PERL_BINARY)
 	let g:Perl_Perl = $PERL_BINARY
