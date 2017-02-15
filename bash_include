@@ -2,7 +2,6 @@
 export EDITOR=vim
 export VISUAL=vim
 export XDEBUG_CONFIG="ide-key=vim"
-export GREP_OPTIONS='--color=auto --exclude=*.swp --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp'
 if [ "$(whoami)" == "ilya" ]
 then
 	export GIT_EDITOR=vim
@@ -317,6 +316,7 @@ fi
 
 alias mtail="less +F "
 # alias grep="grep --color"
+alias grep="grep --color=auto --exclude='*.swp' --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=tmp --exclude-dir=log"
 alias ll="ls -lAF"
 alias gis="git -c color.ui=always -c color.status=always status"
 alias giss="git -c color.ui=always -c color.status=always status | grep -v .min.js | grep -v .min.css "
