@@ -184,6 +184,7 @@ hi DiffText   ctermbg=Magenta	guibg=Magenta
 inoremap <CR> <CR>x<BS>
 nnoremap o ox<BS>
 nnoremap O Ox<BS>
+nnoremap <F5> :buffers<CR>:buffer<Space>
 
 iab <expr> xt strftime("%H:%M:%S")
 iab <expr> xd strftime("%Y-%m-%d")
