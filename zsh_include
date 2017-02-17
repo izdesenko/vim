@@ -68,9 +68,9 @@ work(){
 	SESSION="ilya";
 	if [ "$1" ]
 	then
-		SESSION="$SESSION$1";
+		SESSION=${SESSION}"_$1";
 	else
-		SESSION=$SESSION"1";
+		SESSION=$SESSION"_1";
 	fi
 	tmux attach -t $SESSION
 	if [ $? -ne 0 ]; then
