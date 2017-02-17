@@ -125,6 +125,7 @@ au BufNewFile,BufRead *.cjsx set filetype=javascript.jsx
 au BufRead,BufNewFile *.coffee set filetype=javascript.coffee
 au BufRead,BufNewFile *.module set filetype=php
 au BufRead,BufNewFile *.ts set filetype=typescript
+au BufRead,BufNewFile *.twig set filetype=html
 
 
 if !empty($PERL_BINARY)
