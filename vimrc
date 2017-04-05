@@ -134,8 +134,8 @@ endif
 
 set wildmenu
 set wildmode=full
-"set wildignorecase
-set pastetoggle=<F11>
+set wildignorecase
+set pastetoggle=<F2>
 
 set diffopt=filler,context:5,icase,iwhite,vertical
 

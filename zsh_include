@@ -56,6 +56,8 @@ go() {
 	git pull origin $BRANCH
 }
 
+# TODO git previously used branch
+
 gof(){
 	go
 	
@@ -322,7 +324,7 @@ alias giss="git -c color.ui=always -c color.status=always status | grep -v .min.
 alias gil="git log --stat --graph --pretty=short --abbrev-commit"
 alias ga="git add "
 alias gci='git commit --author="Ilya Z <iplugin@gmail.com>" -m '
-alias gca='git commit --amend -m '
+alias gca='git commit --amend '
 alias gd="git diff HEAD "
 alias gdw="git diff -w --word-diff "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
