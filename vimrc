@@ -70,6 +70,9 @@ set nofoldenable
 "set foldopen=all 
 "set rnu
 
+set backupdir=/tmp//
+set directory=/tmp//
+set undodir=/tmp//
 
 "let g:netrw_list_hide='[\/]$,\<core\%(\.\d\+\)\=,\.[a-np-z]$,\.h$,\.c$,\.cpp$,*,\.o$,\.obj$,\.info$,\.swp$,\.bak$,\~$'
 "let g:netrw_list_hide='[\/]$,\<core\%(\.\d\+\)\=,\.swp$,\.bak$,\~$'
