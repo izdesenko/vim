@@ -57,7 +57,7 @@ syntax on
 set background=light
 
 set nocursorcolumn
-set nocursorline
+set cursorline
 set norelativenumber
 syntax sync minlines=256
 
