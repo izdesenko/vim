@@ -1,3 +1,6 @@
 $DB::deep=1000;
+our $preview=19;
+our $doret=0;
+our $frame=0;
 sub afterinit { push @DB::typeahead, "{{v" unless $DB::already_curly_curly_v++; };
-parse_options('dumpDepth=3 windowSize=20 PrintRet=1 arrayDepth=50 compactDump=1');
+parse_options('dumpDepth=4 windowSize=39 PrintRet=1 arrayDepth=50 compactDump=1 inhibit_exit=0');
