@@ -531,4 +531,9 @@ lc(){
 	echo "$1" | awk '{print tolower($0)}'
 }
 
+cols(){
+	column -t -s $'\t'
+}
+
+# source ~/.vim/zsh_include
 source ~/.vim/convert.sh
