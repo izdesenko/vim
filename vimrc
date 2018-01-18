@@ -22,6 +22,7 @@ set tabstop=4
 set shiftwidth=4
 set smarttab
 set smartindent
+set noexpandtab
 
 set laststatus=2
 set encoding=utf-8

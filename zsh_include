@@ -1,6 +1,8 @@
 # vim: syntax=sh
 export EDITOR=vim
 export VISUAL=vim
+export VIEWER=less
+export PAGER=less
 export XDEBUG_CONFIG="ide-key=vim"
 # export GREP_OPTIONS='--color=auto --exclude=*.swp --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp'
 export LESS=' -Ri ' # less without word wrapp
@@ -23,6 +25,18 @@ elif [[ -e /etc/bash_completion.d/git-prompt ]]; then
 else
 	source ~/.vim/git-prompt.sh
 fi
+
+# gap(){
+# 	for F in $@;
+# 	do
+# 		if [[ $F == *".pl"* || $F == *".pm"* ]];
+# 		then
+# 			perl -c "$F"
+# 		fi
+# 	done
+# 	
+# 	git add "$@"
+# }
 
 gdc(){
 	BRANCH=$1
@@ -311,6 +325,31 @@ top_folders(){
 	done | sort -nr | $HEAD | awk '{print $0}'
 }
 
+vgrep(){
+	SEARCH=$1
+	OPTIONS=$2
+	FOLDER=$3
+
+	FIRST=${OPTIONS:0:1}
+	if [[ $FIRST != '-' ]] ;
+	then
+		FOLDER="$OPTIONS"
+		OPTIONS=''
+	fi
+
+	if [ -z "$OPTIONS" ] ;
+	then
+		OPTIONS='-rl'
+	fi
+
+	if [ -z "$FOLDER" ] ;
+	then
+		FOLDER='./'
+	fi
+
+	grep $OPTIONS --color=none --exclude='*.swp' --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp "$SEARCH" "$FOLDER" | vim -
+}
+
 if [ -z "$(type tailf 2> /dev/null)" ]
 then
 	alias tailf="tail -f "
@@ -395,6 +434,14 @@ permodver(){
 	do
 		perl -M${m} -e 'print "'$m'::$'$m'::VERSION\n"'
 	done
+}
+
+permodwhere(){
+	for m in "$@"
+	do
+		perl -M$m -e '$m="'$m'";$o=$m;$m=~s/::/\//;print "$o - ".$INC{"$m.pm"}."\n"'
+	done
+
 }
 
 treeps(){
@@ -484,5 +531,4 @@ lc(){
 	echo "$1" | awk '{print tolower($0)}'
 }
 
-# source ~/.vim/zsh_include
 source ~/.vim/convert.sh
