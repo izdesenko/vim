@@ -58,3 +58,9 @@
 [submodule "bundle/coffee-script"]
 	path = bundle/coffee-script
 	url = git@github.com:kchmck/vim-coffee-script.git
+[submodule "bundle/ruscmd"]
+	path = bundle/ruscmd
+	url = git@github.com:vim-scripts/ruscmd.git
+[submodule "bundle/neomake"]
+	path = bundle/neomake
+	url = git@github.com:neomake/neomake.git

@@ -7,6 +7,7 @@ export XDEBUG_CONFIG="ide-key=vim"
 # export GREP_OPTIONS='--color=auto --exclude=*.swp --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp'
 export LESS=' -Ri ' # less without word wrapp
 export TERM='xterm-256color'
+export DOCKER_ID_USER='izdesenko'
 
 # export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 
@@ -165,6 +166,10 @@ gbdiff () {
 		DIFF=$(git diff origin/$BRANCH $x 2> /dev/null)
 		echo $x$'\n'"$DIFF"$'\n'$'\n'$'\n' >> "$DUMP_FILE"
 	done
+}
+
+gbcdiff(){
+	git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative $1..$2
 }
 
 gdonw() {
@@ -360,9 +365,11 @@ alias mtail="less +F "
 alias grep="grep --color=always --exclude='*.swp' --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp"
 alias ll="ls -lAF"
 alias gis="git -c color.ui=always -c color.status=always status"
+alias пшы="git -c color.ui=always -c color.status=always status"
 alias giss="git -c color.ui=always -c color.status=always status | grep -v .min.js | grep -v .min.css "
 alias gil="git log --stat --graph --pretty=short --abbrev-commit"
 alias ga="git add "
+alias gai="ga -i"
 alias gci='git commit --author="Ilya Z <iplugin@gmail.com>" -m '
 alias gca='git commit --amend '
 alias gd="git diff HEAD "

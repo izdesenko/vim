@@ -1,0 +1,16 @@
+# vim temp files
+*~
+*.sw*
+
+# test scripts
+[1-9]*.pl
+[1-9].js
+[1-9]*.sh
+[1-9]*.txt
+[1-9]*.csv
+[1-9]*.sql
+[1-9]*.html
+
+# node files
+.node_repl_history
+package-lock.json

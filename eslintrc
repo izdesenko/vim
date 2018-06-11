@@ -69,13 +69,17 @@
 		"__filename": true,
 		"arguments": true,
 		"Buffer": true,
-		"GLOBAL": true
+		"GLOBAL": true,
+		"describe": true,
+		"before": true,
+		"after": true,
+		"it": true,
 	},
 	"env": {
 		"browser": true,
 		"commonjs": true,
 		"es6": true,
-		"node": true
+		"node": true,
 	},
 	"rules": {
 		"no-caller": "error",
@@ -88,7 +92,7 @@
 		"no-continue": "off",
 		
 		"no-duplicate-imports": "off",
-		"no-debugger": "error",
+		"no-debugger": "warn",
 		"no-delete-var": "error",
 		"no-dupe-class-members": "error",
 		"no-dupe-keys": "error",
@@ -175,8 +179,8 @@
 		"block-scoped-var": "error",
 		"block-spacing": "off",
 		"callback-return": "off",
-		"comma-dangle": ["error","never"],
-		"comma-spacing": ["warn",{"before":false,"after":false}],
+		"comma-dangle": ["warn","never"],
+		"comma-spacing": ["warn",{"before":false,"after":true}],
 		"comma-style": ["error","last"],
 		"complexity": ["off",11],
 		"computed-property-spacing": ["error","never"],
@@ -194,7 +198,7 @@
 		"indent": ["error","tab"],
 		"init-declarations": "off",
 		"jsx-quotes": "off",
-		"key-spacing": ["error", {
+		"key-spacing": ["warn", {
 			"singleLine": {
 				"beforeColon": false,
 				"afterColon": false,
@@ -216,7 +220,8 @@
 					"return":{"after":true,"before":true},
 					"this":{"after":true,"before":true},
 					"throw":{"after":true,"before":true},
-					"yield":{"after":true,"before":true}
+					"yield":{"after":true,"before":true},
+					"of":{"after":true,"before":true}
 				}
 			}
 		],
@@ -252,7 +257,7 @@
 		"id-blacklist": "off",
 		"require-jsdoc": "off",
 		"require-yield": "error",
-		"semi": ["error", "always"],
+		"semi": ["error", "never"],
 		"semi-spacing": "error",
 		"sort-vars": "off",
 		"sort-imports": "off",
@@ -277,7 +282,7 @@
 		"ecmaFeatures": {
 			"globalReturn": true
 		},
-		"ecmaVersion": 6,
+		"ecmaVersion": 8,
 		"sourceType": "module"
 	},
 	"parser": null,

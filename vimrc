@@ -85,6 +85,10 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+"let SyntasticToggleMode='passive'
+let g:syntastic_disabled_filetypes=[]
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+
 let mojo_highlight_data=1
 
 "let g:syntastic_always_populate_loc_list = 1
@@ -131,6 +135,12 @@ au BufRead,BufNewFile *.module set filetype=php
 au BufRead,BufNewFile *.ts set filetype=typescript
 au BufRead,BufNewFile *.twig set filetype=html
 
+autocmd! BufWritePost,BufEnter * Neomake
+let g:neomake_verbose=0
+"let g:neomake_verbose=3
+let g:neomake_open_list = 0
+let g:neomake_list_height = 4
+let g:neomake_javascript_enabled_makers = ['eslint']
 
 if !empty($PERL_BINARY)
 	let g:Perl_Perl = $PERL_BINARY
@@ -168,28 +178,31 @@ cnoreabbrev <expr> TABR ((getcmdtype() is# ':' && getcmdline() is# 'tabr')?('TAB
 cnoreabbrev <expr> TABL ((getcmdtype() is# ':' && getcmdline() is# 'tabl')?('TABL'):('tabl'))
 cnoreabbrev <expr> TABE ((getcmdtype() is# ':' && getcmdline() is# 'tabe')?('TABE'):('tabe'))
 
-hi PComment guifg=#5f5fff guibg=none guisp=none ctermfg=117 ctermbg=none
+"hi PComment guifg=#5f5fff guibg=none guisp=none ctermfg=117 ctermbg=none
+hi PComment guifg=#5f5fff guisp=none ctermfg=117 ctermbg=none
 hi! link perlComment PComment
 
 "hi PVariables guifg=#005f00 guibg=none guisp=none gui=bold ctermfg=30 ctermbg=none cterm=bold
 "hi! link perlVarPlain PVariables
 
-hi PFunction guibg=none guisp=none ctermfg=30 ctermbg=none cterm=bold
+hi PFunction guisp=none ctermfg=30 ctermbg=none cterm=bold
 hi! link perlSubName PFunction
 
 "hi Type guifg=#008787 guibg=NONE guisp=NONE gui=bold ctermfg=30 ctermbg=NONE cterm=bold
 "hi! link PerlString Type
 "hi def link PerlString perlPackageRef
 "hi def link PerlString perlPackageRef
-hi def link PerlString Comment
 "hi def link PerlComment Comment
-hi DiffChange   ctermbg=LightMagenta	guibg=LightMagenta
-hi DiffText   ctermbg=Magenta	guibg=Magenta
+hi DiffChange ctermbg=LightMagenta	guibg=LightMagenta
+hi DiffText ctermbg=Magenta	guibg=Magenta
+hi String ctermfg=Blue
+hi Comment ctermfg=Gray
 
 inoremap <CR> <CR>x<BS>
 nnoremap o ox<BS>
 nnoremap O Ox<BS>
 nnoremap <F5> :buffers<CR>:buffer<Space>
+nnoremap <F4> :tabs<CR>:tabn<Space>
 
 iab <expr> xt strftime("%H:%M:%S")
 iab <expr> xd strftime("%Y-%m-%d")
@@ -270,4 +283,3 @@ endfunction
 
 command! -bang Tabcloseright call TabCloseRight('<bang>')
 command! -bang Tabcloseleft call TabCloseLeft('<bang>')
-
