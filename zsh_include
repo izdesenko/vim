@@ -385,7 +385,7 @@ alias FG="fg"
 alias free_space="df . -h"
 
 alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
-alias apt_uppp='sudo apt-get update; sudo apt-get upgrade' 
+alias apt_uppp='sudo apt-get update -y; sudo apt-get upgrade -y' 
 alias dcc='drush cc all'
 alias timestamp='date "+%s"'
 alias download='curl --progress-bar --fail -O '
