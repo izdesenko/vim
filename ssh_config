@@ -6,4 +6,3 @@ ForwardAgent yes
 Host *
 	Ciphers arcfour256
 	MACs umac-64@openssh.com
-
