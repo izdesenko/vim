@@ -2,6 +2,9 @@
 *~
 *.sw*
 
+# Mac special files
+.DS_Store
+
 # test scripts
 [1-9].pl
 [1-9][1-9].pl
@@ -26,3 +29,6 @@
 # node files
 .node_repl_history
 package-lock.json
+
+# stuff
+*.log

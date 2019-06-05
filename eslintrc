@@ -195,7 +195,7 @@
 		"guard-for-in": "error",
 		"handle-callback-err": "off",
 		"id-length": "off",
-		"indent": ["error","tab"],
+		"indent": ["error", "tab"],
 		"init-declarations": "off",
 		"jsx-quotes": "off",
 		"key-spacing": ["warn", {
