@@ -113,6 +113,7 @@ _gc(){
 
 # i don't know why does it happen, but if i just create function gc then git status crashes shell :(
 alias gc="_gc"
+alias WORK="work"
 
 # push to current branch to all remotes
 gop() {
@@ -405,7 +406,7 @@ random(){
 	then
 		HEAD='head -c '$1
 	fi
-	echo $(cat /dev/urandom | tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | eval $HEAD)
+	echo $(cat /dev/urandom | LC_CTYPE=C tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | eval $HEAD)
 }
 
 
