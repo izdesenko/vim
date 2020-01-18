@@ -18,8 +18,8 @@ set noerrorbells
 set visualbell
 "set t_vb= 
 
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 set smarttab
 set smartindent
 set expandtab
