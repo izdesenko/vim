@@ -49,3 +49,9 @@
 [submodule "bundle/wordmotion"]
 	path = bundle/wordmotion
 	url = git@github.com:chaoren/vim-wordmotion.git
+[submodule "bundle/vimproc.vim"]
+	path = bundle/vimproc.vim
+	url = https://github.com/Shougo/vimproc.vim.git
+[submodule "bundle/tsuquyomi"]
+	path = bundle/tsuquyomi
+	url = https://github.com/Quramy/tsuquyomi.git
