@@ -83,46 +83,46 @@ let g:netrw_list_hide='^\.\/$,\.swp$,\.bak$,\.\.,\~'
 "set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 set statusline=%<%f\ %h%m%r(%{fugitive#head(7)})%=%-14.(%l,%c%V%)\ %P
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 "let SyntasticToggleMode='passive'
-let g:syntastic_disabled_filetypes=[]
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+" let g:syntastic_disabled_filetypes=[]
+" let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
 
-let mojo_highlight_data=1
+" let mojo_highlight_data=1
 
 "let g:syntastic_always_populate_loc_list = 1
 "let g:syntastic_debug = 32  "debug checkers
-let g:syntastic_loc_list_height = 7
-let g:syntastic_aggregate_errors = 1
+" let g:syntastic_loc_list_height = 7
+" let g:syntastic_aggregate_errors = 1
 "let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
-let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 1
+" let g:syntastic_javascript_checkers = ['eslint']
 "let g:syntastic_javascript_eslint_exec = '/usr/bin/eslint'
 
 "let g:syntastic_error_symbol = '❌'
-let g:syntastic_error_symbol = 'XX'
+" let g:syntastic_error_symbol = 'XX'
 "let g:syntastic_style_error_symbol = '⁉️'
-let g:syntastic_style_error_symbol = '??'
+" let g:syntastic_style_error_symbol = '??'
 "let g:syntastic_warning_symbol = '⚠️'
-let g:syntastic_warning_symbol = '!!'
+" let g:syntastic_warning_symbol = '!!'
 "let g:syntastic_style_warning_symbol = '💩'
-let g:syntastic_style_warning_symbol = '#%'
+" let g:syntastic_style_warning_symbol = '#%'
 
-let g:syntastic_aggregate_errors = 1
+" let g:syntastic_aggregate_errors = 1
 
 let g:LoupeVeryMagic=0
 
-highlight link SyntasticErrorSign SignColumn
-highlight link SyntasticWarningSign SignColumn
-highlight link SyntasticStyleErrorSign SignColumn
-highlight link SyntasticStyleWarningSign SignColumn
+" highlight link SyntasticErrorSign SignColumn
+" highlight link SyntasticWarningSign SignColumn
+" highlight link SyntasticStyleErrorSign SignColumn
+" highlight link SyntasticStyleWarningSign SignColumn
 
-let g:syntastic_css_checkers = ['csslint']
+" let g:syntastic_css_checkers = ['csslint']
 " let g:loaded_syntastic_notifier_cursor = 1
-let g:loaded_syntastic_javascript_jsxhint_checker=1 "get rid of buggy checker
+" let g:loaded_syntastic_javascript_jsxhint_checker=1 "get rid of buggy checker
 let g:ctrlp_tabpage_position = 'ac'
 let g:ctrlp_open_new_file = 't'
 let g:ctrlp_custom_ignore = {'dir': '\v[\/]node_modules$'}
