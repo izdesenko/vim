@@ -8,12 +8,6 @@
 [submodule "bundle/supertab"]
 	path = bundle/supertab
 	url = git://github.com/vim-scripts/SuperTab.git
-[submodule "bundle/mojo.vim"]
-	path = bundle/mojo.vim
-	url = git://github.com/yko/mojo.vim.git
-[submodule "bundle/vim-colors-solarized"]
-	path = bundle/vim-colors-solarized
-	url = git://github.com/altercation/vim-colors-solarized.git
 [submodule "bundle/vim-jsbeautify"]
 	path = bundle/vim-jsbeautify
 	url = https://github.com/maksimr/vim-jsbeautify.git
@@ -22,12 +16,6 @@
 	path = bundle/ctrlp
 	url = https://github.com/vim-scripts/ctrlp.vim.git
 	ignore = dirty
-[submodule "bundle/vim-perl"]
-	path = bundle/vim-perl
-	url = https://github.com/vim-perl/vim-perl.git
-[submodule "syntastic_reload"]
-	path = bundle/syntastic
-	url = https://github.com/scrooloose/syntastic.git
 [submodule "tagbar_reload"]
 	path = bundle/tagbar
 	url = https://github.com/majutsushi/tagbar.git
@@ -46,18 +34,12 @@
 [submodule "bundle/ack"]
 	path = bundle/ack
 	url = https://github.com/mileszs/ack.vim.git
-[submodule "bundle/node-vim-debugger"]
-	path = bundle/node-vim-debugger
-	url = https://github.com/sidorares/node-vim-debugger.git
 [submodule "bundle/loupe"]
 	path = bundle/loupe
 	url = https://github.com/wincent/loupe.git
 [submodule "bundle/typescript-vim"]
 	path = bundle/typescript-vim
 	url = https://github.com/leafgarland/typescript-vim.git
-[submodule "bundle/coffee-script"]
-	path = bundle/coffee-script
-	url = git@github.com:kchmck/vim-coffee-script.git
 [submodule "bundle/ruscmd"]
 	path = bundle/ruscmd
 	url = git@github.com:vim-scripts/ruscmd.git
