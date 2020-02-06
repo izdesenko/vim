@@ -45,7 +45,7 @@
 	url = git@github.com:vim-scripts/ruscmd.git
 [submodule "bundle/neomake"]
 	path = bundle/neomake
-	url = git@github.com:neomake/neomake.git
+	url = https://github.com/neomake/neomake.git
 [submodule "bundle/wordmotion"]
 	path = bundle/wordmotion
 	url = git@github.com:chaoren/vim-wordmotion.git
@@ -55,3 +55,6 @@
 [submodule "bundle/tsuquyomi"]
 	path = bundle/tsuquyomi
 	url = https://github.com/Quramy/tsuquyomi.git
+[submodule "bundle/vim-gutentags"]
+	path = bundle/vim-gutentags
+	url = git@github.com:ludovicchabant/vim-gutentags.git
