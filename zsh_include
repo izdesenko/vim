@@ -71,6 +71,15 @@ go() {
 	git pull origin $BRANCH
 }
 
+unalias gdw
+gdw() {
+    git diff -U10 --minimal $@|dwdiff --diff-input -c|less -R
+}
+
+gdwp() {
+    git diff -U10 --diff-algorithm=patience $@|dwdiff --diff-input -c|less -R
+}
+
 # TODO git previously used branch
 
 gof(){
@@ -335,6 +344,10 @@ vgrep(){
 	SEARCH=$1
 	OPTIONS=$2
 	FOLDER=$3
+    
+    echo "SEARCH:: $SEARCH"
+    echo "OPTIONS:: $OPTIONS"
+    echo "FOLDER:: $FOLDER"
 
 	FIRST=${OPTIONS:0:1}
 	if [[ $FIRST != '-' ]] ;
@@ -375,7 +388,7 @@ alias gchp="git checkout -p"
 alias gci='git commit --author="Ilya Z <iplugin@gmail.com>" -m '
 alias gca='git commit --amend '
 alias gd="git diff HEAD "
-alias gdw="git diff -w --word-diff "
+# alias gdw="git diff -w --word-diff "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
 alias grmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
@@ -542,6 +555,16 @@ lc(){
 
 cols(){
 	column -t -s $'\t'
+}
+
+clear_memory_cache(){
+    sync; sudo echo 1 > /proc/sys/vm/drop_caches;
+    printf '\n%s\n' 'Done'
+}
+
+clear_swap(){
+    sudo swapoff -a && sudo swapon -a;
+    printf '\n%s\n' 'Done'
 }
 
 # source ~/.vim/zsh_include
