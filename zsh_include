@@ -123,6 +123,8 @@ _gc(){
 # i don't know why does it happen, but if i just create function gc then git status crashes shell :(
 alias gc="_gc"
 alias WORK="work"
+alias weather="curl wttr.in"
+alias weather2="curl v2.wttr.in"
 
 # push to current branch to all remotes
 gop() {

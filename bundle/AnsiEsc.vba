@@ -1,3 +1,40 @@
+" Vimball Archiver by Charles E. Campbell, Ph.D.
+UseVimball
+finish
+plugin/AnsiEscPlugin.vim	[[[1
+30
+" AnsiEscPlugin.vim
+"   Author: Charles E. Campbell
+"   Date:   Apr 07, 2010
+"   Version: 13s
+" ---------------------------------------------------------------------
+"  Load Once: {{{1
+if &cp || exists("g:loaded_AnsiEscPlugin")
+ finish
+endif
+let g:loaded_AnsiEscPlugin = "v13s"
+let s:keepcpo              = &cpo
+set cpo&vim
+
+" ---------------------------------------------------------------------
+"  Public Interface: {{{1
+com! -bang -nargs=0 AnsiEsc	:call AnsiEsc#AnsiEsc(<bang>0)
+
+" DrChip Menu Support: {{{2
+if has("gui_running") && has("menu") && &go =~ 'm'
+ if !exists("g:DrChipTopLvlMenu")
+  let g:DrChipTopLvlMenu= "DrChip."
+ endif
+ exe 'menu '.g:DrChipTopLvlMenu.'AnsiEsc.Start<tab>:AnsiEsc		:AnsiEsc<cr>'
+endif
+
+" ---------------------------------------------------------------------
+"  Restore: {{{1
+let &cpo= s:keepcpo
+unlet s:keepcpo
+" vim: ts=4 fdm=marker
+autoload/AnsiEsc.vim	[[[1
+1432
 " AnsiEsc.vim: Uses vim 7.0 syntax highlighting
 " Language:		Text with ansi escape sequences
 " Maintainer:	Charles E. Campbell <NdrOchipS@PcampbellAfamily.Mbiz>
@@ -1430,3 +1467,838 @@ unlet s:keepcpo
 " ---------------------------------------------------------------------
 "  Modelines: {{{1
 " vim: ts=12 fdm=marker
+plugin/cecutil.vim	[[[1
+601
+" cecutil.vim : save/restore window position
+"               save/restore mark position
+"               save/restore selected user maps
+"  Author:	Charles E. Campbell
+"  Version:	18k	ASTRO-ONLY
+"  Date:	Nov 22, 2017
+"
+"  Saving Restoring Destroying Marks: {{{1
+"       call SaveMark(markname)       let savemark= SaveMark(markname)
+"       call RestoreMark(markname)    call RestoreMark(savemark)
+"       call DestroyMark(markname)
+"       commands: SM RM DM
+"
+"  Saving Restoring Destroying Window Position: {{{1
+"       call SaveWinPosn()        let winposn= SaveWinPosn()
+"       call RestoreWinPosn()     call RestoreWinPosn(winposn)
+"		\swp : save current window/buffer's position
+"		\rwp : restore current window/buffer's previous position
+"       commands: SWP RWP
+"
+"  Saving And Restoring User Maps: {{{1
+"       call SaveUserMaps(mapmode,maplead,mapchx,suffix)
+"       call RestoreUserMaps(suffix)
+"
+" GetLatestVimScripts: 1066 1 :AutoInstall: cecutil.vim
+"
+" You believe that God is one. You do well. The demons also {{{1
+" believe, and shudder. But do you want to know, vain man, that
+" faith apart from works is dead?  (James 2:19,20 WEB)
+"redraw!|call inputsave()|call input("Press <cr> to continue")|call inputrestore()
+
+" ---------------------------------------------------------------------
+" Load Once: {{{1
+if &cp || exists("g:loaded_cecutil")
+ finish
+endif
+let g:loaded_cecutil = "v18k"
+let s:keepcpo        = &cpo
+set cpo&vim
+"if exists("g:loaded_Decho")  " Decho
+" DechoRemOn
+"endif  " Decho
+
+" =======================
+"  Public Interface: {{{1
+" =======================
+
+" ---------------------------------------------------------------------
+"  Map Interface: {{{2
+if !hasmapto('<Plug>SaveWinPosn')
+ map <unique> <Leader>swp <Plug>SaveWinPosn
+endif
+if !hasmapto('<Plug>RestoreWinPosn')
+ map <unique> <Leader>rwp <Plug>RestoreWinPosn
+endif
+nmap <silent> <Plug>SaveWinPosn		:call SaveWinPosn()<CR>
+nmap <silent> <Plug>RestoreWinPosn	:call RestoreWinPosn()<CR>
+
+" ---------------------------------------------------------------------
+" Command Interface: {{{2
+com! -bar -nargs=0 SWP	call SaveWinPosn()
+com! -bar -nargs=? RWP	call RestoreWinPosn(<args>)
+com! -bar -nargs=1 SM	call SaveMark(<q-args>)
+com! -bar -nargs=1 RM	call RestoreMark(<q-args>)
+com! -bar -nargs=1 DM	call DestroyMark(<q-args>)
+
+com! -bar -nargs=1 WLR	call s:WinLineRestore(<q-args>)
+
+if v:version < 630
+ let s:modifier= "sil! "
+else
+ let s:modifier= "sil! keepj "
+endif
+
+" ===============
+" Functions: {{{1
+" ===============
+
+" ---------------------------------------------------------------------
+" SaveWinPosn: {{{2
+"    let winposn= SaveWinPosn()  will save window position in winposn variable
+"    call SaveWinPosn()          will save window position in b:cecutil_winposn{b:cecutil_iwinposn}
+"    let winposn= SaveWinPosn(0) will *only* save window position in winposn variable (no stacking done)
+fun! SaveWinPosn(...)
+"  echomsg "Decho: SaveWinPosn() a:0=".a:0
+  let savedposn= winsaveview()
+  if a:0 == 0
+   if !exists("b:cecutil_iwinposn")
+    let b:cecutil_iwinposn= 1
+   else
+    let b:cecutil_iwinposn= b:cecutil_iwinposn + 1
+   endif
+"   echomsg "Decho: saving posn to SWP stack"
+   let b:cecutil_winposn{b:cecutil_iwinposn}= savedposn
+  endif
+  return savedposn
+""  echomsg "Decho: SaveWinPosn() a:0=".a:0
+"  if line("$") == 1 && getline(1) == ""
+""   echomsg "Decho: SaveWinPosn : empty buffer"
+"   return ""
+"  endif
+"  let so_keep   = &l:so
+"  let siso_keep = &siso
+"  let ss_keep   = &l:ss
+"  setlocal so=0 siso=0 ss=0
+
+"  let swline = line(".")                           " save-window line in file
+"  let swcol  = col(".")                            " save-window column in file
+"  if swcol >= col("$")
+"   let swcol= swcol + virtcol(".") - virtcol("$")  " adjust for virtual edit (cursor past end-of-line)
+"  endif
+"  let swwline   = winline() - 1                    " save-window window line
+"  let swwcol    = virtcol(".") - wincol()          " save-window window column
+"  let savedposn = ""
+""  echomsg "Decho: sw[".swline.",".swcol."] sww[".swwline.",".swwcol."]"
+"  let savedposn = "call GoWinbufnr(".winbufnr(0).")"
+"  let savedposn = savedposn."|".s:modifier.swline
+"  let savedposn = savedposn."|".s:modifier."norm! 0z\<cr>"
+"  if swwline > 0
+"   let savedposn= savedposn.":".s:modifier."call s:WinLineRestore(".(swwline+1).")\<cr>"
+"  endif
+"  if swwcol > 0
+"   let savedposn= savedposn.":".s:modifier."norm! 0".swwcol."zl\<cr>"
+"  endif
+"  let savedposn = savedposn.":".s:modifier."call cursor(".swline.",".swcol.")\<cr>"
+
+"  " save window position in
+"  " b:cecutil_winposn_{iwinposn} (stack)
+"  " only when SaveWinPosn() is used
+"  if a:0 == 0
+"   if !exists("b:cecutil_iwinposn")
+"    let b:cecutil_iwinposn= 1
+"   else
+"    let b:cecutil_iwinposn= b:cecutil_iwinposn + 1
+"   endif
+""   echomsg "Decho: saving posn to SWP stack"
+"   let b:cecutil_winposn{b:cecutil_iwinposn}= savedposn
+"  endif
+
+"  let &l:so = so_keep
+"  let &siso = siso_keep
+"  let &l:ss = ss_keep
+
+""  if exists("b:cecutil_iwinposn")                                                                  " Decho
+""   echomsg "Decho: b:cecutil_winpos{".b:cecutil_iwinposn."}[".b:cecutil_winposn{b:cecutil_iwinposn}."]"
+""  else                                                                                             " Decho
+""   echomsg "Decho: b:cecutil_iwinposn doesn't exist"
+""  endif                                                                                            " Decho
+""  echomsg "Decho: SaveWinPosn [".savedposn."]"
+"  return savedposn
+endfun
+
+" ---------------------------------------------------------------------
+" RestoreWinPosn: {{{2
+"      call RestoreWinPosn()
+"      call RestoreWinPosn(winposn)
+fun! RestoreWinPosn(...)
+  if line("$") == 1 && getline(1) == ""
+   return ""
+  endif
+  if a:0 == 0 || type(a:1) != 4
+   " use saved window position in b:cecutil_winposn{b:cecutil_iwinposn} if it exists
+   if exists("b:cecutil_iwinposn") && exists("b:cecutil_winposn{b:cecutil_iwinposn}")
+    try
+	 call winrestview(b:cecutil_winposn{b:cecutil_iwinposn})
+    catch /^Vim\%((\a\+)\)\=:E749/
+     " ignore empty buffer error messages
+    endtry
+    " normally drop top-of-stack by one
+    " but while new top-of-stack doesn't exist
+    " drop top-of-stack index by one again
+    if b:cecutil_iwinposn >= 1
+     unlet b:cecutil_winposn{b:cecutil_iwinposn}
+     let b:cecutil_iwinposn= b:cecutil_iwinposn - 1
+     while b:cecutil_iwinposn >= 1 && !exists("b:cecutil_winposn{b:cecutil_iwinposn}")
+      let b:cecutil_iwinposn= b:cecutil_iwinposn - 1
+     endwhile
+     if b:cecutil_iwinposn < 1
+      unlet b:cecutil_iwinposn
+     endif
+    endif
+   else
+    echohl WarningMsg
+    echomsg "***warning*** need to SaveWinPosn first!"
+    echohl None
+   endif
+
+  else	 " handle input argument
+"   echomsg "Decho: using input a:1<".a:1.">"
+   " use window position passed to this function
+   call winrestview(a:1)
+   " remove a:1 pattern from b:cecutil_winposn{b:cecutil_iwinposn} stack
+   if exists("b:cecutil_iwinposn")
+    let jwinposn= b:cecutil_iwinposn
+    while jwinposn >= 1                     " search for a:1 in iwinposn..1
+     if exists("b:cecutil_winposn{jwinposn}")    " if it exists
+      if a:1 == b:cecutil_winposn{jwinposn}      " and the pattern matches
+       unlet b:cecutil_winposn{jwinposn}            " unlet it
+       if jwinposn == b:cecutil_iwinposn            " if at top-of-stack
+        let b:cecutil_iwinposn= b:cecutil_iwinposn - 1      " drop stacktop by one
+       endif
+      endif
+     endif
+     let jwinposn= jwinposn - 1
+    endwhile
+   endif
+  endif
+
+""  echomsg "Decho: RestoreWinPosn() a:0=".a:0
+""  echomsg "Decho: getline(1)<".getline(1).">"
+""  echomsg "Decho: line(.)=".line(".")
+"  if line("$") == 1 && getline(1) == ""
+""   echomsg "Decho: RestoreWinPosn : empty buffer"
+"   return ""
+"  endif
+"  let so_keep   = &l:so
+"  let siso_keep = &l:siso
+"  let ss_keep   = &l:ss
+"  setlocal so=0 siso=0 ss=0
+
+"  if a:0 == 0 || a:1 == ""
+"   " use saved window position in b:cecutil_winposn{b:cecutil_iwinposn} if it exists
+"   if exists("b:cecutil_iwinposn") && exists("b:cecutil_winposn{b:cecutil_iwinposn}")
+""    echomsg "Decho: using stack b:cecutil_winposn{".b:cecutil_iwinposn."}<".b:cecutil_winposn{b:cecutil_iwinposn}.">"
+"    try
+"     exe s:modifier.b:cecutil_winposn{b:cecutil_iwinposn}
+"    catch /^Vim\%((\a\+)\)\=:E749/
+"     " ignore empty buffer error messages
+"    endtry
+"    " normally drop top-of-stack by one
+"    " but while new top-of-stack doesn't exist
+"    " drop top-of-stack index by one again
+"    if b:cecutil_iwinposn >= 1
+"     unlet b:cecutil_winposn{b:cecutil_iwinposn}
+"     let b:cecutil_iwinposn= b:cecutil_iwinposn - 1
+"     while b:cecutil_iwinposn >= 1 && !exists("b:cecutil_winposn{b:cecutil_iwinposn}")
+"      let b:cecutil_iwinposn= b:cecutil_iwinposn - 1
+"     endwhile
+"     if b:cecutil_iwinposn < 1
+"      unlet b:cecutil_iwinposn
+"     endif
+"    endif
+"   else
+"    echohl WarningMsg
+"    echomsg "***warning*** need to SaveWinPosn first!"
+"    echohl None
+"   endif
+
+"  else	 " handle input argument
+""   echomsg "Decho: using input a:1<".a:1.">"
+"   " use window position passed to this function
+"   exe a:1
+"   " remove a:1 pattern from b:cecutil_winposn{b:cecutil_iwinposn} stack
+"   if exists("b:cecutil_iwinposn")
+"    let jwinposn= b:cecutil_iwinposn
+"    while jwinposn >= 1                     " search for a:1 in iwinposn..1
+"     if exists("b:cecutil_winposn{jwinposn}")    " if it exists
+"      if a:1 == b:cecutil_winposn{jwinposn}      " and the pattern matches
+"       unlet b:cecutil_winposn{jwinposn}            " unlet it
+"       if jwinposn == b:cecutil_iwinposn            " if at top-of-stack
+"        let b:cecutil_iwinposn= b:cecutil_iwinposn - 1      " drop stacktop by one
+"       endif
+"      endif
+"     endif
+"     let jwinposn= jwinposn - 1
+"    endwhile
+"   endif
+"  endif
+
+"  " Seems to be something odd: vertical motions after RWP
+"  " cause jump to first column.  The following fixes that.
+"  " Note: was using wincol()>1, but with signs, a cursor
+"  " at column 1 yields wincol()==3.  Beeping ensued.
+"  let vekeep= &ve
+"  set ve=all
+"  if virtcol('.') > 1
+"   exe s:modifier."norm! hl"
+"  elseif virtcol(".") < virtcol("$")
+"   exe s:modifier."norm! lh"
+"  endif
+"  let &ve= vekeep
+
+"  let &l:so   = so_keep
+"  let &l:siso = siso_keep
+"  let &l:ss   = ss_keep
+
+""  echomsg "Decho: RestoreWinPosn"
+endfun
+
+" ---------------------------------------------------------------------
+" s:WinLineRestore: {{{2
+fun! s:WinLineRestore(swwline)
+"  echomsg "Decho: s:WinLineRestore(swwline=".a:swwline.")"
+  while winline() < a:swwline
+   let curwinline= winline()
+   exe s:modifier."norm! \<c-y>"
+   if curwinline == winline()
+	break
+   endif
+  endwhile
+"  echomsg "Decho: s:WinLineRestore"
+endfun
+
+" ---------------------------------------------------------------------
+" GoWinbufnr: go to window holding given buffer (by number) {{{2
+"   Prefers current window; if its buffer number doesn't match,
+"   then will try from topleft to bottom right
+fun! GoWinbufnr(bufnum)
+"  call Dfunc("GoWinbufnr(".a:bufnum.")")
+  if winbufnr(0) == a:bufnum
+"   call Dret("GoWinbufnr : winbufnr(0)==a:bufnum")
+   return
+  endif
+  winc t
+  let first=1
+  while winbufnr(0) != a:bufnum && (first || winnr() != 1)
+  	winc w
+	let first= 0
+   endwhile
+"  call Dret("GoWinbufnr")
+endfun
+
+" ---------------------------------------------------------------------
+" SaveMark: sets up a string saving a mark position. {{{2
+"           For example, SaveMark("a")
+"           Also sets up a global variable, g:savemark_{markname}
+fun! SaveMark(markname)
+"  call Dfunc("SaveMark(markname<".string(a:markname).">)")
+  let markname= a:markname
+  if strpart(markname,0,1) !~ '\a'
+   let markname= strpart(markname,1,1)
+  endif
+"  call Decho("markname=".string(markname))
+
+  let lzkeep  = &lz
+  set lz
+
+  if 1 <= line("'".markname) && line("'".markname) <= line("$")
+   let winposn               = SaveWinPosn(0)
+   exe s:modifier."norm! `".markname
+   let savemark              = SaveWinPosn(0)
+   let g:savemark_{markname} = savemark
+   let savemark              = markname.string(savemark)
+   call RestoreWinPosn(winposn)
+  else
+   let g:savemark_{markname} = ""
+   let savemark              = ""
+  endif
+
+  let &lz= lzkeep
+
+"  call Dret("SaveMark : savemark<".savemark.">")
+  return savemark
+endfun
+
+" ---------------------------------------------------------------------
+" RestoreMark: {{{2
+"   call RestoreMark("a")  -or- call RestoreMark(savemark)
+fun! RestoreMark(markname)
+"  call Dfunc("RestoreMark(markname<".a:markname.">)")
+
+  if strlen(a:markname) <= 0
+"   call Dret("RestoreMark : no such mark")
+   return
+  endif
+  let markname= strpart(a:markname,0,1)
+  if markname !~ '\a'
+   " handles 'a -> a styles
+   let markname= strpart(a:markname,1,1)
+  endif
+"  call Decho("markname=".markname." strlen(a:markname)=".strlen(a:markname))
+
+  let lzkeep  = &lz
+  set lz
+  let winposn = SaveWinPosn(0)
+
+  if strlen(a:markname) <= 2
+   if exists("g:savemark_{markname}")
+	" use global variable g:savemark_{markname}
+"	call Decho("use savemark list")
+	call RestoreWinPosn(g:savemark_{markname})
+	exe "norm! m".markname
+   endif
+  else
+   " markname is a savemark command (string)
+"	call Decho("use savemark command")
+   let markcmd= strpart(a:markname,1)
+  call RestoreWinPosn(winposn)
+   exe "norm! m".markname
+  endif
+
+  call RestoreWinPosn(winposn)
+  let &lz       = lzkeep
+
+"  call Dret("RestoreMark")
+endfun
+
+" ---------------------------------------------------------------------
+" DestroyMark: {{{2
+"   call DestroyMark("a")  -- destroys mark
+fun! DestroyMark(markname)
+"  call Dfunc("DestroyMark(markname<".a:markname.">)")
+
+  " save options and set to standard values
+  let reportkeep= &report
+  let lzkeep    = &lz
+  set lz report=10000
+
+  let markname= strpart(a:markname,0,1)
+  if markname !~ '\a'
+   " handles 'a -> a styles
+   let markname= strpart(a:markname,1,1)
+  endif
+"  call Decho("markname=".markname)
+
+  let curmod  = &mod
+  let winposn = SaveWinPosn(0)
+  1
+  let lineone = getline(".")
+  exe "k".markname
+  d
+  put! =lineone
+  let &mod    = curmod
+  call RestoreWinPosn(winposn)
+
+  " restore options to user settings
+  let &report = reportkeep
+  let &lz     = lzkeep
+
+"  call Dret("DestroyMark")
+endfun
+
+" ---------------------------------------------------------------------
+" QArgSplitter: to avoid \ processing by <f-args>, <q-args> is needed. {{{2
+" However, <q-args> doesn't split at all, so this one returns a list
+" with splits at all whitespace (only!), plus a leading length-of-list.
+" The resulting list:  qarglist[0] corresponds to a:0
+"                      qarglist[i] corresponds to a:{i}
+fun! QArgSplitter(qarg)
+"  call Dfunc("QArgSplitter(qarg<".a:qarg.">)")
+  let qarglist    = split(a:qarg)
+  let qarglistlen = len(qarglist)
+  let qarglist    = insert(qarglist,qarglistlen)
+"  call Dret("QArgSplitter ".string(qarglist))
+  return qarglist
+endfun
+
+" ---------------------------------------------------------------------
+" ListWinPosn: {{{2
+"fun! ListWinPosn()                                                        " Decho 
+"  if !exists("b:cecutil_iwinposn") || b:cecutil_iwinposn == 0             " Decho 
+"   call Decho("nothing on SWP stack")                                     " Decho
+"  else                                                                    " Decho
+"   let jwinposn= b:cecutil_iwinposn                                       " Decho 
+"   while jwinposn >= 1                                                    " Decho 
+"    if exists("b:cecutil_winposn{jwinposn}")                              " Decho 
+"     call Decho("winposn{".jwinposn."}<".b:cecutil_winposn{jwinposn}.">") " Decho 
+"    else                                                                  " Decho 
+"     call Decho("winposn{".jwinposn."} -- doesn't exist")                 " Decho 
+"    endif                                                                 " Decho 
+"    let jwinposn= jwinposn - 1                                            " Decho 
+"   endwhile                                                               " Decho 
+"  endif                                                                   " Decho
+"endfun                                                                    " Decho 
+"com! -nargs=0 LWP	call ListWinPosn()                                    " Decho 
+
+" ---------------------------------------------------------------------
+" SaveUserMaps: this function sets up a script-variable (s:restoremap) {{{2
+"          which can be used to restore user maps later with
+"          call RestoreUserMaps()
+"
+"          mapmode - see :help maparg for details (n v o i c l "")
+"                    ex. "n" = Normal
+"                    The letters "b" and "u" are optional prefixes;
+"                    The "u" means that the map will also be unmapped
+"                    The "b" means that the map has a <buffer> qualifier
+"                    ex. "un"  = Normal + unmapping
+"                    ex. "bn"  = Normal + <buffer>
+"                    ex. "bun" = Normal + <buffer> + unmapping
+"                    ex. "ubn" = Normal + <buffer> + unmapping
+"          maplead - see mapchx
+"          mapchx  - "<something>" handled as a single map item.
+"                    ex. "<left>"
+"                  - "string" a string of single letters which are actually
+"                    multiple two-letter maps (using the maplead:
+"                    maplead . each_character_in_string)
+"                    ex. maplead="\" and mapchx="abc" saves user mappings for
+"                        \a, \b, and \c
+"                    Of course, if maplead is "", then for mapchx="abc",
+"                    mappings for a, b, and c are saved.
+"                  - :something  handled as a single map item, w/o the ":"
+"                    ex.  mapchx= ":abc" will save a mapping for "abc"
+"          suffix  - a string unique to your plugin
+"                    ex.  suffix= "DrawIt"
+fun! SaveUserMaps(mapmode,maplead,mapchx,suffix)
+"  call Dfunc("SaveUserMaps(mapmode<".a:mapmode."> maplead<".a:maplead."> mapchx<".a:mapchx."> suffix<".a:suffix.">)")
+
+  if !exists("s:restoremap_{a:suffix}")
+   " initialize restoremap_suffix to null string
+   let s:restoremap_{a:suffix}= ""
+  endif
+
+  " set up dounmap: if 1, then save and unmap  (a:mapmode leads with a "u")
+  "                 if 0, save only
+  let mapmode  = a:mapmode
+  let dounmap  = 0
+  let dobuffer = ""
+  while mapmode =~# '^[bu]'
+   if     mapmode =~# '^u'
+    let dounmap = 1
+    let mapmode = strpart(a:mapmode,1)
+   elseif mapmode =~# '^b'
+    let dobuffer = "<buffer> "
+    let mapmode  = strpart(a:mapmode,1)
+   endif
+  endwhile
+"  call Decho("dounmap=".dounmap."  dobuffer<".dobuffer.">")
+ 
+  " save single map :...something...
+  if strpart(a:mapchx,0,1) == ':'
+"   call Decho("save single map :...something...")
+   let amap= strpart(a:mapchx,1)
+   if amap == "|" || amap == "\<c-v>"
+    let amap= "\<c-v>".amap
+   endif
+   let amap                    = a:maplead.amap
+   let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|:sil! ".mapmode."unmap ".dobuffer.amap
+   if maparg(amap,mapmode) != ""
+    let maprhs                  = substitute(maparg(amap,mapmode),'|','<bar>','ge')
+	let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|:".mapmode."map ".dobuffer.amap." ".maprhs
+   endif
+   if dounmap
+	exe "sil! ".mapmode."unmap ".dobuffer.amap
+   endif
+ 
+  " save single map <something>
+  elseif strpart(a:mapchx,0,1) == '<'
+"   call Decho("save single map <something>")
+   let amap       = a:mapchx
+   if amap == "|" || amap == "\<c-v>"
+    let amap= "\<c-v>".amap
+"	call Decho("amap[[".amap."]]")
+   endif
+   let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|sil! ".mapmode."unmap ".dobuffer.amap
+   if maparg(a:mapchx,mapmode) != ""
+    let maprhs                  = substitute(maparg(amap,mapmode),'|','<bar>','ge')
+	let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|".mapmode."map ".dobuffer.amap." ".maprhs
+   endif
+   if dounmap
+	exe "sil! ".mapmode."unmap ".dobuffer.amap
+   endif
+ 
+  " save multiple maps
+  else
+"   call Decho("save multiple maps")
+   let i= 1
+   while i <= strlen(a:mapchx)
+    let amap= a:maplead.strpart(a:mapchx,i-1,1)
+	if amap == "|" || amap == "\<c-v>"
+	 let amap= "\<c-v>".amap
+	endif
+	let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|sil! ".mapmode."unmap ".dobuffer.amap
+    if maparg(amap,mapmode) != ""
+     let maprhs                  = substitute(maparg(amap,mapmode),'|','<bar>','ge')
+	 let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|".mapmode."map ".dobuffer.amap." ".maprhs
+    endif
+	if dounmap
+	 exe "sil! ".mapmode."unmap ".dobuffer.amap
+	endif
+    let i= i + 1
+   endwhile
+  endif
+"  call Dret("SaveUserMaps : s:restoremap_".a:suffix.": ".s:restoremap_{a:suffix})
+endfun
+
+" ---------------------------------------------------------------------
+" RestoreUserMaps: {{{2
+"   Used to restore user maps saved by SaveUserMaps()
+fun! RestoreUserMaps(suffix)
+"  call Dfunc("RestoreUserMaps(suffix<".a:suffix.">)")
+  if exists("s:restoremap_{a:suffix}")
+   let s:restoremap_{a:suffix}= substitute(s:restoremap_{a:suffix},'|\s*$','','e')
+   if s:restoremap_{a:suffix} != ""
+"   	call Decho("exe ".s:restoremap_{a:suffix})
+    exe "sil! ".s:restoremap_{a:suffix}
+   endif
+   unlet s:restoremap_{a:suffix}
+  endif
+"  call Dret("RestoreUserMaps")
+endfun
+
+" ==============
+"  Restore: {{{1
+" ==============
+let &cpo= s:keepcpo
+unlet s:keepcpo
+
+" ================
+"  Modelines: {{{1
+" ================
+" vim: ts=4 fdm=marker
+doc/AnsiEsc.txt	[[[1
+230
+*AnsiEsc.txt*	Ansi Escape Sequence Visualization		May 01, 2019
+
+Author:  Charles E. Campbell  <NdrOchip@ScampbellPfamily.AbizM>
+	  (remove NOSPAM from Campbell's email first)
+Copyright: (c) 2004-2017 by Charles E. Campbell		*AnsiEsc-copyright*
+           The VIM LICENSE applies to AnsiEsc.vim and AnsiEsc.txt
+           (see |copyright|) except use "AnsiEsc" instead of "Vim".
+	   No warranty, express or implied.  Use At-Your-Own-Risk.
+
+==============================================================================
+1. Contents					*AnsiEsc* *AnsiEsc-contents*
+   1. Contents         ...................................|AnsiEsc-contents|
+   2. AnsiEsc Manual   ...................................|AnsiEsc|
+   3. AnsiEsc Method   ...................................|AnsiEsc-Method|
+   4. AnsiEsc History  ...................................|AnsiEsc-history|
+
+==============================================================================
+2. Manual						*AnsiEsc-manual*
+
+
+	CONCEAL~
+		The best option: for this, your vim must have +conceal. Try either >
+			:version
+			:echo has("conceal")
+<		if you have vim v7.3.  Your vim needs to have been compiled
+		for "big" or "huge" and to support syntax highlighting.
+
+	Vim: (v7.2 or earlier) -- ansi escape sequences themselves are Ignore'd~
+		Ansi escape sequences have the expected effect on subsequent
+		text, but the ansi escape sequences themselves still take up
+		screen columns.  The sequences are displayed using "Ignore"
+		highlighting; depending on your colorscheme, this should either
+		make the sequences blend into your background or be visually
+		suppressed.  If the sequences aren't suppressed, you need to
+		improve your colorscheme!
+
+								*:AnsiEsc*
+	USAGE~
+		:AnsiEsc   -- toggles Ansi escape sequence highlighting
+		:AnsiEsc!  -- rebuilds highlighting for new/removed three
+		              or more element Ansi escape sequences.
+
+	RESULT~
+		Ansi escape sequences become concealed or ignored (depending
+		on whether your vim supports Negri's conceal mode), and their
+		effect on subsequent text is emulated with Vim's syntax
+		highlighting.
+
+		Syntax highlighting for one and two element codes are
+		hard-coded into AnsiEsc.vim.  There are too many possibilities
+		for three or more element codes; these are supported by
+		examining the file for such sequences and only building syntax
+		highlighting rules for such sequences as are actually present
+		in the document.
+	
+
+	CUSTOMIZATION~
+		AnsiEsc does not know how to read what your terminal does with
+		several escape sequences.  One may customize what AnsiEsc does
+		with these by specifying global variables which specify the
+		desired highlighting:
+
+		*g:ansiNone* use this variable to specify what should be done
+		with <esc>[0m and <esc>[m. Example: >
+			let g:ansiNone="hi gui=NONE cterm=NONE fg=white bg=black ctermfg=7"
+<
+		*g:ansiBold* use this variable to specify what should be
+		done with <esc>[1m
+
+		*g:ansiItalic* use this variable to specify what should be
+		done with <esc>[3m
+
+		*g:ansiUnderline* use this variable to specify what should be
+		done with <esc>[4m
+
+	EXAMPLE~
+
+		You'll want to use   :AnsiEsc   to see the following properly!
+
+            [34;47mColor Escape Sequences[m
+[37m  -  [m   [37;1m  1  [m   [37;2m  2  [m   [37;3m  3  [m   [37;4m  4  [m   [37;5m  5  [m   [37;7m  7  [m
+[30mblack[m   [30;1mblack[m   [30;2mblack[m   [30;3mblack[m   [30;4mblack[m   [30;5mblack[m   [30;7mblack[m
+[31mred[m     [31;1mred[m     [31;2mred[m     [31;3mred[m     [31;4mred[m     [31;5mred[m     [31;7mred[m
+[32mgreen[m   [32;1mgreen[m   [32;2mgreen[m   [32;3mgreen[m   [32;4mgreen[m   [32;5mgreen[m   [32;7mgreen[m
+[33myellow[m  [33;1myellow[m  [33;2myellow[m  [33;3myellow[m  [33;4myellow[m  [33;5myellow[m  [33;7myellow[m
+[34mblue[m    [34;1mblue[m    [34;2mblue[m    [34;3mblue[m    [34;4mblue[m    [34;5mblue[m    [34;7mblue[m
+[35mmagenta[m [35;1mmagenta[m [35;2mmagenta[m [35;3mmagenta[m [35;4mmagenta[m [35;5mmagenta[m [35;7mmagenta[m
+[36mcyan[m    [36;1mcyan[m    [36;2mcyan[m    [36;3mcyan[m    [36;4mcyan[m    [36;5mcyan[m    [36;7mcyan[m
+[37mwhite[m   [37;1mwhite[m   [37;2mwhite[m   [37;3mwhite[m   [37;4mwhite[m   [37;5mwhite[m   [37;7mwhite[m
+
+Black   [30;40mB[m  [30;41mB[m  [30;42mB[m  [30;43mB[m  [30;44mB[m   [30;45mB[m   [30;46mB[m   [30;47mB[m
+Red     [31;40mR[m  [31;41mR[m  [31;42mR[m  [31;43mR[m  [31;44mR[m   [31;45mR[m   [31;46mR[m   [31;47mR[m
+Green   [32;40mG[m  [32;41mG[m  [32;42mG[m  [32;43mG[m  [32;44mG[m   [32;45mG[m   [32;46mG[m   [32;47mG[m
+Yellow  [33;40mY[m  [33;41mY[m  [33;42mY[m  [33;43mY[m  [33;44mY[m   [33;45mY[m   [33;46mY[m   [33;47mY[m
+Blue    [34;40mB[m  [34;41mB[m  [34;42mB[m  [34;43mB[m  [34;44mB[m   [34;45mB[m   [34;46mB[m   [34;47mB[m
+Magenta [35;40mM[m  [35;41mM[m  [35;42mM[m  [35;43mM[m  [35;44mM[m   [35;45mM[m   [35;46mM[m   [35;47mM[m
+Cyan    [36;40mC[m  [36;41mC[m  [36;42mC[m  [36;43mC[m  [36;44mC[m   [36;45mC[m   [36;46mC[m   [36;47mC[m
+White   [37;40mW[m  [37;41mW[m  [37;42mW[m  [37;43mW[m  [37;44mW[m   [37;45mW[m   [37;46mW[m   [37;47mW[m
+
+	Here's the vim logo:
+
+        [30;48;5;22m/  \[m
+       [30;48;5;22m/    \[m
+      [30;48;5;22m/      \[m
+     [30;48;5;22m/        \[m
+ [38;5;34;48;5;251m+----+[30;48;5;22m [38;5;34;48;5;251m+----+[30;48;5;22m \[m
+ [38;5;34;48;5;251m++  ++[30;48;5;22m [38;5;34;48;5;251m+-   |[30;48;5;22m  \[m
+ [30;48;5;22m/[38;5;34;48;5;251m|  |[30;48;5;22m   [m[38;5;34;48;5;251m/  /[30;48;5;22m    \[m
+[30;48;5;22mX [38;5;34;48;5;251m|  |[30;48;5;22m  [38;5;34;48;5;251m/  /O[30;48;5;22m     \[m
+ [30;48;5;22m\[38;5;34;48;5;251m|  |[30;48;5;22m [38;5;34;48;5;251m/  /+-+[30;48;5;22m [38;5;34;48;5;251m+-\[30;48;5;22m/[38;5;34;48;5;251m/-+[m
+  [38;5;34;48;5;251m|  |/  /[30;48;5;22m [38;5;34;48;5;251m| |[30;48;5;22m [38;5;34;48;5;251m|  v  |[m
+  [38;5;34;48;5;251m|  /  /[30;48;5;22m  [38;5;34;48;5;251m| |[30;48;5;22m [m[38;5;34;48;5;251m| +  [38;5;34;48;5;251m+|[m
+  [38;5;34;48;5;251m|    /[30;48;5;22m   [38;5;34;48;5;251m| |[30;48;5;22m/[38;5;34;48;5;251m| |[38;5;34;48;5;251m\/[m[38;5;34;48;5;251m||[m
+  [38;5;34;48;5;251m+----[30;48;5;22m\   [38;5;34;48;5;251m+-+ [38;5;34;48;5;251m+-+[m  [38;5;34;48;5;251m++[m
+        [30;48;5;22m\   /[m
+         [30;48;5;22m\ /[m
+
+	PROBLEM WITH EMBEDDING:
+
+		AnsiEsc plugin highlighting cannot be embedded in another
+		syntax language.
+
+		AnsiEsc uses the syntax highlighting engine, so it is
+		effectively another syntax highlighting language.  But,
+		there are major differences:
+
+			* It supports being turned on and off
+
+			* AnsiEsc is not a syntax highlighting file, it
+			  is a plugin
+
+			* AnsiEsc dynamically determines some syntax
+			  highlighting by analyzing what's needed in the
+			  current file.
+
+		To do a syntax highlighting file would involve an inordinate
+		quantity of permutations, resulting in a file that would take
+		much time to load (about a half hour with only a partially
+		complete set of permutations on my system).
+
+		Normally to embed a syntax highlighting language in another
+		would involve a pair of syntax highlighting commands such as:
+
+		  syn include @AnsiEsc
+		  syn region ... defines the region where AnsiEsc
+		  \              highlighting is to occur ...  contains=@AnsiEsc
+
+		placed in the other syntax file's definitions.  That won't
+		work with AnsiEc because, again, AnsiEsc is not a syntax
+		highlighting file.
+
+
+==============================================================================
+3. AnsiEsc Method					*AnsiEsc-Method* {{{1
+
+Method 1: AnsiEsc implements syntax highlighting rules for highlighting the
+basic eight colors (black-red-green-yellow-blue-magenta-cyan-white, plus gray)
+atop the same basic eight colors, and rules for italic, bold, and underline.
+These comprise a fixed set of syntax highlighting rules.
+
+Method 2: Ansi escape codes may also represent a 6x6x6 color cube for an
+additional 216 colors, plus 25 grayscale colors.  To handle these, AnsiEsc
+analyzes the file and builds custom syntax highlighting rules.  These comprise
+a variable set of syntax highlighting rules.  I did it this way because things
+
+	a) broke (ie. vim was unable to handle 262000+ syntax highlighting rules),
+	   and
+
+	b) took excessive amounts of time to load a fixed set of rules for
+	   256 foreground atop 256 background syntax highlighting rules with
+	   variants for italic, underline, and bold.
+
+
+==============================================================================
+4. AnsiEsc History					*AnsiEsc-history* {{{1
+  v13	Apr 12, 2012	* (Peter Brant) a "conceal" was left on a syntax
+			  definition in a no-conceal-support if block.
+			  Fixed.
+	Apr 17, 2012	* (Ingo Karkat) support for the "reverse" attribute
+	May 13, 2014	* (Jason Schmidt) reported that <esc>[39m didn't work.
+			  This means revert to default foreground.  Similarly,
+			  <esc>[49m didn't work (which means revert to default
+			  background).
+	Dec 11, 2014	* Implemented implicit foreground/background
+	Jan 10, 2015	* (Evgeny Lukianchikov) provided XUbuntu support for
+			  no-ansi-sequence (AnsiNone)
+	Sep 06, 2016	* Implemented bold/italic/underline without color
+			  specification
+	Feb 18, 2017	* ansiConceal priority overruled foregroup specs
+			  containing background specs.
+			  (reported by Lucas Hoffman)
+	Apr 10, 2018	* (James McCoy) provided a patch so that the
+			  |'highlight'| option is no longer used when
+			  conceal is available (see |'conceallevel'|)
+	May 01, 2019	* (barrie) reported that <esc>[24m was showing up as
+			  a "stray m".  Reason: ansiSuppress wasn't handling
+			  the code.
+  v12	Jul 23, 2010	* changed conc to |'cole'| to correspond to vim 7.3's
+			  change
+			* for menus, &go =~# used to insure correct case
+	Aug 10, 2010	* (Rainer M Schmid) changed conceallevel setting to
+			  depend on whether the version is before vim 7.3;
+			  for 7.3, also sets concealcursor
+			* Restores conc/cole/cocu settings when AnsiEsc is
+			  toggled off.
+	Dec 13, 2010	* Included some additional sequences involving 0
+	Feb 22, 2011	* for menus, &go =~# used to insure correct case
+  v11	Apr 20, 2010	* AnsiEsc now supports enabling/disabling via a menu
+			* <esc>[K and <esc>[00m now supported (as
+			  grep --color=always   issues them)
+  v10   May 06, 2009	* Three or more codes in an ANSI escape sequence are
+			  supported by building custom syntax and highlighting
+			  commands.
+	May 20, 2009	* cecutil bugfix
+  v9    May 12, 2008    * Now in plugin + autoload format.  Provides :AnsiEsc
+                          command to toggle Ansi-escape sequence processing.
+	Jan 01, 2009	* Applies Ignore highlighting to extended Ansi escape
+			  sequences support 256-colors.
+	Mar 18, 2009    * Includes "rapid blink" ansi escape sequences.  Vim
+			  doesn't have a blinking attribute, so such text uses
+			  "standout" for vim and "undercurl" for gvim.
+  v8	Aug 16, 2006	* Uses undercurl, and so is only available for vim 7.0
+  v7  	Dec 14, 2004	* Works better with vim2ansi output and Vince Negri's
+			  conceal patch for vim 6.x.
+  v2	Nov 24, 2004	* This version didn't use Vince Negri's conceal patch
+			  (used Ignore highlighting)
+
+==============================================================================
+Modelines: {{{1
+vim:tw=78:ts=8:ft=help:fdm=marker:
