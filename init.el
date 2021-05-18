@@ -90,8 +90,7 @@
 (plsense-direx:config-default)
 (put 'upcase-region 'disabled nil)
 
-(defun create-tags (dir-name)
+(defun create-tags()
   "Create tags file."
-  (interactive "DDirectory: ")
   (eshell-command 
-   (format "find . -type f -regex '.*\\(p[ml]\\|js\\)$' -not -path './.git/*' -not -path './.vim/*' -not -path './.emacs.d/*' -not -path '*/node_modules/*' -not -path '*/thirdparty/*' | xargs etags --append" dir-name)))
+   (format "find . -type f -regex '.*\\(p[ml]\\|js\\)$' -not -path './.git/*' -not -path './.vim/*' -not -path './.emacs.d/*' -not -path '*/node_modules/*' -not -path '*/thirdparty/*' | xargs etags --append")))
