@@ -64,67 +64,21 @@ set norelativenumber
 syntax sync minlines=256
 
 set nofoldenable
-"set foldenable=0
-"set foldmethod=syntax
-"set foldcolumn=2
-"set foldlevel=1
-"let php_folding=1
-"set foldopen=all 
-"set rnu
 
 set backupdir=/tmp//
 set directory=/tmp//
 set undodir=/tmp//
 
-"let g:netrw_list_hide='[\/]$,\<core\%(\.\d\+\)\=,\.[a-np-z]$,\.h$,\.c$,\.cpp$,*,\.o$,\.obj$,\.info$,\.swp$,\.bak$,\~$'
-"let g:netrw_list_hide='[\/]$,\<core\%(\.\d\+\)\=,\.swp$,\.bak$,\~$'
 let g:netrw_list_hide='^\.\/$,\.swp$,\.bak$,\.\.,\~'
 let g:tsuquyomi_definition_split=3
 let g:tsuquyomi_disable_quickfix = 1
 
-"set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 set statusline=%<%f\ %h%m%r(%{fugitive#head(7)})%=%-14.(%l,%c%V%)\ %P
 set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-
-"let SyntasticToggleMode='passive'
-" let g:syntastic_disabled_filetypes=[]
-" let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
-
-" let mojo_highlight_data=1
-
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_debug = 32  "debug checkers
-" let g:syntastic_loc_list_height = 7
-" let g:syntastic_aggregate_errors = 1
-"let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 1
-" let g:syntastic_javascript_checkers = ['eslint']
-"let g:syntastic_javascript_eslint_exec = '/usr/bin/eslint'
-
-"let g:syntastic_error_symbol = '❌'
-" let g:syntastic_error_symbol = 'XX'
-"let g:syntastic_style_error_symbol = '⁉️'
-" let g:syntastic_style_error_symbol = '??'
-"let g:syntastic_warning_symbol = '⚠️'
-" let g:syntastic_warning_symbol = '!!'
-"let g:syntastic_style_warning_symbol = '💩'
-" let g:syntastic_style_warning_symbol = '#%'
-
-" let g:syntastic_aggregate_errors = 1
 
 let g:LoupeVeryMagic=0
 
-" highlight link SyntasticErrorSign SignColumn
-" highlight link SyntasticWarningSign SignColumn
-" highlight link SyntasticStyleErrorSign SignColumn
-" highlight link SyntasticStyleWarningSign SignColumn
-
-" let g:syntastic_css_checkers = ['csslint']
-" let g:loaded_syntastic_notifier_cursor = 1
-" let g:loaded_syntastic_javascript_jsxhint_checker=1 "get rid of buggy checker
 let g:ctrlp_tabpage_position = 'ac'
 let g:ctrlp_open_new_file = 't'
 let g:ctrlp_custom_ignore = {'dir': '\v[\/]node_modules$'}
@@ -140,7 +94,6 @@ au BufRead,BufNewFile *.twig set filetype=html
 
 autocmd! BufWritePost,BufEnter * Neomake
 let g:neomake_verbose=0
-"let g:neomake_verbose=3
 let g:neomake_open_list = 0
 let g:neomake_list_height = 4
 let g:neomake_javascript_enabled_makers = ['eslint']
