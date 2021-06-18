@@ -343,7 +343,7 @@ alias jira="curl -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application
 alias used_ports="lsof -i"
 alias used_ports2="netstat -tulpn"
 alias lynx='lynx -accept_all_cookies'
-alias emacs_tags_create="find . -type f -regex '.*\(p[ml]\|js\)$' -not -path './.git/*' -not -path './.vim/*' -not -path './.emacs.d/*' -not -path '*/node_modules/*' -not -path '*/thirdparty/*' | xargs etags --append"
+alias emacs_tags_create="rm TAGS; find . -type f -regex '.*\(p[ml]\|js\)$' -not -path './.git/*' -not -path './.vim/*' -not -path './.emacs.d/*' -not -path '*/node_modules/*' -not -path '*/thirdparty/*' | xargs etags --append"
 #alias mc='/usr/share/mc/bin/mc-wrapper.sh'
 #alias random="cat /dev/urandom | tr -dc '\\/,.!@#$%^*{}[];:|~&()a-zA-Z0-9_+-' | fold -w 100 | head -n 1"
 

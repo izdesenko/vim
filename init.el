@@ -1,15 +1,4 @@
-(linum-mode t)
-(show-paren-mode 1)
-
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
-(setq completion-ignore-case  t)
-(setq read-file-name-completion-ignore-case  t)
-(setq linum-format (quote "%4d  "))
-(setq cperl-auto-newline nil)
-(setq cperl-autoindent-on-semi nil)
-(setq cperl-auto-newline-after-colon nil)
 
 ;; store all backup and autosave files in the tmp dir
 (setq backup-directory-alist
@@ -17,21 +6,13 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-(set-face-foreground 'linum "dark blue")
-
 (add-to-list 'auto-mode-alist '("\\.\\(t\\)\\'" . cperl-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(tt\\)\\'" . sgml-mode))
 (defalias 'perl-mode 'cperl-mode)
 
 ;; (setq display-buffer-base-action '(display-buffer-in-tab))
 ;; (require 'uniquify)
 ;; (setq uniquify-buffer-name-style 'reverse)
-
-(setq verilog-auto-newline nil)
-(global-set-key (kbd "C-;") nil)
-(global-set-key (kbd "C-\\") nil)
-(global-set-key (kbd "C-\\") 'er/expand-region)
-;;(global-set-key (kbd "C-;") 'iedit-mode)
-(global-set-key (kbd "C-M-i") 'iedit-mode)
 
 (add-to-list 'load-path "/opt/otrs/.emacs.d/stuff")
 (add-to-list 'load-path "/opt/otrs/.emacs.d/pde/lisp")
@@ -61,9 +42,19 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(global-display-line-numbers-mode t)
- '(package-selected-packages '(expand-region iedit))
- '(show-paren-mode t))
+ '(cperl-auto-newline nil)
+ '(cperl-auto-newline-after-colon nil)
+ '(cperl-autoindent-on-semi nil)
+ '(global-linum-mode t)
+ '(indent-tabs-mode nil)
+ '(linum-format "%4d  ")
+ '(package-selected-packages '(magit expand-region iedit))
+ '(read-buffer-completion-ignore-case t)
+ '(read-file-name-completion-ignore-case t)
+ '(show-paren-mode t)
+ '(tab-width 4)
+ '(truncate-lines nil)
+ '(word-wrap nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -94,3 +85,12 @@
   "Create tags file."
   (eshell-command 
    (format "find . -type f -regex '.*\\(p[ml]\\|js\\)$' -not -path './.git/*' -not -path './.vim/*' -not -path './.emacs.d/*' -not -path '*/node_modules/*' -not -path '*/thirdparty/*' | xargs etags --append")))
+(put 'set-goal-column 'disabled nil)
+
+(global-set-key (kbd "C-;") nil)
+(global-set-key (kbd "C-\\") nil)
+(global-set-key (kbd "C-\\") 'er/expand-region)
+;;(global-set-key (kbd "C-;") 'iedit-mode)
+(global-set-key (kbd "C-M-i") 'iedit-mode)
+
+(set-face-foreground 'linum "dark blue")
