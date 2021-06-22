@@ -10,10 +10,6 @@
 (add-to-list 'auto-mode-alist '("\\.\\(tt\\)\\'" . sgml-mode))
 (defalias 'perl-mode 'cperl-mode)
 
-;; (setq display-buffer-base-action '(display-buffer-in-tab))
-;; (require 'uniquify)
-;; (setq uniquify-buffer-name-style 'reverse)
-
 (add-to-list 'load-path "/opt/otrs/.emacs.d/stuff")
 (add-to-list 'load-path "/opt/otrs/.emacs.d/pde/lisp")
 (load "pde-load")
@@ -47,13 +43,15 @@
  '(cperl-autoindent-on-semi nil)
  '(global-linum-mode t)
  '(indent-tabs-mode nil)
- '(linum-format "%4d  ")
+ '(linum-format "%4d ")
  '(package-selected-packages '(magit expand-region iedit))
  '(read-buffer-completion-ignore-case t)
  '(read-file-name-completion-ignore-case t)
  '(show-paren-mode t)
  '(tab-width 4)
  '(truncate-lines nil)
+ '(uniquify-buffer-name-style 'reverse nil (uniquify))
+ '(uniquify-min-dir-content 2)
  '(word-wrap nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -90,7 +88,6 @@
 (global-set-key (kbd "C-;") nil)
 (global-set-key (kbd "C-\\") nil)
 (global-set-key (kbd "C-\\") 'er/expand-region)
-;;(global-set-key (kbd "C-;") 'iedit-mode)
 (global-set-key (kbd "C-M-i") 'iedit-mode)
 
 (set-face-foreground 'linum "dark blue")
