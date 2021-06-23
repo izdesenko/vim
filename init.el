@@ -41,6 +41,7 @@
  '(cperl-auto-newline nil)
  '(cperl-auto-newline-after-colon nil)
  '(cperl-autoindent-on-semi nil)
+ '(find-file-suppress-same-file-warnings t)
  '(global-linum-mode t)
  '(indent-tabs-mode nil)
  '(linum-format "%4d ")
@@ -50,7 +51,7 @@
  '(show-paren-mode t)
  '(tab-width 4)
  '(truncate-lines nil)
- '(uniquify-buffer-name-style 'reverse nil (uniquify))
+ '(uniquify-buffer-name-style 'forward nil (uniquify))
  '(uniquify-min-dir-content 2)
  '(word-wrap nil))
 (custom-set-faces
