@@ -99,7 +99,8 @@ work(){
 		SESSION=$SESSION"_1";
 	fi
 	tmux attach -t $SESSION
-	if [ $? -ne 0 ]; then
+  
+	if [ "$?" -ne 0 ]; then
 		tmux -f ~/.vim/tmux.conf new -s $SESSION
 	fi
 }
