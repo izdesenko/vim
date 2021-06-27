@@ -14,12 +14,18 @@ set bg=light
 set t_Co=256
 "colorscheme distinguished
 
+set tabstop=2
+set shiftwidth=2
+set backspace=2
+set autoindent
+set softtabstop=4
+
 set noerrorbells 
 set visualbell
 "set t_vb= 
 
-set tabstop=4
-set shiftwidth=4
+"set tabstop=4
+"set shiftwidth=4
 set smarttab
 set smartindent
 set expandtab
