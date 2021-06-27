@@ -88,7 +88,12 @@
 
 (global-set-key (kbd "C-;") nil)
 (global-set-key (kbd "C-\\") nil)
+(global-set-key (kbd "<C-left>") nil)
+(global-set-key (kbd "<C-right>") nil)
+
 (global-set-key (kbd "C-\\") 'er/expand-region)
 (global-set-key (kbd "C-M-i") 'iedit-mode)
+(global-set-key (kbd "<C-left>") 'backward-sexp)
+(global-set-key (kbd "<C-right>") 'forward-sexp)
 
 (set-face-foreground 'linum "dark blue")
