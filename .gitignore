@@ -4,6 +4,8 @@
 .DS_Store
 
 bundle/perl-support/doc/tags
+bundle/tsuquyomi/doc/tags
+bundle/tsuquyomi/doc/tags-ja
 bundle/ctrlp/doc/tags
 ./bundle/perl-support/doc/tags/*
 ./bundle/perl-support/doc/tags-te/*
