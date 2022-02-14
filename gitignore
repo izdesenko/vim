@@ -21,6 +21,10 @@ tags
 [1-9][1-9].js
 [1-9][1-9][1-9].js
 
+[1-9].json
+[1-9][1-9].json
+[1-9][1-9][1-9].json
+        
 [1-9].sh
 [1-9][1-9].sh
 [1-9][1-9][1-9].sh
@@ -35,6 +39,7 @@ tags
 
 # node files
 .node_repl_history
+node_modules/*
 package-lock.json
 
 # stuff
