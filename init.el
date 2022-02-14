@@ -10,8 +10,8 @@
 (add-to-list 'auto-mode-alist '("\\.\\(tt\\)\\'" . sgml-mode))
 (defalias 'perl-mode 'cperl-mode)
 
-(add-to-list 'load-path "/opt/otrs/.emacs.d/stuff")
-(add-to-list 'load-path "/opt/otrs/.emacs.d/pde/lisp")
+(add-to-list 'load-path "~/.emacs.d/stuff")
+(add-to-list 'load-path "~/.emacs.d/pde/lisp")
 (load "pde-load")
 
 (require 'package)
