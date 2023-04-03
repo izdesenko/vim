@@ -1,6 +1,13 @@
 $DB::deep=1000;
-our $preview=20;
+our $preview=23;
 our $doret=0;
 our $frame=0;
 sub afterinit { push @DB::typeahead, "{{v" unless $DB::already_curly_curly_v++; };
-parse_options('NonStop=0 dumpDepth=4 windowSize=39 PrintRet=1 arrayDepth=50 compactDump=1 inhibit_exit=1');
+sub DB::get_fork_TTY {
+    open XT, q[3>&1 xterm -title 'Forked Perl debugger' -e sh -c 'tty +1>&3;\ sleep 10000000' |];
+    $DB::fork_TTY = <XT>;
+    chomp $DB::fork_TTY;
+}
+parse_options('NonStop=0 dumpDepth=3 windowSize=47 PrintRet=1 arrayDepth=50 compactDump=1 inhibit_exit=1');
+# Debug forks
+# parse_options('NonStop=0 dumpDepth=3 windowSize=47 PrintRet=1 arrayDepth=50 compactDump=1 inhibit_exit=0');

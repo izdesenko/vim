@@ -140,14 +140,14 @@ cnoreabbrev <expr> TABR ((getcmdtype() is# ':' && getcmdline() is# 'tabr')?('TAB
 cnoreabbrev <expr> TABL ((getcmdtype() is# ':' && getcmdline() is# 'tabl')?('TABL'):('tabl'))
 cnoreabbrev <expr> TABE ((getcmdtype() is# ':' && getcmdline() is# 'tabe')?('TABE'):('tabe'))
 
-"hi PComment guifg=#5f5fff guibg=none guisp=none ctermfg=117 ctermbg=none
-hi PComment guifg=#5f5fff guisp=none ctermfg=117 ctermbg=none
+"hi PComment guifg=#5f5fff guibg=NONE guisp=none ctermfg=117 ctermbg=none
+hi PComment guifg=#5f5fff guisp=NONE ctermfg=117 ctermbg=NONE
 hi! link perlComment PComment
 
 "hi PVariables guifg=#005f00 guibg=none guisp=none gui=bold ctermfg=30 ctermbg=none cterm=bold
 "hi! link perlVarPlain PVariables
 
-hi PFunction guisp=none ctermfg=30 ctermbg=none cterm=bold
+hi PFunction guisp=NONE ctermfg=30 ctermbg=NONE cterm=bold
 hi! link perlSubName PFunction
 
 "hi Type guifg=#008787 guibg=NONE guisp=NONE gui=bold ctermfg=30 ctermbg=NONE cterm=bold

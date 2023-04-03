@@ -90,6 +90,37 @@ gof(){
 	git submodule foreach git pull origin master ;
 }
 
+git_bump(){
+    BASE="$1";
+    OTHER="$2";
+    DIR="$(pwd)";
+
+    echo "===================================\nFOLDER: $DIR,\nBASE_BRANCH: $BASE,\nOTHER_BRANCH: $OTHER.\n===================================\n\nIf everything is OK type \"ok\"\n";
+
+    read FINE;
+
+    if [ "$FINE" = "ok" ] ;
+    then
+        echo "You said OK";
+
+        git checkout $BASE;
+        git clean -fd;
+
+        git fetch origin;
+        git reset --hard HEAD
+        git pull origin $BASE;
+        git merge $OTHER --no-commit --no-ff -X theirs
+
+        cd /opt/otrs/var/httpd/vue-front/ && npm install && npm run build && cd ../sm-frontend/ && yarn install --frozen-lockfile && yarn build:prod
+
+        cd /opt/otrs/.bash_stuff;
+        ./dclear.sh;
+        cd /opt/otrs;
+    else
+        echo "Nothing to do. Quit.";
+    fi
+}
+
 work(){
 	SESSION="ilya";
 	if [ "$1" ]
@@ -126,6 +157,7 @@ alias gc="_gc"
 alias WORK="work"
 alias weather="curl wttr.in"
 alias weather2="curl v2.wttr.in"
+alias gmerge_no_mess="git merge --no-commit --no-ff "
 
 # push to current branch to all remotes
 gop() {
@@ -402,6 +434,7 @@ alias control_vim="cd ~/control/; vim +4 time.txt plan.txt consience ideas.txt -
 alias VIM="vim"
 alias FG="fg"
 alias free_space="df . -h"
+alias gmf="git merge --no-commit --no-ff "
 
 alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
 alias apt_uppp='sudo apt-get update -y --allow-unauthenticated; sudo apt-get upgrade -y --allow-unauthenticated; sudo apt autoremove -y' 

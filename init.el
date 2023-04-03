@@ -1,10 +1,11 @@
-(setq indent-line-function 'insert-tab)
+;(setq indent-line-function 'insert-tab)
 
 ;; store all backup and autosave files in the tmp dir
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
+(setq-default tab-width 4)
 
 (add-to-list 'auto-mode-alist '("\\.\\(t\\)\\'" . cperl-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(tt\\)\\'" . sgml-mode))
@@ -57,6 +58,7 @@
  '(read-file-name-completion-ignore-case t)
  '(show-paren-mode t)
  '(tab-width 4)
+ '(c-basic-offset 4)
  '(truncate-lines t)
  '(uniquify-buffer-name-style 'forward nil (uniquify))
  '(uniquify-min-dir-content 2)
