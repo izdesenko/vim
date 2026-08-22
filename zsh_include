@@ -62,13 +62,22 @@ gdo() {
 }
 go() {
 	BRANCH=$1
-	
+
 	if [ ! "$BRANCH" ]
 	then
 		BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    else
+        shift 1;
 	fi
-	
-	git pull origin $BRANCH
+
+    ARGS=( "$@" );
+
+    if [ "$1" = "theirs" ] || [ "$1" = "ours" ] ;
+    then
+        ARGS=('-X' "${ARGS[@]}");
+    fi;
+
+	git pull origin $BRANCH $ARGS
 }
 
 unalias gdw
@@ -129,11 +138,25 @@ work(){
 	else
 		SESSION=$SESSION"_1";
 	fi
-	tmux attach -t $SESSION
   
+    TMUX_BIN=$(which tmux)
+
+	$TMUX_BIN attach -t $SESSION
 	if [ "$?" -ne 0 ]; then
-		tmux -f ~/.vim/tmux.conf new -s $SESSION
-	fi
+
+       # CONFIG=~/.config/tmux/tmux.conf.local
+       #  [ -e "$CONFIG" ] || CONFIG=~/.vim/tmux.conf
+
+        if ! $TMUX_BIN has-session 2>/dev/null; then
+            # env PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH" $TMUX_BIN new-session -d -s "$SESSION"
+            $TMUX_BIN new-session -d -s "$SESSION"
+        else
+            $TMUX_BIN new-session -d -s "$SESSION"
+            # tmux source-file "$CONFIG"
+        fi
+
+        $TMUX_BIN attach -t "$SESSION"
+   fi
 }
 
 passh(){
@@ -414,6 +437,7 @@ alias mtail="less +F "
 alias grep="grep --color=always --exclude='*.swp' --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=log --exclude-dir=tmp"
 alias ll="ls -lAF"
 alias gis="git -c color.ui=always -c color.status=always status"
+alias GIS="git -c color.ui=always -c color.status=always status"
 alias пшы="git -c color.ui=always -c color.status=always status"
 alias giss="git -c color.ui=always -c color.status=always status | grep -v .min.js | grep -v .min.css "
 alias gil="git log --stat --graph --pretty=short --abbrev-commit"
@@ -426,10 +450,11 @@ alias gd="git diff HEAD "
 # alias gdw="git diff -w --word-diff "
 alias gab="git ls-remote | perl -ne '/\/([^\/]+\$)/; print \$1'"
 alias gfo="git fetch origin"
+alias gwl="git worktree list"
 alias grmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
 alias vim="vim -p"
 alias view="view -p"
-alias control="cd ~/control/; emacs time.txt plan.txt consience ideas.txt"
+alias control="cd ~/control/; emacs --debug-init time.txt plan.txt consience ideas.txt bot.txt"
 alias control_vim="cd ~/control/; vim +4 time.txt plan.txt consience ideas.txt -c 'normal zt'"
 alias VIM="vim"
 alias FG="fg"
@@ -440,7 +465,7 @@ alias myptidy='perltidy -opt -ce -bar -bt=2 -pt=2 -bbt=2 -sbt=2 -dws -cti=1 '
 alias apt_uppp='sudo apt-get update -y --allow-unauthenticated; sudo apt-get upgrade -y --allow-unauthenticated; sudo apt autoremove -y' 
 alias dcc='drush cc all'
 alias timestamp='date "+%s"'
-alias download='curl --progress-bar --fail -O '
+alias download='curl -L --progress-bar --fail -O '
 alias jira="curl -u '$jira_user:$jira_pass' -X GET -H 'Content-Type: application/json; charset=UTF-8' '$jira_domain/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=assignee%3D+$jira_user+AND+project+%3D+%22$jira_project%22+and+status+not+in+%28Done%2C+Closed%2C%22TO+TEST%22%29&tempMax=1000' 2> /dev/null | htmlentities | parseJira"
 alias used_ports="lsof -i"
 alias used_ports2="netstat -tulpn"

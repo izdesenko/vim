@@ -1,9 +1,9 @@
 set nocompatible
 
-set shell=/bin/bash\ -i
+"set shell=/bin/bash\ -i
 
-call pathogen#incubate()
-call pathogen#helptags()
+"call pathogen#incubate()
+"call pathogen#helptags()
 
 set shortmess+=|
 set mouse=a
@@ -79,7 +79,7 @@ let g:netrw_list_hide='^\.\/$,\.swp$,\.bak$,\.\.,\~'
 let g:tsuquyomi_definition_split=3
 let g:tsuquyomi_disable_quickfix = 1
 
-set statusline=%<%f\ %h%m%r(%{fugitive#head(7)})%=%-14.(%l,%c%V%)\ %P
+"set statusline=%<%f\ %h%m%r(%{fugitive#head(7)})%=%-14.(%l,%c%V%)\ %P
 set statusline+=%#warningmsg#
 set statusline+=%*
 
@@ -98,7 +98,7 @@ au BufRead,BufNewFile *.module set filetype=php
 au BufRead,BufNewFile *.ts set filetype=typescript
 au BufRead,BufNewFile *.twig set filetype=html
 
-autocmd! BufWritePost,BufEnter * Neomake
+"autocmd! BufWritePost,BufEnter * Neomake
 let g:neomake_verbose=0
 let g:neomake_open_list = 0
 let g:neomake_list_height = 4
@@ -113,7 +113,8 @@ set wildmode=full
 set wildignorecase
 set pastetoggle=<F2>
 
-set diffopt=filler,context:5,icase,iwhite,vertical
+" icase,iblank
+set diffopt=filler,context:8,iwhite,vertical,hiddenoff
 
 map <cr> i<cr><esc>
 map Q :w<cr>
@@ -128,7 +129,7 @@ nmap <s-tab> ^i<bs><esc>
 
 "these lines to prevent vim to remove tabs from empty lines
 
-let Tlist_Ctags_Cmd='/usr/bin/ctags-exuberant'
+"let Tlist_Ctags_Cmd='/usr/bin/ctags-exuberant'
 let Tlist_Inc_Winwidth=0
 
 highlight MatchParen ctermbg=blue guibg=lightyellow
@@ -245,3 +246,12 @@ endfunction
 
 command! -bang Tabcloseright call TabCloseRight('<bang>')
 command! -bang Tabcloseleft call TabCloseLeft('<bang>')
+
+if &diff
+    set cursorline
+    map ] ]c
+    map [ [c
+    hi DiffAdd    ctermfg=233 ctermbg=LightGreen guifg=#003300 guibg=#DDFFDD gui=none cterm=none
+    hi DiffChange ctermbg=white  guibg=#ececec gui=none   cterm=none
+    hi DiffText   ctermfg=233  ctermbg=yellow  guifg=#000033 guibg=#DDDDFF gui=none cterm=none
+endif
