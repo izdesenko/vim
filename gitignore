@@ -45,3 +45,8 @@ package-lock.json
 
 # stuff
 *.log
+*/__pycache__/*
+venv
+.vscode
+.qodo
+node_modules

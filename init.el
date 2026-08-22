@@ -1,19 +1,26 @@
 ;(setq indent-line-function 'insert-tab)
 
+(package-initialize)
 ;; store all backup and autosave files in the tmp dir
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
+(setq vc-follow-symlinks nil)
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 (setq-default tab-width 4)
+
+(setq scroll-margin 1
+      scroll-conservatively 0
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01)
+    (setq-default scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01)
 
 (add-to-list 'auto-mode-alist '("\\.\\(t\\)\\'" . cperl-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(tt\\)\\'" . sgml-mode))
 (defalias 'perl-mode 'cperl-mode)
 
 (add-to-list 'load-path "~/.emacs.d/stuff")
-(add-to-list 'load-path "~/.emacs.d/pde/lisp")
-(load "pde-load")
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -38,27 +45,35 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(c-basic-offset 4)
  '(column-number-mode t)
  '(cperl-auto-newline nil)
  '(cperl-auto-newline-after-colon nil)
  '(cperl-autoindent-on-semi nil)
  '(find-file-suppress-same-file-warnings t)
- '(global-linum-mode t)
  '(grep-command "grep -rl ")
  '(grep-find-ignored-directories
-   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "tmp" "*.swp" "log"))
+   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN"
+     "_darcs" "{arch}" "node_modules" "tmp" "*.swp" "log"))
  '(grep-find-ignored-files
-   '(".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "*.swp"))
+   '(".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg"
+     "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm"
+     "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl"
+     "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl"
+     "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl"
+     "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl"
+     "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp"
+     "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys"
+     "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "*.swp"))
  '(grep-search-path '(nil "~/"))
  '(indent-tabs-mode nil)
- '(linum-format "%4d ")
  '(mouse-wheel-scroll-amount '(1 ((shift) . 1) ((meta)) ((control) . text-scale)))
- '(package-selected-packages '(helm magit expand-region iedit))
+ '(package-selected-packages '(expand-region helm iedit magit vue-mode))
  '(read-buffer-completion-ignore-case t)
  '(read-file-name-completion-ignore-case t)
+ '(scroll-conservatively 10000)
  '(show-paren-mode t)
  '(tab-width 4)
- '(c-basic-offset 4)
  '(truncate-lines t)
  '(uniquify-buffer-name-style 'forward nil (uniquify))
  '(uniquify-min-dir-content 2)
@@ -69,24 +84,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(put 'narrow-to-region 'disabled nil)
 
-;; (require 'auto-install)
-;; (auto-install-from-url "https://raw.github.com/aki2o/emacs-plsense/master/plsense.el")
-
-;; (require 'plsense)
-
-;; Key binding
-;; (setq plsense-popup-help-key "C-:")
-;; (setq plsense-display-help-buffer-key "M-:")
-;; (setq plsense-jump-to-definition-key "C->")
-
-;; Make config suit for you. About the config item, eval the following sexp.
-;; (customize-group "plsense")
-
-;; Do setting recommemded configuration
-;; (plsense-config-default)
-(plsense-direx:config-default)
 (put 'upcase-region 'disabled nil)
 
 (defun create-tags()
@@ -105,5 +103,33 @@
 (global-set-key (kbd "<C-left>") 'backward-sexp)
 (global-set-key (kbd "<C-right>") 'forward-sexp)
 
-(set-face-foreground 'linum "dark blue")
-(ac-config-default)
+(put 'narrow-to-region 'disabled nil)
+
+;; Отключаем передачу координат мыши из терминала в Emacs
+(unless (display-graphic-p)
+  (xterm-mouse-mode -1)
+  (track-mouse nil))
+
+; Возможно, это фикм для проблем с неадекватным курсором
+;(setq tty-focus-mode nil) ; Полностью отключает отслеживание фокуса терминалом, если оно мешает
+
+;; Принудительно отключаем BIDI для всех буферов
+(setq-default bidi-display-reordering nil)
+(setq-default bidi-paragraph-direction 'left-to-right)
+
+;; Включаем продвинутый cperl-mode вместо стандартного perl-mode
+(defalias 'perl-mode 'cperl-mode)
+
+;; Настраиваем cperl-mode для корректных отступов (4 пробела)
+(setq cperl-indent-level 4
+      cperl-close-paren-offset -4
+      cperl-continued-statement-offset 4
+      cperl-indent-parens-as-block t)
+
+;; Регистрируем perlnavigator в клиенте eglot
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               `((cperl-mode perl-mode) . ("perlnavigator" "--stdio"))))
+
+;; Автоматически запускаем eglot при открытии Perl-файлов
+(add-hook 'cperl-mode-hook 'eglot-ensure)

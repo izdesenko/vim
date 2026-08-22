@@ -1,13 +1,13 @@
 [submodule "bundle/fugitive"]
 	path = bundle/fugitive
-	url = git://github.com/tpope/vim-fugitive.git
+	url = git@github.com:tpope/vim-fugitive.git
 [submodule "bundle/perl-support"]
 	path = bundle/perl-support
 	url = https://github.com/vim-scripts/perl-support.vim.git
 	ignore = dirty
 [submodule "bundle/supertab"]
 	path = bundle/supertab
-	url = git://github.com/vim-scripts/SuperTab.git
+	url = git@github.com:vim-scripts/SuperTab.git
 [submodule "bundle/vim-jsbeautify"]
 	path = bundle/vim-jsbeautify
 	url = https://github.com/maksimr/vim-jsbeautify.git
