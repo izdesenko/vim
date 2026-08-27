@@ -68,7 +68,7 @@
  '(grep-search-path '(nil "~/"))
  '(indent-tabs-mode nil)
  '(mouse-wheel-scroll-amount '(1 ((shift) . 1) ((meta)) ((control) . text-scale)))
- '(package-selected-packages '(expand-region helm iedit magit vue-mode))
+ '(package-selected-packages nil)
  '(read-buffer-completion-ignore-case t)
  '(read-file-name-completion-ignore-case t)
  '(scroll-conservatively 10000)
@@ -133,3 +133,7 @@
 
 ;; Автоматически запускаем eglot при открытии Perl-файлов
 (add-hook 'cperl-mode-hook 'eglot-ensure)
+
+(use-package nushell-mode
+  :ensure t
+  :mode "\\.nu\\'")

@@ -1,19 +1,31 @@
--ole=unix
--bbs
--mbl=2
--l=200
--dws
--nsak='my our local if else for while foreach unless sub'
--nsfs
--pt=2
--sbt=2
--bt=2
--bbt=2
--nsts
--asc
--nskp
--tqw
--ce
--sot
--sct
+-l=90 -i=2 -ci=2 -st -se -vt=1 -cti=0 -pt=1 -bt=1 -sbt=1 -bbt=1
+-nsfs -nolq -mft=1
+-wbb="% + - * / x != == >= <= =~ !~ < > | & =
+      **= += *= &= <<= &&= -= /= |= >>= ||= //= .= %= ^= x="
 
+# Принудительно сохранять старые переносы строк ПОСЛЕ открывающих токенов
+# -kba="( [ {"
+
+# Включаем вертикальное выравнивание для списков и аргументов функций
+-vbc     # Вертикальная плотность для закрывающих скобок (делает перенос)
+-mft=1   # Максимальное количество элементов в одной строке перед принудительным переносом
+# -boc     # --break-at-old-comma-breakpoints
+         # Если вы сами при написании кода поставили перенос или запятую, 
+         # perltidy зафиксирует эту структуру и разложит параметры по вертикали
+
+# --- Блок управления пустыми строками (Blank Line Control) ---
+-blbs=1    # Принудительно вставлять пустую строку ПЕРЕД функциями sub
+-kbl=1     # Бережно сохранять пустые строки ПОСЛЕ блоков, если разработчик их поставил
+-mbl=2     # Ограничивать максимальное количество пустых строк подряд до двух
+
+-w       # show all warnings
+-nst     # no output
+-wn      # Weld nested containers {\n{ -> { {
+-bbhb=0  # --break-before-hash-brace (0 - never, 1 - keep break it it is there, 2 - break on complex hashes, 3 - always)
+-iob     # keep simple hashes one line
+-dws     # --delete-old-whitespace `,  $var` -> `, $var`
+-nsts    # no space before semicolon
+-asc     # add not necessary  semicolons
+-tqw     # format multiline qw(...)
+-cb      # cuddled block
+-ce      # cuddled else

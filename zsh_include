@@ -80,7 +80,7 @@ go() {
 	git pull origin $BRANCH $ARGS
 }
 
-unalias gdw
+unalias gdw 2>/dev/null
 gdw() {
     git diff -U10 --minimal $@|dwdiff --diff-input -c|less -R
 }
