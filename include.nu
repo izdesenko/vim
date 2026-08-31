@@ -198,3 +198,60 @@ export def my_random [length: int = 100] {
     # Переменная length задает, сколько символов оставить в конце
     random chars --length $length
 }
+
+export def perl-draft [filename: string] {
+    if not ( $filename | path exists ) {
+        let template = [
+            "#!/usr/bin/env perl"
+            ""
+            "use utf8;"
+            "use strict;"
+            "use warnings;"
+            "use Data::Dumper;"
+            "use feature 'say';"
+            ""
+            "binmode $_, ':encoding(utf-8)' for *STDIN, *STDOUT, *STDERR;"
+            ""
+            ""
+            ""
+            ""
+            "__DATA__"
+        ] | str join "\n"
+        
+        $template | save $filename
+    }
+
+    run-external $env.EDITOR $filename # Сразу открывает созданный файл в VS Code
+}
+
+export def --env mclaude [] {
+    with-env { CLAUDE_CODE_MAX_OUTPUT_TOKENS: "8192" } {
+        claude
+    }
+}
+
+export def --env mc [...args] {
+    # Запрашиваем тему. Направляем и вывод, и ошибки (o+e>) в системный /dev/null
+    let is_dark = (try { 
+        ^defaults read -g AppleInterfaceStyle e> /dev/null | str trim 
+    } catch { 
+        "Light" 
+    })
+    
+    # Отладочный вывод (пока оставим, чтобы проверить)
+    print $"args: ($args)"
+    print $"is_dark: ($is_dark)"
+    
+    # Выбираем скин
+    let skin = (if $is_dark == "Dark" { "nicedark" } else { "gray-green-purple256" })
+    print $"SKIN: ($skin)"
+    print " ----- "
+
+    let expanded_args = ($args | each { |it| $it | path expand })
+    print $"Входящие: ($args)"
+    print $"Раскрытые: ($expanded_args)"
+    print " ----- "
+    
+    # Запускаем Midnight Commander
+    with-env { MC_SKIN: $skin } { ^mc ...$expanded_args }    
+}

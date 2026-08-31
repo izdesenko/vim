@@ -2,6 +2,10 @@
 
 (package-initialize)
 ;; store all backup and autosave files in the tmp dir
+;; Прокидываем стандартные пути macOS для внешних утилит (git, clang, make)
+(setq exec-path (append '("/usr/bin" "/usr/local/bin" "/opt/homebrew/bin") exec-path))
+(setenv "PATH" (concat "/usr/bin:/usr/local/bin:/opt/homebrew/bin:" (getenv "PATH")))
+
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq vc-follow-symlinks nil)
@@ -69,6 +73,9 @@
  '(indent-tabs-mode nil)
  '(mouse-wheel-scroll-amount '(1 ((shift) . 1) ((meta)) ((control) . text-scale)))
  '(package-selected-packages nil)
+ '(package-vc-selected-packages
+   '((lsp-biome :vc-backend Git :url
+                "https://github.com/cxa/lsp-biome.git")))
  '(read-buffer-completion-ignore-case t)
  '(read-file-name-completion-ignore-case t)
  '(scroll-conservatively 10000)
@@ -137,3 +144,55 @@
 (use-package nushell-mode
   :ensure t
   :mode "\\.nu\\'")
+
+;; 1. Безопасная проверка и установка Biome из репозитория
+(unless (featurep 'lsp-biome)
+  (when (and (fboundp 'package-vc-install) 
+             (not (package-installed-p 'lsp-biome)))
+    (package-vc-install "https://github.com/cxa/lsp-biome.git")))
+
+;; =============================================================================
+;; 1. КАРТА РЕПОЗИТОРИЕВ TREE-SITTER (Для подсветки кода)
+;; =============================================================================
+(setq treesit-language-source-alist
+      '((typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src")
+        (js "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+        (html "https://github.com/tree-sitter/tree-sitter-html" "master" "src")
+        (css "https://github.com/tree-sitter/tree-sitter-css" "master" "src")))
+
+;; =============================================================================
+;; 2. НАСТРОЙКА РЕЖИМА TYPESCRIPT (Tree-sitter версия)
+;; =============================================================================
+(use-package typescript-ts-mode
+  :ensure nil ; Встроено в Emacs 29+
+  :mode (("\\.ts\\'" . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode)))
+
+;; =============================================================================
+;; 3. ИНТЕГРАЦИЯ BIOME (Форматирование, сортировка и линтинг при сохранении)
+;; =============================================================================
+(defun my/biome-format-and-fix-buffer ()
+  "Автоматически запускает проверку и исправление Biome СТРОГО ПОСЛЕ сохранения файла на диск."
+  (when (derived-mode-p 'typescript-ts-mode 'tsx-ts-mode 'web-mode 'js-mode 'json-mode)
+    (let* ((file-path (buffer-file-name))
+           (project-root (and file-path (locate-dominating-file file-path "package.json")))
+           (local-biome (and project-root (expand-file-name "node_modules/.bin/biome" project-root)))
+           (biome-exec (if (and local-biome (file-executable-p local-biome))
+                           local-biome
+                         (executable-find "biome"))))
+      
+      (when (and file-path biome-exec)
+        ;; Временно отключаем хук, чтобы команда revert-buffer не вызвала бесконечный цикл сохранения
+        (remove-hook 'after-save-hook #'my/biome-format-and-fix-buffer)
+        (let ((inhibit-message t))
+          ;; Запускаем Biome поверх уже сохраненного на диск чистого файла
+          (call-process biome-exec nil nil nil "check" "--write" "--unsafe" file-path)
+          ;; Обновляем буфер в Emacs, чтобы увидеть результат
+          (revert-buffer t t t))
+        ;; Возвращаем хук на место для следующих сохранений
+        (add-hook 'after-save-hook #'my/biome-format-and-fix-buffer)))))
+
+;; 🎯 ВАЖНО: Удаляем старый хук BEFORE и вешаем на чистый AFTER
+(remove-hook 'before-save-hook #'my/biome-format-and-fix-buffer)
+(add-hook 'after-save-hook #'my/biome-format-and-fix-buffer)
