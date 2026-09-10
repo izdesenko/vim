@@ -8,4 +8,5 @@ export-env {
   $env.DOCKER_ID_USER = "izdesenko"
   $env.LESSCHARSET = "UTF-8"
   $env.NODE_REPL_HISTORY = "~/.vim/.node_repl_history"
+  $env.show_banner = false
 }
