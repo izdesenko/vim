@@ -1,6 +1,6 @@
 export-env {
-  $env.EDITOR = "emacs"
-  $env.VISUAL = "emacs"
+  $env.EDITOR = ["emacs", "-nw"]
+  $env.VISUAL = ["emacs", "-nw"]
   $env.VIEWER = "less"
   $env.PAGER = "less"
   $env.LESS = ' -Ri ' # less without word wrapp
