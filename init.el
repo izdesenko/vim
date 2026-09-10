@@ -196,3 +196,11 @@
 ;; 🎯 ВАЖНО: Удаляем старый хук BEFORE и вешаем на чистый AFTER
 (remove-hook 'before-save-hook #'my/biome-format-and-fix-buffer)
 (add-hook 'after-save-hook #'my/biome-format-and-fix-buffer)
+
+;; Включаем сохранение истории минибуфера
+(setq savehist-file "~/.emacs.d/savehist")
+(savehist-mode 1)
+
+;; Дополнительно настраиваем историю
+(setq history-length 1000)        ;; Сколько записей хранить в истории
+(setq history-delete-duplicates t) ;; Удалять дубликаты из истории
