@@ -1,5 +1,4 @@
 export alias gdo = git diff -w
-export alias gdw = zsh -ci 'git diff -U10 --minimal | dwdiff --diff-input -c | less -R'
 
 export def go [branch?: string, ...rest: string] {
     # 1. Определяем ветку: если $branch не передан, берем текущую из git
@@ -238,20 +237,41 @@ export def --env mc [...args] {
         "Light" 
     })
     
-    # Отладочный вывод (пока оставим, чтобы проверить)
-    print $"args: ($args)"
-    print $"is_dark: ($is_dark)"
-    
     # Выбираем скин
     let skin = (if $is_dark == "Dark" { "nicedark" } else { "gray-green-purple256" })
-    print $"SKIN: ($skin)"
-    print " ----- "
-
     let expanded_args = ($args | each { |it| $it | path expand })
-    print $"Входящие: ($args)"
-    print $"Раскрытые: ($expanded_args)"
-    print " ----- "
     
     # Запускаем Midnight Commander
     with-env { MC_SKIN: $skin } { ^mc ...$expanded_args }    
+}
+
+export def optimize_images [
+    mask: glob               # *.jpg или *.png, ./**/*.jpg
+    size: int = 1000         # Optional: Optimized image min side new size (default 1000px)
+    quality: int = 70        # Optional: Optimized image quality (default 70%)
+] {
+    # Создаем папку для оптимизированных изображений, если её еще нет
+    mkdir optimized
+
+    # Находим файлы по маске и запускаем обработку
+    glob $mask | each { |file|
+        # Формируем имя выходного файла внутри папки optimized
+        let out = $"optimized/($file | path basename)"
+        
+        # Строим геометрию для ImageMagick
+        let resize_param = $"($size)x($size)^>"
+        
+        # Выводим в консоль информацию о процессе (по желанию можно убрать)
+        print $"Оптимизация ($file) -> ($out)..."
+        
+        # Выполняем команду magick
+        magick $file -resize $resize_param -strip -quality $quality $out
+    }
+    print "🎉 Оптимизация успешно завершена! Все файлы сохранены в папку 'optimized'."
+}
+
+export def gdw [...args: string] {
+    git diff -U10 --minimal ...$args 
+    | dwdiff --diff-input -c 
+    | less -R
 }
