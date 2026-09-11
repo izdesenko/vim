@@ -3,8 +3,8 @@
 (package-initialize)
 ;; store all backup and autosave files in the tmp dir
 ;; Прокидываем стандартные пути macOS для внешних утилит (git, clang, make)
-(setq exec-path (append '("/usr/bin" "/usr/local/bin" "/opt/homebrew/bin") exec-path))
-(setenv "PATH" (concat "/usr/bin:/usr/local/bin:/opt/homebrew/bin:" (getenv "PATH")))
+(setq exec-path (append '("/opt/homebrew/bin" "/usr/bin" "/usr/local/bin") exec-path))
+(setenv "PATH" (concat "/opt/homebrew/bin:/usr/bin:/usr/local/bin:" (getenv "PATH")))
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
@@ -124,22 +124,29 @@
 (setq-default bidi-display-reordering nil)
 (setq-default bidi-paragraph-direction 'left-to-right)
 
-;; Включаем продвинутый cperl-mode вместо стандартного perl-mode
-(defalias 'perl-mode 'cperl-mode)
 
-;; Настраиваем cperl-mode для корректных отступов (4 пробела)
-(setq cperl-indent-level 4
-      cperl-close-paren-offset -4
-      cperl-continued-statement-offset 4
-      cperl-indent-parens-as-block t)
+;; Настраиваем cperl-mode для корректных отступов (8 пробелов)
+(setq cperl-indent-level 8
+  cperl-close-paren-offset -8
+  cperl-continued-statement-offset 8
+  cperl-indent-parens-as-block t)
 
 ;; Регистрируем perlnavigator в клиенте eglot
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
-               `((cperl-mode perl-mode) . ("perlnavigator" "--stdio"))))
+    `((cperl-mode perl-mode) . ("perlnavigator" "--stdio"))))
+
+;; ИСПРАВЛЕННАЯ КОНФИГУРАЦИЯ PERL NAVIGATOR (С ОБРАТНОЙ КАВЫЧКОЙ БЭКТИК)
+(setq-default eglot-workspace-configuration
+  `((:perlnavigator . (:perlEnvAdd t
+    :includeLib t
+    :includePaths []
+    :perlPath ,(or (executable-find "perl") "perl")))))
 
 ;; Автоматически запускаем eglot при открытии Perl-файлов
 (add-hook 'cperl-mode-hook 'eglot-ensure)
+(add-hook 'perl-mode-hook 'eglot-ensure)
+
 
 (use-package nushell-mode
   :ensure t
