@@ -275,3 +275,11 @@ export def gdw [...args: string] {
     | dwdiff --diff-input -c 
     | less -R
 }
+
+export def mgl [filename: string] {
+    # Задаем регулярное выражение для папок, которые нужно исключить
+    let exclude_regex = '(\.vscode|\.svn|\.git|tmp|node_modules)'
+
+    # Выполняем поиск по шаблону и фильтруем результаты
+    glob $"**/($filename)" | where $in !~ $exclude_regex
+}
