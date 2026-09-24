@@ -283,3 +283,17 @@ export def mgl [filename: string] {
     # Выполняем поиск по шаблону и фильтруем результаты
     glob $"**/($filename)" | where $in !~ $exclude_regex
 }
+
+export def check_carpet_ban [_ip: string, start: number = 1, end: number = 255] {
+    echo "test:: " $_ip
+
+    $start..$end | each { |d|
+      let ip = $"($_ip).($d)"
+      let result = (nc -zv -w 1 $ip 443 | complete)
+    
+      # Проверяем exit_code, который complete заботливо сохранил для нас
+      let status = (if $result.exit_code == 0 { "🟢 Доступен" } else { "🔴 Таймаут" })
+    
+      { IP: $ip, Status: $status }
+    } | table
+}
