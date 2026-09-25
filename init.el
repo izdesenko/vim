@@ -54,6 +54,9 @@
  '(cperl-auto-newline nil)
  '(cperl-auto-newline-after-colon nil)
  '(cperl-autoindent-on-semi nil)
+ '(custom-safe-themes
+   '("5c7720c63b729140ed88cf35413f36c728ab7c70f8cd8422d9ee1cedeb618de5"
+     default))
  '(find-file-suppress-same-file-warnings t)
  '(grep-command "grep -rl ")
  '(grep-find-ignored-directories
@@ -212,30 +215,23 @@
 (setq history-length 1000)        ;; Сколько записей хранить в истории
 (setq history-delete-duplicates t) ;; Удалять дубликаты из истории
 
-;; 1. Настройка тем Doom
-(use-package doom-themes
-  :ensure t
-  :config
-  (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t))
-
-;; 2. Родной механизм macOS для смены тем (без сторонних пакетов)
-(defun my/apply-theme-by-macos-appearance (appearance)
-  "Переключает тему Doom в зависимости от системного режима APPEARANCE (:dark или :light)."
-  (mapc #'disable-theme custom-enabled-themes) ; Очищаем старые темы перед загрузкой
-  (if (eq appearance 'dark)
-    (load-theme 'doom-one t)            ; Если macOS перешла в Тёмный режим
-    (load-theme 'doom-one-light t)))    ; Если macOS перешла в Светлый режим
-
-;; Привязываем функцию к родному хуку macOS (сработает при изменении темы в системе)
-(add-hook 'ns-system-appearance-change-functions #'my/apply-theme-by-macos-appearance)
-
-;; Одноразовая проверка при самом первом запуске Emacs, 
-;; чтобы сразу выставить актуальную тему
-(if (boundp 'ns-system-appearance)
-    (my/apply-theme-by-macos-appearance ns-system-appearance))
-
 (use-package pcre2el
   :ensure t
   :config
   (pcre-mode t))
+
+;; 1. Предзагружаем обе темы, чтобы Emacs знал их палитру при старте
+(load-theme 'wombat t t)
+(load-theme 'whiteboard t t)
+
+(require 'auto-dark)
+(auto-dark-mode)
+
+(use-package auto-dark
+  :ensure t
+  :custom
+  (auto-dark-allow-osascript t)
+  (auto-dark-themes '((wombat) (whiteboard)))
+  (auto-dark-polling-interval-seconds 120)
+  :init (auto-dark-mode))
+
