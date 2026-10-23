@@ -206,6 +206,7 @@
 ;; 🎯 ВАЖНО: Удаляем старый хук BEFORE и вешаем на чистый AFTER
 (remove-hook 'before-save-hook #'my/biome-format-and-fix-buffer)
 (add-hook 'after-save-hook #'my/biome-format-and-fix-buffer)
+(add-hook 'prog-mode-hook 'hs-minor-mode)
 
 ;; Включаем сохранение истории минибуфера
 (setq savehist-file "~/.emacs.d/savehist")
